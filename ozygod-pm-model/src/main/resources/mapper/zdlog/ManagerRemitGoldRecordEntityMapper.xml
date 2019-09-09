@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.ManagerRemitGoldRecordEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="manager_id" jdbcType="BIGINT" property="managerId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="begin_gold" jdbcType="BIGINT" property="beginGold" />
+    <result column="gold" jdbcType="BIGINT" property="gold" />
+    <result column="end_gold" jdbcType="BIGINT" property="endGold" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, manager_id, user_id, manager_name, user_account, begin_gold, gold, end_gold, 
+    ip, record_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_manager_remit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="listRemitGoldRecordByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdlog.bo.RemitGoldRecordBO">
+    select
+      t1.record_time, t1.manager_id, t1.user_id, t1.begin_gold, t1.gold, t1.end_gold, t2.login_name managerAccount,
+      t3.nickname, t3.show_id
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where 1=1
+    <if test="playerId != null">
+      AND t1.user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND t1.manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="showId != null">
+      AND t3.show_id = #{showId, jdbcType=BIGINT}
+    </if>
+    <if test="managerAccount != null">
+      AND t2.login_name like concat('%',#{managerAccount, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+    order by t1.record_time desc
+    <if test="pageSize > 0">
+      LIMIT #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalRemitGoldRecordByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Integer">
+    select
+     COUNT(1)
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where 1=1
+    <if test="playerId != null">
+      AND t1.user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND t1.manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="showId != null">
+      AND t3.show_id = #{showId, jdbcType=BIGINT}
+    </if>
+    <if test="managerAccount != null">
+      AND t2.login_name like concat('%',#{managerAccount, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="getTotalRemitGoldByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Long">
+    select
+      ifnull(SUM(t1.gold), 0)
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where 1=1
+    <if test="playerId != null">
+      AND t1.user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND t1.manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="showId != null">
+      AND t3.show_id = #{showId, jdbcType=BIGINT}
+    </if>
+    <if test="managerAccount != null">
+      AND t2.login_name like concat('%',#{managerAccount, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="listManualRechargeStatementByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.common.bo.FinancialStatementBO">
+    select
+      concat('人工充值', '(', concat(t2.login_name, ')')) typeName,
+      ifnull(SUM(gold), 0) amount,
+      0 tax,
+      ifnull(SUM(gold), 0) actualAmount
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    where t1.manager_id != 0
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+    group by t1.manager_id
+  </select>
+
+  <select id="listRechargeManagerByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdmanage.bo.ManagerBO">
+    select
+      distinct t1.manager_id,
+      t2.login_name
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    where t1.manager_id != 0 and t1.gold > 0
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="countRechargeGoldByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Long">
+    select
+      ifnull(SUM(gold), 0)
+    from tbl_manager_remit t1
+    where t1.manager_id = #{managerId, jdbcType=BIGINT} and t1.gold > 0
+    <if test="startTime != null">
+      AND t1.record_time &gt;= #{startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND t1.record_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_manager_remit
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
+    insert into tbl_manager_remit (id, manager_id, user_id, 
+      manager_name, user_account, begin_gold, 
+      gold, end_gold, ip, record_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{managerName,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{beginGold,jdbcType=BIGINT}, 
+      #{gold,jdbcType=BIGINT}, #{endGold,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
+    insert into tbl_manager_remit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="managerName != null">
+        manager_name,
+      </if>
+      <if test="userAccount != null">
+        user_account,
+      </if>
+      <if test="beginGold != null">
+        begin_gold,
+      </if>
+      <if test="gold != null">
+        gold,
+      </if>
+      <if test="endGold != null">
+        end_gold,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="managerName != null">
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="beginGold != null">
+        #{beginGold,jdbcType=BIGINT},
+      </if>
+      <if test="gold != null">
+        #{gold,jdbcType=BIGINT},
+      </if>
+      <if test="endGold != null">
+        #{endGold,jdbcType=BIGINT},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
+    update tbl_manager_remit
+    <set>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="managerName != null">
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="beginGold != null">
+        begin_gold = #{beginGold,jdbcType=BIGINT},
+      </if>
+      <if test="gold != null">
+        gold = #{gold,jdbcType=BIGINT},
+      </if>
+      <if test="endGold != null">
+        end_gold = #{endGold,jdbcType=BIGINT},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        record_time = #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
+    update tbl_manager_remit
+    set manager_id = #{managerId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      user_account = #{userAccount,jdbcType=VARCHAR},
+      begin_gold = #{beginGold,jdbcType=BIGINT},
+      gold = #{gold,jdbcType=BIGINT},
+      end_gold = #{endGold,jdbcType=BIGINT},
+      ip = #{ip,jdbcType=VARCHAR},
+      record_time = #{recordTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.ManageLogTypeEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.ManageLogTypeEntity">
+    <id column="typeid" jdbcType="INTEGER" property="typeid" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    typeid, type_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_manage_log_type
+    where typeid = #{typeid,jdbcType=INTEGER}
+  </select>
+  <select id="listManageLogType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_manage_log_type
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_manage_log_type
+    where typeid = #{typeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.ManageLogTypeEntity">
+    insert into tbl_manage_log_type (typeid, type_name)
+    values (#{typeid,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.ManageLogTypeEntity">
+    insert into tbl_manage_log_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="typeid != null">
+        typeid,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.ManageLogTypeEntity">
+    update tbl_manage_log_type
+    <set>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where typeid = #{typeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.ManageLogTypeEntity">
+    update tbl_manage_log_type
+    set type_name = #{typeName,jdbcType=VARCHAR}
+    where typeid = #{typeid,jdbcType=INTEGER}
+  </update>
+</mapper>

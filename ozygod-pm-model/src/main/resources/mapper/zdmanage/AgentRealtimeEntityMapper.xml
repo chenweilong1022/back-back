@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.AgentRealtimeEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="super_id" jdbcType="BIGINT" property="superId" />
+    <result column="total_performance" jdbcType="BIGINT" property="totalPerformance" />
+    <result column="agent_level" jdbcType="INTEGER" property="agentLevel" />
+    <result column="ratio" jdbcType="INTEGER" property="ratio" />
+    <result column="rebate" jdbcType="BIGINT" property="rebate" />
+    <result column="performance" jdbcType="BIGINT" property="performance" />
+    <result column="direct_performance" jdbcType="BIGINT" property="directPerformance" />
+    <result column="team_performance" jdbcType="BIGINT" property="teamPerformance" />
+    <result column="under_count" jdbcType="INTEGER" property="underCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, super_id, total_performance, agent_level, ratio, rebate, performance, direct_performance, 
+    team_performance, under_count
+  </sql>
+
+  <select id="listAgentRealtimeByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdmanage.bo.AgentRealtimeBO">
+    select
+    t1.*, t2.account userAccount, t3.nickname, t3.show_id
+    from tbl_agent_realtime t1
+    left join zdgame.tbl_account t2 on t1.user_id = t2.userid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    <if test="playerId != null">
+      and t1.user_id = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="superId != null">
+      and t1.super_id = #{superId,jdbcType=BIGINT}
+    </if>
+    <if test="showId != null">
+      and t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    <if test="account != null and account != ''">
+      and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
+    </if>
+    order by t1.rebate desc
+    <if test="pageSize > 0">
+      limit #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalAgentRealtimeByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
+    select
+    COUNT(1)
+    from tbl_agent_realtime t1
+    left join zdgame.tbl_account t2 on t1.user_id = t2.userid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    <if test="playerId != null">
+      and t1.user_id = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="superId != null">
+      and t1.super_id = #{superId,jdbcType=BIGINT}
+    </if>
+    <if test="showId != null">
+      and t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    <if test="account != null and account != ''">
+      and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_agent_realtime
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_agent_realtime
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
+    insert into tbl_agent_realtime (user_id, super_id, total_performance, 
+      agent_level, ratio, rebate, 
+      performance, direct_performance, team_performance, 
+      under_count)
+    values (#{userId,jdbcType=BIGINT}, #{superId,jdbcType=BIGINT}, #{totalPerformance,jdbcType=BIGINT}, 
+      #{agentLevel,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER}, #{rebate,jdbcType=BIGINT}, 
+      #{performance,jdbcType=BIGINT}, #{directPerformance,jdbcType=BIGINT}, #{teamPerformance,jdbcType=BIGINT}, 
+      #{underCount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
+    insert into tbl_agent_realtime
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="superId != null">
+        super_id,
+      </if>
+      <if test="totalPerformance != null">
+        total_performance,
+      </if>
+      <if test="agentLevel != null">
+        agent_level,
+      </if>
+      <if test="ratio != null">
+        ratio,
+      </if>
+      <if test="rebate != null">
+        rebate,
+      </if>
+      <if test="performance != null">
+        performance,
+      </if>
+      <if test="directPerformance != null">
+        direct_performance,
+      </if>
+      <if test="teamPerformance != null">
+        team_performance,
+      </if>
+      <if test="underCount != null">
+        under_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="superId != null">
+        #{superId,jdbcType=BIGINT},
+      </if>
+      <if test="totalPerformance != null">
+        #{totalPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="agentLevel != null">
+        #{agentLevel,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        #{ratio,jdbcType=INTEGER},
+      </if>
+      <if test="rebate != null">
+        #{rebate,jdbcType=BIGINT},
+      </if>
+      <if test="performance != null">
+        #{performance,jdbcType=BIGINT},
+      </if>
+      <if test="directPerformance != null">
+        #{directPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="teamPerformance != null">
+        #{teamPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="underCount != null">
+        #{underCount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
+    update tbl_agent_realtime
+    <set>
+      <if test="superId != null">
+        super_id = #{superId,jdbcType=BIGINT},
+      </if>
+      <if test="totalPerformance != null">
+        total_performance = #{totalPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="agentLevel != null">
+        agent_level = #{agentLevel,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        ratio = #{ratio,jdbcType=INTEGER},
+      </if>
+      <if test="rebate != null">
+        rebate = #{rebate,jdbcType=BIGINT},
+      </if>
+      <if test="performance != null">
+        performance = #{performance,jdbcType=BIGINT},
+      </if>
+      <if test="directPerformance != null">
+        direct_performance = #{directPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="teamPerformance != null">
+        team_performance = #{teamPerformance,jdbcType=BIGINT},
+      </if>
+      <if test="underCount != null">
+        under_count = #{underCount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
+    update tbl_agent_realtime
+    set super_id = #{superId,jdbcType=BIGINT},
+      total_performance = #{totalPerformance,jdbcType=BIGINT},
+      agent_level = #{agentLevel,jdbcType=INTEGER},
+      ratio = #{ratio,jdbcType=INTEGER},
+      rebate = #{rebate,jdbcType=BIGINT},
+      performance = #{performance,jdbcType=BIGINT},
+      direct_performance = #{directPerformance,jdbcType=BIGINT},
+      team_performance = #{teamPerformance,jdbcType=BIGINT},
+      under_count = #{underCount,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

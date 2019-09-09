@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.ManagerEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.ManagerEntity">
+    <result column="manageid" jdbcType="INTEGER" property="manageid" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+    <result column="roleid" jdbcType="INTEGER" property="roleid" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="isdel" jdbcType="BIT" property="isdel" />
+  </resultMap>
+
+  <select id="getManagerByLoginDto" parameterType="com.ozygod.model.zdmanage.dto.LoginDto" resultType="com.ozygod.model.zdmanage.bo.ManagerBO">
+    select manageid, login_name, login_pwd,
+      roleid, nick_name, last_login_ip,
+      last_login_time, isdel
+    from tbl_manager
+    where login_name = #{username,jdbcType=VARCHAR} and login_pwd = #{password,jdbcType=VARCHAR} and isdel = 0
+  </select>
+
+  <select id="getManagerBySuperDto" parameterType="com.ozygod.model.zdmanage.dto.LoginDto" resultType="com.ozygod.model.zdmanage.bo.ManagerBO">
+    select manageid, login_name, login_pwd,
+      roleid, nick_name, last_login_ip,
+      last_login_time, isdel
+    from tbl_manager
+    where login_name = #{username,jdbcType=VARCHAR} and isdel = 0
+  </select>
+
+  <select id="login" parameterType="com.ozygod.model.zdmanage.dto.LoginDto" resultMap="BaseResultMap" statementType="CALLABLE">
+    <![CDATA[
+      call sp_manage_login(#{username, mode=IN ,jdbcType=VARCHAR},
+        #{password, mode=IN ,jdbcType=VARCHAR},
+        #{userIP, mode=IN ,jdbcType=VARCHAR},
+        #{userAgent, mode=IN ,jdbcType=VARCHAR});
+    ]]>
+  </select>
+
+  <select id="getManagerById" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdmanage.bo.ManagerBO">
+    select manageid, login_name, login_pwd,
+      roleid, nick_name, last_login_ip,
+      last_login_time, isdel
+    from tbl_manager
+    where manageid = #{managerId,jdbcType=INTEGER} and isdel = 0
+  </select>
+
+  <select id="validateManager" parameterType="com.ozygod.model.zdmanage.bo.ManagerBO" resultType="java.lang.Integer">
+    select count(1)
+    from tbl_manager
+    where manageid = #{manageid,jdbcType=INTEGER} and login_pwd = #{oldPassword,jdbcType=VARCHAR}  and isdel = 0
+  </select>
+
+  <select id="changePassword" parameterType="com.ozygod.model.zdmanage.bo.ManagerBO" resultType="java.lang.Integer" statementType="CALLABLE">
+    call sp_update_manager_pwd(#{manageid,jdbcType=INTEGER, mode=IN},
+      #{oldPassword,jdbcType=VARCHAR, mode=IN},
+      #{newPassword,jdbcType=VARCHAR, mode=IN}
+    )
+  </select>
+
+  <select id="listManagerByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultType="com.ozygod.model.zdmanage.bo.ManagerBO">
+    SELECT
+        A.*,
+        B.ROLE_NAME
+    FROM
+        tbl_manager AS A
+        LEFT JOIN tbl_role AS B ON A.ROLEID = B.ROLEID
+    WHERE
+        1 = 1
+    ORDER BY
+        A.ISDEL,
+        A.MANAGEID
+  </select>
+
+  <select id="delManagerByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultType="int" statementType="CALLABLE">
+    call sp_del_manager(#{managerId,jdbcType=INTEGER}, #{whoId,jdbcType=INTEGER})
+  </select>
+
+  <select id="addOrUpdateManager" parameterType="com.ozygod.model.zdmanage.bo.ManagerBO" resultType="int" statementType="CALLABLE">
+    call sp_add_update_manager(#{manageid,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=VARCHAR},
+      #{roleid,jdbcType=INTEGER}, #{nickName,jdbcType=VARCHAR},#{whoId,jdbcType=INTEGER})
+  </select>
+
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.ManagerEntity">
+    insert into tbl_manager (manageid, login_name, login_pwd, 
+      roleid, nick_name, last_login_ip, 
+      last_login_time, isdel)
+    values (#{manageid,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=VARCHAR}, 
+      #{roleid,jdbcType=INTEGER}, #{nickName,jdbcType=VARCHAR}, #{lastLoginIp,jdbcType=VARCHAR}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{isdel,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.ManagerEntity">
+    insert into tbl_manager
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="manageid != null">
+        manageid,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="loginPwd != null">
+        login_pwd,
+      </if>
+      <if test="roleid != null">
+        roleid,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="manageid != null">
+        #{manageid,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null">
+        #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

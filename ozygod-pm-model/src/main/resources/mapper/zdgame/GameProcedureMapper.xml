@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.GameProcedureMapper">
+    <resultMap id="platformOverview" type="com.ozygod.model.zdgame.bo.PlatformOverviewBO">
+        <result column="@TOTALUSER" jdbcType="BIGINT" property="totalUser" />
+        <result column="@LOCKUSER" jdbcType="BIGINT" property="lockUser" />
+        <result column="@TODAYLOGIN" jdbcType="BIGINT" property="todayLogin" />
+        <result column="@TOTALGOLD" jdbcType="BIGINT" property="totalGold" />
+        <result column="@TOTALDIAMOND" jdbcType="BIGINT" property="totalDiamond" />
+        <result column="@TOTALORDERPAY" jdbcType="BIGINT" property="totalOrderPay" />
+        <result column="@TOTALTAX" jdbcType="BIGINT" property="totalTax" />
+        <result column="@TODAYREGNUM" jdbcType="BIGINT" property="todayRegNum" />
+        <result column="@TODAYMAXONLINE" jdbcType="BIGINT" property="todayMaxOnline" />
+        <result column="@NOWONLINE" jdbcType="BIGINT" property="nowOnline" />
+        <result column="@LOCK_USER_GOLD" jdbcType="BIGINT" property="lockUserGold" />
+    </resultMap>
+
+    <resultMap id="dailyRechargeCount" type="com.ozygod.model.zdgame.bo.DailyRechargeCountBO">
+        <result column="orderDay" jdbcType="DATE" property="orderDay" />
+        <result column="totalPay" jdbcType="BIGINT" property="totalPay" />
+        <result column="wantongpay" jdbcType="BIGINT" property="wanTongPay" />
+        <result column="fengyunpay" jdbcType="BIGINT" property="fengYunPay" />
+        <result column="weixin" jdbcType="BIGINT" property="weixin" />
+    </resultMap>
+
+    <resultMap id="rechargeCount" type="com.ozygod.model.zdgame.bo.RechargeCountBO">
+        <result column="@TOTALPAY" jdbcType="BIGINT" property="totalPay" />
+        <result column="@TOTALWANTONGPAY" jdbcType="BIGINT" property="totalWanTongPay" />
+        <result column="@TOTALFENGYUNPAY" jdbcType="BIGINT" property="totalFengYunPay" />
+        <result column="@TOTALWEIXIN" jdbcType="BIGINT" property="totalWeixin" />
+    </resultMap>
+
+    <select id="getPlatformOverview" resultMap="platformOverview" statementType="CALLABLE">
+      call sp_get_platform_survey()
+    </select>
+    
+    <select id="listDailyRechargeCountByQry" statementType="CALLABLE" parameterType="com.ozygod.model.common.dto.PlatformDto" resultMap="dailyRechargeCount, rechargeCount">
+      call sp_get_day_pay_amont(#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE})
+    </select>
+
+
+</mapper>

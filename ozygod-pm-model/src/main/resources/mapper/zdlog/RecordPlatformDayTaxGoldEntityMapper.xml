@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.RecordPlatformDayTaxGoldEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.RecordPlatformDayTaxGoldEntity">
+    <result column="record_time" jdbcType="DATE" property="recordTime" />
+    <result column="game_id" jdbcType="INTEGER" property="gameId" />
+    <result column="channel_id" jdbcType="VARCHAR" property="channelId" />
+    <result column="day_game_tax" jdbcType="BIGINT" property="dayGameTax" />
+  </resultMap>
+
+  <select id="listDailyGameTaxGoldCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdlog.bo.DailyGameTaxGoldCountBO">
+    SELECT
+        t1.record_time,
+        t3.game_name,
+        sum( t1.day_game_tax ) AS totalTax
+    FROM
+        tbl_day_game_gold_tax_record t1
+    left join zdgame.tbl_game_room t2 on t1.game_id = t2.roomid
+    left join zdgame.tbl_game t3 on t2.gameid = t3.gameid
+    WHERE 1=1
+    <if test="gameId != null">
+      and  t2.gameid = #{gameId, jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      and t1.record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and t1.record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+    GROUP BY
+        t1.record_time,
+        t2.gameid
+    ORDER BY
+        t1.record_time desc, t2.gameid
+    <if test="pageSize > 0">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalDailyGameTaxGoldCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
+   SELECT COUNT(1) FROM (
+      SELECT
+      t1.record_time,
+      t3.game_name,
+      sum( t1.day_game_tax ) AS totalTax
+      FROM
+      tbl_day_game_gold_tax_record t1
+      left join zdgame.tbl_game_room t2 on t1.game_id = t2.roomid
+      left join zdgame.tbl_game t3 on t2.gameid = t3.gameid
+      WHERE 1=1
+      <if test="gameId != null">
+          and  t2.gameid = #{gameId, jdbcType=INTEGER}
+      </if>
+      <if test="startDate != null">
+          and t1.record_time &gt;= #{startDate,jdbcType=DATE}
+      </if>
+      <if test="endDate != null">
+          and t1.record_time &lt;= #{endDate,jdbcType=DATE}
+      </if>
+      GROUP BY
+      t1.record_time,
+      t2.gameid
+   ) A
+  </select>
+
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayTaxGoldEntity">
+    insert into tbl_day_game_gold_tax_record (record_time, game_id, channel_id, 
+      day_game_tax)
+    values (#{recordTime,jdbcType=DATE}, #{gameId,jdbcType=INTEGER}, #{channelId,jdbcType=VARCHAR}, 
+      #{dayGameTax,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayTaxGoldEntity">
+    insert into tbl_day_game_gold_tax_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        record_time,
+      </if>
+      <if test="gameId != null">
+        game_id,
+      </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="dayGameTax != null">
+        day_game_tax,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=DATE},
+      </if>
+      <if test="gameId != null">
+        #{gameId,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="dayGameTax != null">
+        #{dayGameTax,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

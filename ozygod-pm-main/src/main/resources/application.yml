@@ -1,0 +1,50 @@
+# 指定配置文件
+spring:
+  profiles:
+    active: 955Prod
+  application:
+    name: qy_web_gm
+
+# 服务端口配置
+server:
+  port: 8080
+
+# Swagger配置
+# 通过链接[http://ip:port/swagger-ui.html]访问
+swagger:
+  title: 游戏平台管理API文档
+  description: 游戏平台管理API文档
+  version: 1.0.0
+  license: Apache License, Version 2.0
+  license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+  terms-of-service-url: https://github.com/SpringForAll/spring-boot-starter-swagger
+  base-package: com.ozygod
+  base-path: /**
+  exclude-path: /error
+  global-operation-parameters:
+    -
+      name: api-version
+      description: api版本
+      modelRef: string
+      parameterType: header
+      required: true
+
+# 用户自定义属性
+# token失效时间(秒)，-1永久不失效
+token_expiresecs: 3600
+
+# 机器人系统地址
+robot_url: http://127.0.0.1:8692
+# 游戏api地址
+game_url: http://127.0.0.1:8691
+# 代理api地址
+agent_url: http://127.0.0.1:6002
+
+# ipv4地址库
+ipdb: /home/web/ipipfree.ipdb
+
+# 文件存放路径
+files_url: /home/web/files/
+
+appId: wxbaa0742299d28b09
+appSecret: 74232c45c7c40598eef3391fc78563a1

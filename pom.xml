@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.ozygod</groupId>
+	<artifactId>ozygod-pm</artifactId>
+	<version>${ozygod.version}</version>
+	<packaging>pom</packaging>
+
+	<name>ozygod-pm</name>
+	<description>后台管理系统基础架构</description>
+
+	<!-- 指定项目的Spring Boot版本 -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.0.M2</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<!-- 统一管理项目中引用包的版本 -->
+	<properties>
+		<!-- 项目版本号 -->
+		<ozygod.version>1.0.0</ozygod.version>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- 私有镜像仓库地址 -->
+		<docker.image.prefix></docker.image.prefix>
+
+		<java.version>1.8</java.version>
+
+		<!-- 引用包版本号 -->
+		<mybatis.version>1.3.2</mybatis.version>
+		<fastjson.version>1.2.49</fastjson.version>
+		<druid.version>1.1.10</druid.version>
+		<aspectj.version>1.8.9</aspectj.version>
+		<swagger.version>1.7.1.RELEASE</swagger.version>
+		<commons-httpclient.version>3.1-rc1</commons-httpclient.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<ipdb.version>1.1.1</ipdb.version>
+		<thumbnailator.version>0.4.8</thumbnailator.version>
+	</properties>
+
+	<!-- 管理所有子模块 -->
+	<modules>
+		<module>ozygod-pm-main</module>
+		<module>ozygod-pm-conf</module>
+		<module>ozygod-pm-base</module>
+		<module>ozygod-pm-model</module>
+		<module>ozygod-pm-api</module>
+		<module>ozygod-pm-account</module>
+		<module>ozygod-pm-robot</module>
+		<module>ozygod-pm-player</module>
+		<module>ozygod-pm-game</module>
+		<module>ozygod-pm-platform</module>
+		<module>ozygod-pm-spread</module>
+	</modules>
+
+	<!-- 指定项目中的公有模块 -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-main</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-base</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-model</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-conf</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-account</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-robot</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-player</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-api</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-game</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-platform</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-spread</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.spring4all</groupId>
+				<artifactId>swagger-spring-boot-starter</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commons-beanutils.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/net.ipip/ipdb -->
+			<dependency>
+				<groupId>net.ipip</groupId>
+				<artifactId>ipdb</artifactId>
+				<version>${ipdb.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.coobird</groupId>
+				<artifactId>thumbnailator</artifactId>
+				<version>${thumbnailator.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- 指定项目中的公有依赖 -->
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
+		<!-- AOP -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- 指定使用Maven打包 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				  <configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				  </configuration>
+			</plugin>
+
+			  <plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-surefire-plugin</artifactId>
+				  <version>2.19.1</version>
+					<configuration>
+					  <!--默认关掉单元测试 -->
+					  <skipTests>true</skipTests>
+					</configuration>
+			  </plugin>
+		</plugins>
+	</build>
+
+	<!-- 指定Spring Boot引用包下载仓库 -->
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>

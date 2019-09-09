@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 配置mysql 驱动jar包路径.用了绝对路径 -->
+    <classPathEntry location="/Users/joey/.m2/repository/mysql/mysql-connector-java/8.0.12/mysql-connector-java-8.0.12.jar" />
+
+    <context id="dev_taozhu_order" targetRuntime="MyBatis3">
+        <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+            <property name="suppressDate" value="true" />
+        </commentGenerator>
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://47.104.247.143:3306/zdspread?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="reader"
+                        password="123456">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 数据表对应的model层  -->
+        <javaModelGenerator targetPackage="com.ozygod.model.zdspread.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+            <!--<property name="rootClass" value="com.ozygod.base.entity.BaseEntity" />-->
+        </javaModelGenerator>
+
+        <!-- sql mapper 映射配置文件 -->
+        <sqlMapGenerator targetPackage="mapper.zdspread"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- mybatis3中的mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ozygod.model.zdspread.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
+        <!--<table schema="zdspread" tableName="tbl_spread_users" domainObjectName="SpreadUserEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_day_spread_gold" domainObjectName="RecordDaySpreadGoldEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_spread_give_gold" domainObjectName="RecordSpreadGiveGoldEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_spread_give_gold" domainObjectName="RecordSpreadGiveGoldEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_exchange_diamond" domainObjectName="RecordExchangeDiamondEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_spread_give_diamond" domainObjectName="RecordSpreadGiveDiamondEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table schema="zdspread" tableName="tbl_record_spread_diamond_add" domainObjectName="SpreadDiamondAddRecordEntity"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+
+    </context>
+</generatorConfiguration>

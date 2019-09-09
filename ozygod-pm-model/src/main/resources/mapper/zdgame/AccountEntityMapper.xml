@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.AccountEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.AccountEntity">
+    <id column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="app_channel" jdbcType="VARCHAR" property="appChannel" />
+    <result column="lock" jdbcType="TIMESTAMP" property="lock" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="logout_time" jdbcType="TIMESTAMP" property="logoutTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="token_invalid_time" jdbcType="TIMESTAMP" property="tokenInvalidTime" />
+    <result column="platform" jdbcType="CHAR" property="platform" />
+    <result column="ip" jdbcType="CHAR" property="ip" />
+    <result column="vip_type" jdbcType="TINYINT" property="vipType" />
+    <result column="vip_invalid_time" jdbcType="TIMESTAMP" property="vipInvalidTime" />
+    <result column="phone_num" jdbcType="VARCHAR" property="phoneNum" />
+    <result column="saler" jdbcType="BIGINT" property="saler" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="id_code" jdbcType="VARCHAR" property="idCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, account, pwd, channel, app_channel, `lock`, login_time, logout_time, create_time,
+    token, token_invalid_time, platform, ip, vip_type, vip_invalid_time, phone_num, saler, 
+     real_name, id_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_account
+    where userid = #{userid,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="getPlayerAccountById" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+    SELECT
+        C.*,
+        D.channel_name,
+        ifnull(t1.id, 0) spreadUserId,
+        ifnull(t1.ratio, 0) spreadRatio
+    FROM
+        (
+        SELECT
+            A.*,
+            B.NICKNAME,
+            B.GOLD,
+            B.BANK_GOLD,
+            ( B.GOLD + B.BANK_GOLD ) AS TOTALGOLD,
+            B.HONOR,
+            B.diamond,
+            C.totalPay,
+            D.totalWithdraw
+        FROM
+            tbl_account AS A
+            LEFT JOIN tbl_playerinfo AS B ON A.USERID = B.USERID
+            LEFT JOIN (
+                select t1.userid, sum(t1.totalPay) totalPay
+                from (
+                    SELECT
+                        t1.userid,
+                        sum(t1.money) totalPay
+                    FROM tbl_order t1
+                    where t1.state = 3
+                    group by t1.userid
+                    union all
+                    select
+                      t2.user_id userid,
+                      sum(t2.gold) totalPay
+                    from zdlog.tbl_manager_remit t2
+                    where t2.gold > 0
+                    group by t2.user_id
+                ) t1 group by t1.userid
+            ) C ON C.USERID = A.USERID
+            LEFT JOIN (
+              select t1.userid, sum(t1.totalWithdraw) totalWithdraw
+              from (
+              select
+                t1.userid,
+                sum(t1.amount-t1.tax) totalWithdraw
+              from zdmanage.tbl_withdraw_order t1
+              where t1.state = 2
+              group by t1.userid
+              union all
+              select
+                t2.user_id userid,
+                sum(t2.gold) totalWithdraw
+              from zdlog.tbl_manager_remit t2
+              where t2.gold &lt; 0
+              group by t2.user_id) t1 group by t1.userid
+            ) D
+            ON D.userid = A.userid
+        WHERE
+            A.USERID > 10000
+        AND A.USERID = #{playerId,jdbcType=BIGINT}
+    ) C
+    LEFT JOIN tbl_app_channel_type AS D
+    ON C.APP_CHANNEL = D.CHANNEL_ID
+    LEFT JOIN zdspread.tbl_spread_users t1
+    on t1.id = C.USERID
+  </select>
+
+
+  <select id="getPlayerAccountByShowId" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+    SELECT
+        C.*,
+        D.channel_name,
+        ifnull(t1.id, 0) spreadUserId,
+        ifnull(t1.ratio, 0) spreadRatio
+    FROM
+        (
+        SELECT
+            A.*,
+            B.NICKNAME,
+            B.GOLD,
+            B.BANK_GOLD,
+            ( B.GOLD + B.BANK_GOLD ) AS TOTALGOLD,
+            B.HONOR,
+            B.diamond,
+            C.totalPay
+        FROM
+            tbl_account AS A
+            LEFT JOIN tbl_playerinfo AS B ON A.USERID = B.USERID
+            LEFT JOIN (
+                SELECT
+                    t1.userid,
+                    sum(t1.money) totalPay
+                FROM tbl_order t1
+                group by t1.userid
+            ) C ON C.USERID = A.USERID
+        WHERE
+            A.USERID > 10000
+        AND B.show_id = #{showId,jdbcType=BIGINT}
+    ) C
+    LEFT JOIN tbl_app_channel_type AS D
+    ON C.APP_CHANNEL = D.CHANNEL_ID
+    LEFT JOIN zdspread.tbl_spread_users t1
+    on t1.id = C.USERID
+  </select>
+
+  <select id="listPlayerAccountByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+    SELECT
+        C.*,
+        D.channel_name,
+        t1.nickname agentNickname
+    FROM
+        (
+        SELECT
+            A.*,
+            B.NICKNAME,
+            B.GOLD,
+            B.BANK_GOLD,
+            ( B.GOLD + B.BANK_GOLD ) AS TOTALGOLD,
+            B.HONOR,
+            B.diamond,
+            ifnull(t1.id, 0) spreadUserId,
+            ifnull(t1.ratio, 0) spreadRatio,
+            B.send_gift,
+            B.show_id
+        FROM
+            tbl_account AS A
+            INNER JOIN tbl_playerinfo AS B ON A.USERID = B.USERID
+            LEFT JOIN zdspread.tbl_spread_users t1
+            on t1.id = A.USERID
+            LEFT JOIN (select count(1) existFlag, t1.id from zdspread.tbl_spread_users t1 group by t1.id) t2
+            on A.USERID = t2.id
+        WHERE
+            A.USERID > 10000
+        <if test="playerTypes != null and playerTypes.size > 0">
+          and ifnull(t2.existFlag, 0) in
+          <foreach close=")" collection="playerTypes" item="item" open="(" separator=",">
+            #{item, jdbcType=INTEGER}
+          </foreach>
+        </if>
+        <if test="playerId != null">
+          AND A.USERID = #{playerId,jdbcType=BIGINT}
+        </if>
+        <if test="account != null">
+          AND A.account LIKE concat('%',#{account,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="showId != null">
+          AND B.show_id = #{showId,jdbcType=BIGINT}
+        </if>
+        <if test="nickName != null">
+          AND B.NICKNAME LIKE concat('%',#{nickName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="lastLoginIp != null">
+          AND A.ip = #{lastLoginIp,jdbcType=CHAR}
+        </if>
+        <if test="salerId != null">
+          AND A.saler = #{salerId,jdbcType=BIGINT}
+        </if>
+        <if test="state != null and state == 1">
+          AND A.LOCK = '1970-01-01 00:00:00'
+        </if>
+        <if test="state != null and state == 2">
+          AND A.LOCK &lt;&gt; '1970-01-01 00:00:00'
+        </if>
+        <if test="registBeginTime != null">
+          AND A.CREATE_TIME &gt;= #{registBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="registEndTime != null">
+          AND A.CREATE_TIME &lt; #{registEndTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="loginBeginTime != null">
+          AND A.login_time &gt;= #{loginBeginTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="loginEndTime != null">
+          AND A.login_time &lt; #{loginEndTime,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY A.USERID DESC
+        <if test="pageSize > 0">
+          LIMIT #{start}, #{pageSize}
+        </if>
+    ) C
+    LEFT JOIN tbl_app_channel_type AS D
+    ON C.APP_CHANNEL = D.CHANNEL_ID
+    LEFT JOIN tbl_playerinfo t1 on C.saler = t1.show_id
+    ORDER BY C.USERID DESC
+  </select>
+
+  <select id="totalCountPlayerAccountByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
+    SELECT
+      COUNT(1)
+    FROM
+    tbl_account AS A
+    INNER JOIN tbl_playerinfo AS B ON A.USERID = B.USERID
+    LEFT JOIN (select count(1) existFlag, t1.id from zdspread.tbl_spread_users t1 group by t1.id) t2
+    on A.USERID = t2.id
+    WHERE
+    A.USERID > 10000
+    <if test="playerTypes != null and playerTypes.size > 0">
+      and ifnull(t2.existFlag, 0) in
+      <foreach close=")" collection="playerTypes" item="item" open="(" separator=",">
+        #{item, jdbcType=INTEGER}
+      </foreach>
+    </if>
+    <if test="playerId != null">
+      AND A.USERID = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="account != null">
+      AND A.account LIKE concat('%',#{account,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="showId != null">
+      AND B.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    <if test="nickName != null">
+      AND B.NICKNAME LIKE concat('%',#{nickName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="lastLoginIp != null">
+      AND A.ip = #{lastLoginIp,jdbcType=CHAR}
+    </if>
+    <if test="salerId != null">
+      AND A.saler = #{salerId,jdbcType=BIGINT}
+    </if>
+    <if test="state != null and state == 1">
+      AND A.LOCK = '1970-01-01 00:00:00'
+    </if>
+    <if test="state != null and state == 2">
+      AND A.LOCK &lt;&gt; '1970-01-01 00:00:00'
+    </if>
+    <if test="registBeginTime != null">
+      AND A.CREATE_TIME &gt;= #{registBeginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="registEndTime != null">
+      AND A.CREATE_TIME &lt; #{registEndTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="loginBeginTime != null">
+      AND A.login_time &gt;= #{loginBeginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="loginEndTime != null">
+      AND A.login_time &lt; #{loginEndTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="listOnlinePlayerQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+    select
+      t1.userid, t3.show_id, t3.nickname, t2.ip, t1.room, tt.room_name, t1.table_ tableId, t1.val luckyRatio, t3.gold, t3.bank_gold,
+      t4.todayWinningGold, t5.totalWinningGold
+    from tbl_player_location t1
+    left join tbl_game_room tt on t1.room = tt.roomid
+    left join tbl_account t2 on t1.userid = t2.userid
+    left join tbl_playerinfo t3 on t1.userid = t3.userid
+    left join (
+      select
+        sum(t1.change_gold) todayWinningGold,
+        t1.userid
+      from zdlog.tbl_game_gold t1
+      where t1.userid > 10000 and t1.reason = 0
+      and DATE_FORMAT(t1.record_time, '%Y-%m-%d') = DATE_FORMAT(sysdate(), '%Y-%m-%d')
+      group by t1.userid
+    ) t4 on t1.userid = t4.userid
+    left join (
+      select
+        sum(t1.change_gold) totalWinningGold,
+        t1.userid
+      from zdlog.tbl_game_gold t1
+      where t1.userid > 10000 and t1.reason = 0
+      group by t1.userid
+    ) t5 on t1.userid = t5.userid
+    where t1.userid > 10000
+    <if test="playerId != null">
+      AND t1.userid = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="showId != null">
+      AND t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    <if test="gameId != null and gameId != 0">
+      and tt.gameid = #{gameId, jdbcType=INTEGER}
+    </if>
+    <if test="gameIds != null and gameIds.size() > 0">
+      and tt.gameid in
+      <foreach collection="gameIds" item="gameId" open="(" separator="," close=")">
+        #{gameId, jdbcType=INTEGER}
+      </foreach>
+    </if>
+    ORDER BY t3.show_id DESC
+    <if test="pageSize > 0">
+      LIMIT #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalOnlinePlayerByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
+    select COUNT(1)
+    from tbl_player_location t1
+    left join tbl_playerinfo t3 on t1.userid = t3.userid
+    left join tbl_game_room tt on t1.room = tt.roomid
+    where t1.userid > 10000
+    <if test="playerId != null">
+      AND t1.userid = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="showId != null">
+      AND t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    <if test="gameId != null and gameId != 0">
+      and tt.gameid = #{gameId, jdbcType=INTEGER}
+    </if>
+    <if test="gameIds != null and gameIds.size() > 0">
+      and tt.gameid in
+      <foreach collection="gameIds" item="gameId" open="(" separator="," close=")">
+        #{gameId, jdbcType=INTEGER}
+      </foreach>
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_account
+    where userid = #{userid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.AccountEntity">
+    insert into tbl_account (userid, account, pwd, 
+      channel, app_channel, lock, 
+      login_time, logout_time, create_time, 
+      token, token_invalid_time, platform, 
+      ip, vip_type, vip_invalid_time, 
+      phone_num, saler,
+      real_name, id_code)
+    values (#{userid,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{channel,jdbcType=VARCHAR}, #{appChannel,jdbcType=VARCHAR}, #{lock,jdbcType=TIMESTAMP}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{token,jdbcType=VARCHAR}, #{tokenInvalidTime,jdbcType=TIMESTAMP}, #{platform,jdbcType=CHAR}, 
+      #{ip,jdbcType=CHAR}, #{vipType,jdbcType=TINYINT}, #{vipInvalidTime,jdbcType=TIMESTAMP}, 
+      #{phoneNum,jdbcType=VARCHAR}, #{saler,jdbcType=BIGINT},
+      #{realName,jdbcType=VARCHAR}, #{idCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.AccountEntity">
+    insert into tbl_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="appChannel != null">
+        app_channel,
+      </if>
+      <if test="lock != null">
+        lock,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="logoutTime != null">
+        logout_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="tokenInvalidTime != null">
+        token_invalid_time,
+      </if>
+      <if test="platform != null">
+        platform,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="vipType != null">
+        vip_type,
+      </if>
+      <if test="vipInvalidTime != null">
+        vip_invalid_time,
+      </if>
+      <if test="phoneNum != null">
+        phone_num,
+      </if>
+      <if test="saler != null">
+        saler,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="idCode != null">
+        id_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="appChannel != null">
+        #{appChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="lock != null">
+        #{lock,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null">
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenInvalidTime != null">
+        #{tokenInvalidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platform != null">
+        #{platform,jdbcType=CHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=CHAR},
+      </if>
+      <if test="vipType != null">
+        #{vipType,jdbcType=TINYINT},
+      </if>
+      <if test="vipInvalidTime != null">
+        #{vipInvalidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="saler != null">
+        #{saler,jdbcType=BIGINT},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCode != null">
+        #{idCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.AccountEntity">
+    update tbl_account
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="appChannel != null">
+        app_channel = #{appChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="lock != null">
+        lock = #{lock,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null">
+        logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="tokenInvalidTime != null">
+        token_invalid_time = #{tokenInvalidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platform != null">
+        platform = #{platform,jdbcType=CHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=CHAR},
+      </if>
+      <if test="vipType != null">
+        vip_type = #{vipType,jdbcType=TINYINT},
+      </if>
+      <if test="vipInvalidTime != null">
+        vip_invalid_time = #{vipInvalidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phoneNum != null">
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="saler != null">
+        saler = #{saler,jdbcType=BIGINT},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCode != null">
+        id_code = #{idCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.AccountEntity">
+    update tbl_account
+    set account = #{account,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      channel = #{channel,jdbcType=VARCHAR},
+      app_channel = #{appChannel,jdbcType=VARCHAR},
+      lock = #{lock,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      token = #{token,jdbcType=VARCHAR},
+      token_invalid_time = #{tokenInvalidTime,jdbcType=TIMESTAMP},
+      platform = #{platform,jdbcType=CHAR},
+      ip = #{ip,jdbcType=CHAR},
+      vip_type = #{vipType,jdbcType=TINYINT},
+      vip_invalid_time = #{vipInvalidTime,jdbcType=TIMESTAMP},
+      phone_num = #{phoneNum,jdbcType=VARCHAR},
+      saler = #{saler,jdbcType=BIGINT},
+      real_name = #{realName,jdbcType=VARCHAR},
+      id_code = #{idCode,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=BIGINT}
+  </update>
+</mapper>

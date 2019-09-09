@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdspread.dao.RecordSpreadGiveGoldEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdspread.entity.RecordSpreadGiveGoldEntity">
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="spread_id" jdbcType="INTEGER" property="spreadId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="old_gold" jdbcType="BIGINT" property="oldGold" />
+    <result column="give_gold" jdbcType="BIGINT" property="giveGold" />
+  </resultMap>
+
+  <select id="listRecordSpreadGiveGoldByQry" parameterType="com.ozygod.model.zdspread.dto.SpreadDto" resultType="com.ozygod.model.zdspread.bo.RecordSpreadGiveGoldBO">
+    SELECT
+        A.*,
+        B.nickname
+    FROM
+        tbl_record_spread_give_gold AS A
+        INNER JOIN zdgame.tbl_playerinfo AS B ON A.user_id = B.userid
+    WHERE
+        1 =1
+      <if test="spreadUserId != null">
+        and A.spread_id = #{spreadUserId,jdbcType=INTEGER}
+      </if>
+      <if test="startDate != null">
+        and A.record_time &gt;= #{startDate,jdbcType=DATE}
+      </if>
+      <if test="endDate != null">
+        and A.record_time &lt;= #{endDate,jdbcType=DATE}
+      </if>
+      <if test="playerId != null">
+        and A.user_id = #{playerId,jdbcType=INTEGER}
+      </if>
+	ORDER BY A.record_id desc
+    <if test="pageSize &gt; 0">
+      limit #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalRecordSpreadGiveGoldByQry" parameterType="com.ozygod.model.zdspread.dto.SpreadDto" resultType="int">
+    SELECT
+       COUNT(1)
+    FROM
+        tbl_record_spread_give_gold AS A
+    WHERE
+        1 =1
+      <if test="spreadUserId != null">
+        and A.spread_id = #{spreadUserId,jdbcType=INTEGER}
+      </if>
+      <if test="startDate != null">
+        and A.record_time &gt;= #{startDate,jdbcType=DATE}
+      </if>
+      <if test="endDate != null">
+        and A.record_time &lt;= #{endDate,jdbcType=DATE}
+      </if>
+      <if test="playerId != null">
+        and A.user_id = #{playerId,jdbcType=INTEGER}
+      </if>
+  </select>
+
+  <insert id="insert" parameterType="com.ozygod.model.zdspread.entity.RecordSpreadGiveGoldEntity">
+    insert into tbl_record_spread_give_gold (record_id, spread_id, user_id, 
+      record_time, old_gold, give_gold
+      )
+    values (#{recordId,jdbcType=BIGINT}, #{spreadId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{recordTime,jdbcType=TIMESTAMP}, #{oldGold,jdbcType=BIGINT}, #{giveGold,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdspread.entity.RecordSpreadGiveGoldEntity">
+    insert into tbl_record_spread_give_gold
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        record_id,
+      </if>
+      <if test="spreadId != null">
+        spread_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+      <if test="oldGold != null">
+        old_gold,
+      </if>
+      <if test="giveGold != null">
+        give_gold,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        #{recordId,jdbcType=BIGINT},
+      </if>
+      <if test="spreadId != null">
+        #{spreadId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oldGold != null">
+        #{oldGold,jdbcType=BIGINT},
+      </if>
+      <if test="giveGold != null">
+        #{giveGold,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

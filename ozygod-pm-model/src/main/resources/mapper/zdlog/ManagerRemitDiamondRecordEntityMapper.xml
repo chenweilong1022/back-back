@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.ManagerRemitDiamondRecordEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.ManagerRemitDiamondRecordEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="manager_id" jdbcType="INTEGER" property="managerId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="begin_diamond" jdbcType="BIGINT" property="beginDiamond" />
+    <result column="change_diamond" jdbcType="BIGINT" property="changeDiamond" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, manager_id, user_id, begin_diamond, change_diamond, record_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_record_manager_diamond_remit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="listRemitDiamondRecordByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdlog.bo.RemitDiamondRecordBO">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_record_manager_diamond_remit
+    where 1=1
+    <if test="playerId != null">
+      AND user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      AND record_time &gt;= #{startDate, jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      AND record_time &lt;= #{endDate, jdbcType=DATE}
+    </if>
+    order by record_time desc
+    <if test="pageSize > 0">
+      LIMIT #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalRemitDiamondRecordByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Integer">
+    select
+    COUNT(1)
+    from tbl_record_manager_diamond_remit
+    where 1=1
+    <if test="playerId != null">
+      AND user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      AND record_time &gt;= #{startDate, jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      AND record_time &lt;= #{endDate, jdbcType=DATE}
+    </if>
+  </select>
+
+  <select id="getTotalRemitDiamondByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Integer">
+    select
+    CASE WHEN SUM(change_diamond) IS NULL THEN 0 ELSE SUM(change_diamond) END
+    from tbl_record_manager_diamond_remit
+    where 1=1
+    <if test="playerId != null">
+      AND user_id = #{playerId, jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      AND manager_id = #{managerId, jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      AND record_time &gt;= #{startDate, jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      AND record_time &lt;= #{endDate, jdbcType=DATE}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_record_manager_diamond_remit
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitDiamondRecordEntity">
+    insert into tbl_record_manager_diamond_remit (id, manager_id, user_id, 
+      begin_diamond, change_diamond, record_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{managerId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{beginDiamond,jdbcType=BIGINT}, #{changeDiamond,jdbcType=BIGINT}, #{recordTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitDiamondRecordEntity">
+    insert into tbl_record_manager_diamond_remit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="beginDiamond != null">
+        begin_diamond,
+      </if>
+      <if test="changeDiamond != null">
+        change_diamond,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beginDiamond != null">
+        #{beginDiamond,jdbcType=BIGINT},
+      </if>
+      <if test="changeDiamond != null">
+        #{changeDiamond,jdbcType=BIGINT},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitDiamondRecordEntity">
+    update tbl_record_manager_diamond_remit
+    <set>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="beginDiamond != null">
+        begin_diamond = #{beginDiamond,jdbcType=BIGINT},
+      </if>
+      <if test="changeDiamond != null">
+        change_diamond = #{changeDiamond,jdbcType=BIGINT},
+      </if>
+      <if test="recordTime != null">
+        record_time = #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitDiamondRecordEntity">
+    update tbl_record_manager_diamond_remit
+    set manager_id = #{managerId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      begin_diamond = #{beginDiamond,jdbcType=BIGINT},
+      change_diamond = #{changeDiamond,jdbcType=BIGINT},
+      record_time = #{recordTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

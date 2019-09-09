@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.MenuEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.MenuEntity">
+    <id column="menuid" jdbcType="INTEGER" property="menuid" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_location" jdbcType="VARCHAR" property="menuLocation" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+    <result column="sort_num" jdbcType="INTEGER" property="sortNum" />
+    <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    menuid, menu_name, menu_location, parentid, sort_num, menu_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_menu
+    where menuid = #{menuid,jdbcType=INTEGER}
+  </select>
+  <select id="listMenuByRoleId" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdmanage.bo.MenuBO" statementType="CALLABLE">
+    call sp_get_menus_by_roleid(#{roleId,jdbcType=INTEGER})
+  </select>
+
+
+  <select id="listAllMenus" resultType="com.ozygod.model.zdmanage.bo.MenuBO">
+    select
+      <include refid="Base_Column_List" />
+    from tbl_menu
+  </select>
+
+  <select id="saveRoleMenu" parameterType="com.ozygod.model.zdmanage.bo.MenuBO" resultType="java.lang.Integer" statementType="CALLABLE">
+    call sp_add_update_role_menu(#{roleId,jdbcType=INTEGER}, #{menuIds,jdbcType=VARCHAR}, #{whoId,jdbcType=INTEGER})
+  </select>
+
+  <select id="saveMenu" parameterType="com.ozygod.model.zdmanage.bo.MenuBO" resultType="java.lang.Integer" statementType="CALLABLE">
+    call sp_add_update_menu_new(#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR},#{parentid,jdbcType=INTEGER},
+    #{sortNum,jdbcType=INTEGER},#{whoId,jdbcType=INTEGER})
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_menu
+    where menuid = #{menuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
+    insert into tbl_menu (menuid, menu_name, menu_location, 
+      parentid, sort_num, menu_url
+      )
+    values (#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuLocation,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=INTEGER}, #{sortNum,jdbcType=INTEGER}, #{menuUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
+    insert into tbl_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuid != null">
+        menuid,
+      </if>
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="menuLocation != null">
+        menu_location,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="sortNum != null">
+        sort_num,
+      </if>
+      <if test="menuUrl != null">
+        menu_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuid != null">
+        #{menuid,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLocation != null">
+        #{menuLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="sortNum != null">
+        #{sortNum,jdbcType=INTEGER},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
+    update tbl_menu
+    <set>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLocation != null">
+        menu_location = #{menuLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+      <if test="sortNum != null">
+        sort_num = #{sortNum,jdbcType=INTEGER},
+      </if>
+      <if test="menuUrl != null">
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where menuid = #{menuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
+    update tbl_menu
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_location = #{menuLocation,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER},
+      sort_num = #{sortNum,jdbcType=INTEGER},
+      menu_url = #{menuUrl,jdbcType=VARCHAR}
+    where menuid = #{menuid,jdbcType=INTEGER}
+  </update>
+</mapper>

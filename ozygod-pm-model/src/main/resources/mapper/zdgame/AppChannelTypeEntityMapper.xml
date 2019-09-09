@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.AppChannelTypeEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.AppChannelTypeEntity">
+    <id column="channel_id" jdbcType="VARCHAR" property="channelId" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="isdel" jdbcType="BIT" property="isdel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    channel_id, channel_name, isdel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_app_channel_type
+    where channel_id = #{channelId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="listAppChannelType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_app_channel_type
+    where isdel = 0
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tbl_app_channel_type
+    where channel_id = #{channelId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.AppChannelTypeEntity">
+    insert into tbl_app_channel_type (channel_id, channel_name, isdel
+      )
+    values (#{channelId,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{isdel,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.AppChannelTypeEntity">
+    insert into tbl_app_channel_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channelId != null">
+        channel_id,
+      </if>
+      <if test="channelName != null">
+        channel_name,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channelId != null">
+        #{channelId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.AppChannelTypeEntity">
+    update tbl_app_channel_type
+    <set>
+      <if test="channelName != null">
+        channel_name = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=BIT},
+      </if>
+    </set>
+    where channel_id = #{channelId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.AppChannelTypeEntity">
+    update tbl_app_channel_type
+    set channel_name = #{channelName,jdbcType=VARCHAR},
+      isdel = #{isdel,jdbcType=BIT}
+    where channel_id = #{channelId,jdbcType=VARCHAR}
+  </update>
+</mapper>

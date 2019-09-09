@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.ManageLogEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.ManageLogEntity">
+    <id column="recordid" jdbcType="INTEGER" property="recordid" />
+    <result column="typeid" jdbcType="INTEGER" property="typeid" />
+    <result column="managerid" jdbcType="INTEGER" property="managerid" />
+    <result column="manage_time" jdbcType="TIMESTAMP" property="manageTime" />
+    <result column="manage_desc" jdbcType="VARCHAR" property="manageDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    recordid, typeid, managerid, manage_time, manage_desc
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_manage_log
+    where recordid = #{recordid,jdbcType=INTEGER}
+  </select>
+
+  <select id="listManageLogByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultType="com.ozygod.model.zdmanage.bo.ManageLogBO">
+    select
+      t1.*,t2.type_name
+    from (
+      select * from tbl_manage_log
+      where 1=1
+      <if test="logTypeId != null and logTypeId != 0">
+        and typeid = #{logTypeId,jdbcType=INTEGER}
+      </if>
+      <if test="managerId != null">
+        and managerid = #{managerId,jdbcType=INTEGER}
+      </if>
+      order by recordid desc
+      <if test="pageSize > 0">
+        limit #{start},#{pageSize}
+      </if>
+    ) t1
+    left join tbl_manage_log_type t2 on t1.typeid = t2.typeid
+  </select>
+
+  <select id="totalManageLogByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultType="java.lang.Integer">
+    select count(1) from tbl_manage_log
+    where 1=1
+    <if test="logTypeId != null and logTypeId != 0">
+      and typeid = #{logTypeId,jdbcType=INTEGER}
+    </if>
+    <if test="managerId != null">
+      and managerid = #{managerId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_manage_log
+    where recordid = #{recordid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.ManageLogEntity">
+    insert into tbl_manage_log (recordid, typeid, managerid, 
+      manage_time, manage_desc)
+    values (#{recordid,jdbcType=INTEGER}, #{typeid,jdbcType=INTEGER}, #{managerid,jdbcType=INTEGER}, 
+      #{manageTime,jdbcType=TIMESTAMP}, #{manageDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.ManageLogEntity">
+    insert into tbl_manage_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordid != null">
+        recordid,
+      </if>
+      <if test="typeid != null">
+        typeid,
+      </if>
+      <if test="managerid != null">
+        managerid,
+      </if>
+      <if test="manageTime != null">
+        manage_time,
+      </if>
+      <if test="manageDesc != null">
+        manage_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordid != null">
+        #{recordid,jdbcType=INTEGER},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="managerid != null">
+        #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="manageTime != null">
+        #{manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageDesc != null">
+        #{manageDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.ManageLogEntity">
+    update tbl_manage_log
+    <set>
+      <if test="typeid != null">
+        typeid = #{typeid,jdbcType=INTEGER},
+      </if>
+      <if test="managerid != null">
+        managerid = #{managerid,jdbcType=INTEGER},
+      </if>
+      <if test="manageTime != null">
+        manage_time = #{manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageDesc != null">
+        manage_desc = #{manageDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where recordid = #{recordid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.ManageLogEntity">
+    update tbl_manage_log
+    set typeid = #{typeid,jdbcType=INTEGER},
+      managerid = #{managerid,jdbcType=INTEGER},
+      manage_time = #{manageTime,jdbcType=TIMESTAMP},
+      manage_desc = #{manageDesc,jdbcType=VARCHAR}
+    where recordid = #{recordid,jdbcType=INTEGER}
+  </update>
+</mapper>

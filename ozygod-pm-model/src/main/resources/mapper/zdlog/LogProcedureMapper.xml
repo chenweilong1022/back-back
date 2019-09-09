@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.LogProcedureMapper">
+
+    <select id="listPlayerGameLogByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" statementType="CALLABLE">
+        call sp_webpage_get_game_gold(#{playerId, jdbcType=BIGINT}, #{startTime, jdbcType=TIMESTAMP}, #{endTime, jdbcType=TIMESTAMP})
+    </select>
+
+    <select id="listSameAddressPlayerById" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+        SELECT DISTINCT
+        D.user_id,
+        E.NICKNAME
+        FROM
+        (
+        SELECT
+        B.user_id
+        FROM
+        tbl_user_login B
+        INNER JOIN ( SELECT IP FROM tbl_user_login WHERE user_id = #{playerId,jdbcType=INTEGER} ) AS A ON A.IP = B.ip
+        WHERE
+        B.user_id &lt;&gt; #{playerId,jdbcType=INTEGER}
+        AND B.record_time >= DATE_ADD(NOW(), INTERVAL - 30 DAY )
+        ORDER BY
+        B.record_time DESC
+        ) AS D
+        INNER JOIN zdgame.tbl_playerinfo AS E ON D.user_id = #{playerId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.FreezeUserEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.FreezeUserEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="manager_id" jdbcType="BIGINT" property="managerId" />
+    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="operate" jdbcType="VARCHAR" property="operate" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, manager_id, manager_name, user_id, user_account, operate, end_time, reason, record_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_freeze_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="listFreezeUserRecordById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_freeze_user
+    where user_id = #{playerId,jdbcType=INTEGER}
+    limit 30
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_freeze_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.FreezeUserEntity">
+    insert into tbl_freeze_user (id, manager_id, manager_name, 
+      user_id, user_account, operate, 
+      end_time, reason, record_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, #{managerName,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT}, #{userAccount,jdbcType=VARCHAR}, #{operate,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.FreezeUserEntity">
+    insert into tbl_freeze_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="managerId != null">
+        manager_id,
+      </if>
+      <if test="managerName != null">
+        manager_name,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userAccount != null">
+        user_account,
+      </if>
+      <if test="operate != null">
+        operate,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null">
+        #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="managerName != null">
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.FreezeUserEntity">
+    update tbl_freeze_user
+    <set>
+      <if test="managerId != null">
+        manager_id = #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="managerName != null">
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userAccount != null">
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        operate = #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        record_time = #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.FreezeUserEntity">
+    update tbl_freeze_user
+    set manager_id = #{managerId,jdbcType=BIGINT},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      user_account = #{userAccount,jdbcType=VARCHAR},
+      operate = #{operate,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR},
+      record_time = #{recordTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

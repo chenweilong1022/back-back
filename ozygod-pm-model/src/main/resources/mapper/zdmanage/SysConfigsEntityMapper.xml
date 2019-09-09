@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.SysConfigsEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, title, note, content, created_time, updated_time, is_del
+  </sql>
+
+  <select id="listSysConfigsByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_sys_configs
+    where is_del = 0
+    <if test="code != null and code != ''">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+    order by created_time
+    <if test="pageSize > 0">
+      limit #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalSysConfigsByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultType="int">
+    select
+    COUNT(1)
+    from tbl_sys_configs
+    where is_del = 0
+    <if test="code != null and code != ''">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="getSysConfigsByQry" parameterType="java.lang.String" resultType="com.ozygod.model.zdmanage.bo.SysConfigsBO">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_sys_configs
+    where is_del = 0
+    and code = #{code,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_sys_configs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_sys_configs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+    insert into tbl_sys_configs (id, code, title, 
+      note, content, created_time, 
+      updated_time, is_del)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+    insert into tbl_sys_configs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+    update tbl_sys_configs
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+    update tbl_sys_configs
+    set code = #{code,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

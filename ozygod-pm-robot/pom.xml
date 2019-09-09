@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ozygod-pm-robot</artifactId>
+    <packaging>jar</packaging>
+
+    <name>ozygod-pm-robot</name>
+    <description>平台管理系统——机器人管理</description>
+
+    <parent>
+        <groupId>com.ozygod</groupId>
+        <artifactId>ozygod-pm</artifactId>
+        <version>${ozygod.version}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ozygod</groupId>
+            <artifactId>ozygod-pm-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ozygod</groupId>
+            <artifactId>ozygod-pm-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+</project>

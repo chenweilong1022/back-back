@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.PrivateGameRecordEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.PrivateGameRecordEntity">
+    <result column="table_index" jdbcType="BIGINT" property="tableIndex" />
+    <result column="gameid" jdbcType="INTEGER" property="gameid" />
+    <result column="round" jdbcType="INTEGER" property="round" />
+    <result column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="seat" jdbcType="TINYINT" property="seat" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+
+
+  <select id="listPrivateGameStatisticsByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PrivateGameRecordBO">
+    SELECT
+        t1.*,
+        t2.nickname
+    FROM
+        (
+        SELECT
+            gameid,
+            userid,
+            sum( score ) score,
+            DATE_FORMAT( time, '%Y-%m-%d' ) dailyDate
+        FROM
+            tbl_private_game_record
+        WHERE 1=1
+        and round > 0
+        <if test="playerId != null">
+          AND userid = #{playerId,jdbcType=INTEGER}
+        </if>
+        <if test="startDate != null">
+          AND time &gt;= #{startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDate != null">
+          AND time &lt;= #{endDate,jdbcType=TIMESTAMP}
+        </if>
+        GROUP BY
+            gameid,
+            userid,
+            DATE_FORMAT ( time, '%Y-%m-%d' )
+        ORDER BY DATE_FORMAT ( time, '%Y-%m-%d' ) desc
+        <if test="pageSize > 0">
+          LIMIT #{start},#{pageSize}
+        </if>
+        ) t1
+        LEFT JOIN tbl_playerinfo t2 ON t1.userid = t2.userid
+  </select>
+
+
+  <select id="totalPrivateGameStatisticsByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
+    SELECT COUNT(1) FROM (
+    SELECT
+    gameid,
+    userid,
+    sum( score ) score,
+    DATE_FORMAT( time, '%Y-%m-%d' ) dailyDate
+    FROM
+    tbl_private_game_record
+    WHERE 1=1
+      and round > 0
+    <if test="playerId != null">
+      AND userid = #{playerId,jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null">
+      AND time &gt;= #{startDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      AND time &lt;= #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    GROUP BY
+    gameid,
+    userid,
+    DATE_FORMAT ( time, '%Y-%m-%d' )
+    ) T
+  </select>
+
+    <select id="listPlayerPrivateGameByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PrivateGameRecordBO">
+        SELECT
+        t1.*,
+        t2.nickname
+        FROM
+        (
+        SELECT
+          *
+        FROM
+        tbl_private_game_record
+        WHERE round > 0
+        <if test="playerId != null">
+            AND userid = #{playerId,jdbcType=INTEGER}
+        </if>
+        <if test="startDate != null">
+            AND time &gt;= #{startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDate != null">
+            AND time &lt;= #{endDate,jdbcType=TIMESTAMP}
+        </if>
+        order by time desc
+        <if test="pageSize > 0">
+            LIMIT #{start},#{pageSize}
+        </if>
+        ) t1
+        LEFT JOIN tbl_playerinfo t2 ON t1.userid = t2.userid
+    </select>
+
+
+    <select id="totalPlayerPrivateGameByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
+        SELECT
+          COUNT(1)
+        FROM
+        tbl_private_game_record
+        WHERE round > 0
+        <if test="playerId != null">
+            AND userid = #{playerId,jdbcType=INTEGER}
+        </if>
+        <if test="startDate != null">
+            AND time &gt;= #{startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDate != null">
+            AND time &lt;= #{endDate,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.PrivateGameRecordEntity">
+    insert into tbl_private_game_record (table_index, gameid, round, 
+      userid, seat, score, 
+      time)
+    values (#{tableIndex,jdbcType=BIGINT}, #{gameid,jdbcType=INTEGER}, #{round,jdbcType=INTEGER}, 
+      #{userid,jdbcType=BIGINT}, #{seat,jdbcType=TINYINT}, #{score,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.PrivateGameRecordEntity">
+    insert into tbl_private_game_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableIndex != null">
+        table_index,
+      </if>
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="round != null">
+        round,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="seat != null">
+        seat,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableIndex != null">
+        #{tableIndex,jdbcType=BIGINT},
+      </if>
+      <if test="gameid != null">
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="round != null">
+        #{round,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="seat != null">
+        #{seat,jdbcType=TINYINT},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
