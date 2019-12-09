@@ -13,9 +13,7 @@ import com.ozygod.model.zdlog.dto.BankGoldDto;
 import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdmanage.bo.WithdrawOrderBO;
 import com.ozygod.model.zdmanage.dto.BusinessDto;
-import com.ozygod.model.zdspread.bo.SpreadUserBO;
 import com.ozygod.player.service.IPlayerService;
-import com.ozygod.player.utils.PlayerConstant;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -313,23 +311,6 @@ public class PlayerController {
             return new ResponseBO(ResponseCode.U001.getCode(), "解冻失败");
         }
         return new ResponseBO("解冻成功");
-    }
-
-    /**
-     * 转换为代理
-     * @param playerId
-     * @return
-     */
-    @RequestMapping(value = "/{playerId}/transferToSpread", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
-    public ResponseBO transferToSpread(@PathVariable Integer playerId, @RequestBody PlayerAccountBO accountBO) {
-        SpreadUserBO bo = new SpreadUserBO();
-        bo.setId(playerId);
-        bo.setManagerId(accountBO.getManagerId());
-        int result = playerService.transferToSpreadUser(bo);
-        if (result == 0) {
-            return new ResponseBO(ResponseCode.U001.getCode(), "转换失败");
-        }
-        return new ResponseBO("转换成功");
     }
 
     /**
