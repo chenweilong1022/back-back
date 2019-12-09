@@ -1,15 +1,10 @@
 package com.ozygod.base.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.ozygod.base.redis.StringRedisDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @title:
@@ -39,8 +34,12 @@ public class WeChatUtil {
      */
     private static final String accessTokenKey = "accessToken";
 
+    private static final String weibourl = "http://maiyurl.cn/weibourl?url_long=%s";
+
     /**
-     * 获取微信短链接
+     * 19-12-09
+     * 陈伟龙修改
+     * 将微信短链修改为其他平台短链
      * @param longUrl
      * @return
      */
@@ -50,38 +49,17 @@ public class WeChatUtil {
         if (!CommonUtil.isEmptyStr(shortUrl)) {
             return shortUrl;
         }
-        // 检查redis是否存在accessToken
-        String accessToken = stringRedisDao.readStr(accessTokenKey);
-        // 当accessToken不存在时，从微信拉取数据
-        if (CommonUtil.isEmptyStr(accessToken)) {
-            String url = String.format(accessTokenUrl, appId, appSecret);
-            String result = HttpRequestUtil.sendGet(url);
-            log.info("result:" + result);
-            if (!CommonUtil.isEmptyStr(result)) {
-                Map<String, Object> resultMap = JSON.parseObject(result, new TypeReference<Map<String, Object>>(){});
-                accessToken = String.valueOf(resultMap.get("access_token"));
-                Integer expiresIn = (int)resultMap.get("expires_in");
-                // 获取到后，保存在redis中
-                stringRedisDao.saveStr(accessTokenKey, accessToken, expiresIn);
-            }
+
+        String url = String.format(weibourl, longUrl);
+
+        shortUrl = HttpRequestUtil.sendGet(url);
+
+        if (!CommonUtil.isEmptyStr(shortUrl)) {
+            stringRedisDao.saveStr(longUrl, shortUrl, 3600 * 24);
+            return shortUrl;
         }
-        // 根据长链接获取短链接
-        String url = String.format(long2ShortUrl, accessToken);
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("action", "long2short");
-        paramMap.put("long_url", longUrl);
-        String result = HttpRequestUtil.sendPostJson(url, JSON.toJSONString(paramMap));
-        log.info("result:" + result);
-        if (!CommonUtil.isEmptyStr(result)) {
-            Map<String, Object> resultMap = JSON.parseObject(result, new TypeReference<Map<String, Object>>(){});
-            shortUrl = String.valueOf(resultMap.get("short_url"));
-            String errmsg = String.valueOf(resultMap.get("errmsg"));
-            if ("ok".equals(errmsg)) {
-                // 获取到后，保存在redis中，保存24小时
-                stringRedisDao.saveStr(longUrl, shortUrl, 3600 * 24);
-                return shortUrl;
-            }
-        }
+
         return "";
     }
+
 }
