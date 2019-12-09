@@ -57,7 +57,7 @@
 		<module>ozygod-pm-player</module>
 		<module>ozygod-pm-game</module>
 		<module>ozygod-pm-platform</module>
-		<module>ozygod-pm-spread</module>
+		<!--<module>ozygod-pm-spread</module>-->
 	</modules>
 
 	<!-- 指定项目中的公有模块 -->
@@ -113,11 +113,11 @@
 				<artifactId>ozygod-pm-platform</artifactId>
 				<version>${ozygod.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>com.ozygod</groupId>
-				<artifactId>ozygod-pm-spread</artifactId>
-				<version>${ozygod.version}</version>
-			</dependency>
+			<!--<dependency>-->
+				<!--<groupId>com.ozygod</groupId>-->
+				<!--<artifactId>ozygod-pm-spread</artifactId>-->
+				<!--<version>${ozygod.version}</version>-->
+			<!--</dependency>-->
 
 			<dependency>
 				<groupId>com.spring4all</groupId>

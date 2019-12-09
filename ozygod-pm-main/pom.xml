@@ -37,10 +37,10 @@
 			<groupId>com.ozygod</groupId>
 			<artifactId>ozygod-pm-platform</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.ozygod</groupId>
-			<artifactId>ozygod-pm-spread</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.ozygod</groupId>-->
+			<!--<artifactId>ozygod-pm-spread</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.ozygod</groupId>
 			<artifactId>ozygod-pm-api</artifactId>
