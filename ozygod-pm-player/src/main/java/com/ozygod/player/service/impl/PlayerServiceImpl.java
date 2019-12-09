@@ -28,13 +28,9 @@ import com.ozygod.model.zdmanage.dao.ManageLogEntityMapper;
 import com.ozygod.model.zdmanage.dao.SysConfigsEntityMapper;
 import com.ozygod.model.zdmanage.dao.WithdrawOrderEntityMapper;
 import com.ozygod.model.zdmanage.dto.BusinessDto;
-import com.ozygod.model.zdmanage.entity.ManageLogEntity;
 import com.ozygod.model.zdmanage.entity.WithdrawOrderEntity;
-import com.ozygod.model.zdspread.bo.SpreadUserBO;
 import com.ozygod.player.service.IPlayerService;
 import com.ozygod.player.utils.PlayerConstant;
-import com.ozygod.spread.service.ISpreadUserService;
-import com.ozygod.spread.utils.SpreadConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +45,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import com.ozygod.spread.service.ISpreadUserService;
 
 /**
  * @title:
@@ -102,9 +100,6 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Autowired
     private IPUtils ipUtils;
-
-    @Autowired
-    private ISpreadUserService spreadUserService;
 
     @Autowired
     private ManageLogEntityMapper manageLogEntityMapper;
@@ -809,36 +804,6 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public int getTotalRemitDiamondByQry(PlayerLogDto dto) {
         return remitDiamondRecordEntityMapper.getTotalRemitDiamondByQry(dto);
-    }
-
-    /**
-     * 转换玩家为代理用户
-     *
-     * @param bo
-     * @return
-     */
-    @Override
-    public int transferToSpreadUser(SpreadUserBO bo) {
-        // 获取用户信息
-        PlayerAccountBO accountBO = accountEntityMapper.getPlayerAccountById(bo.getId());
-        // 设置默认参数
-        if (accountBO != null) {
-            bo.setLoginName(accountBO.getAccount());
-            bo.setShowName("玩家代理" + accountBO.getUserid());
-            bo.setParentId(SpreadConstant.SPREAD_SUPER_ID);
-            bo.setRatio(SpreadConstant.SPREAD_USER_DEFAULT_RATIO);
-        }
-
-        int result = spreadUserService.addSpreadUser(bo);
-        if (result > 0) {
-            ManageLogEntity entity = new ManageLogEntity();
-            entity.setManagerid(bo.getManagerId());
-            entity.setManageTime(new Date());
-            entity.setTypeid(170);
-            entity.setManageDesc("管理员【"+bo.getManagerId()+"】转化玩家【"+bo.getId()+"】为：推广");
-            manageLogEntityMapper.insertSelective(entity);
-        }
-        return result;
     }
 
     /**

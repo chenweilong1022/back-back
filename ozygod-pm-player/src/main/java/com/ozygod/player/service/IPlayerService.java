@@ -15,7 +15,6 @@ import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdlog.entity.FreezeUserEntity;
 import com.ozygod.model.zdmanage.bo.WithdrawOrderBO;
 import com.ozygod.model.zdmanage.dto.BusinessDto;
-import com.ozygod.model.zdspread.bo.SpreadUserBO;
 
 import java.util.List;
 
@@ -316,13 +315,6 @@ public interface IPlayerService {
      * @return
      */
     int getTotalRemitDiamondByQry(PlayerLogDto dto);
-
-    /**
-     * 转换玩家为代理用户
-     * @param bo
-     * @return
-     */
-    int transferToSpreadUser(SpreadUserBO bo);
 
     /**
      * 创建玩家提现订单
