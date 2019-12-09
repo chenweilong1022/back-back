@@ -1,7 +1,7 @@
 # 指定配置文件
 spring:
   profiles:
-    active: 955Prod
+    active: dev
   application:
     name: qy_web_gm
 
@@ -46,5 +46,5 @@ ipdb: /home/web/ipipfree.ipdb
 # 文件存放路径
 files_url: /home/web/files/
 
-appId: wxbaa0742299d28b09
-appSecret: 74232c45c7c40598eef3391fc78563a1
+appId: wx6cef6e4f32ab6e62
+appSecret: 70b64c2889ed54053e8e9f67fc50f562

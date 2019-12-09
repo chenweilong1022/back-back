@@ -1,6 +1,6 @@
-package com.ozygod.model.zdmanage.bo;
+package com.ozygod.model.zdconfig.bo;
 
-import com.ozygod.model.zdmanage.entity.SysConfigsEntity;
+import com.ozygod.model.zdconfig.entity.SysConfigsEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

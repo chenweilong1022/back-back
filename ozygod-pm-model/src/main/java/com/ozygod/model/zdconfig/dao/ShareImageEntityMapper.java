@@ -1,8 +1,8 @@
-package com.ozygod.model.zdmanage.dao;
+package com.ozygod.model.zdconfig.dao;
 
 import com.ozygod.model.common.dto.PlatformDto;
-import com.ozygod.model.zdmanage.bo.ShareImageBO;
-import com.ozygod.model.zdmanage.entity.ShareImageEntity;
+import com.ozygod.model.zdconfig.bo.ShareImageBO;
+import com.ozygod.model.zdconfig.entity.ShareImageEntity;
 
 import java.util.List;
 

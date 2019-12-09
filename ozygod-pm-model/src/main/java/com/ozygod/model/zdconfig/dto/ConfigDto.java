@@ -1,4 +1,4 @@
-package com.ozygod.model.zdmanage.dto;
+package com.ozygod.model.zdconfig.dto;
 
 import com.ozygod.base.dto.BaseDto;
 import io.swagger.annotations.ApiModel;

@@ -1,8 +1,8 @@
-package com.ozygod.model.zdmanage.dao;
+package com.ozygod.model.zdconfig.dao;
 
-import com.ozygod.model.zdmanage.bo.SysDomainBO;
-import com.ozygod.model.zdmanage.dto.ConfigDto;
-import com.ozygod.model.zdmanage.entity.SysDomainEntity;
+import com.ozygod.model.zdconfig.bo.SysDomainBO;
+import com.ozygod.model.zdconfig.dto.ConfigDto;
+import com.ozygod.model.zdconfig.entity.SysDomainEntity;
 
 import java.util.List;
 

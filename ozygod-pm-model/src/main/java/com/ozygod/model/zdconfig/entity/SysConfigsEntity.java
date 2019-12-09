@@ -1,4 +1,4 @@
-package com.ozygod.model.zdmanage.entity;
+package com.ozygod.model.zdconfig.entity;
 
 import java.util.Date;
 

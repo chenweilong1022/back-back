@@ -1,6 +1,6 @@
-package com.ozygod.model.zdmanage.bo;
+package com.ozygod.model.zdconfig.bo;
 
-import com.ozygod.model.zdmanage.entity.ShareImageEntity;
+import com.ozygod.model.zdconfig.entity.SysDomainEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,11 +10,11 @@ import lombok.Data;
  * @description:
  * @author: Joey
  * @email: ozygod@gmail.com
- * @date: 2019-05-27
+ * @date: 2019-04-20
  */
 @Data
-@ApiModel("分享图业务类")
-public class ShareImageBO extends ShareImageEntity {
+@ApiModel("域名管理业务类")
+public class SysDomainBO extends SysDomainEntity {
     @ApiModelProperty("管理员id")
     private Integer managerId;
 }

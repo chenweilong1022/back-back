@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ozygod.model.zdmanage.dao.SysDomainEntityMapper">
-  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.SysDomainEntity">
+<mapper namespace="com.ozygod.model.zdconfig.dao.SysDomainEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdconfig.entity.SysDomainEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="domain" jdbcType="VARCHAR" property="domain" />
     <result column="note" jdbcType="VARCHAR" property="note" />
@@ -19,7 +19,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="listSysDomainByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultType="com.ozygod.model.zdmanage.bo.SysDomainBO">
+  <select id="listSysDomainByQry" parameterType="com.ozygod.model.zdconfig.dto.ConfigDto" resultType="com.ozygod.model.zdconfig.bo.SysDomainBO">
     select
       id, domain, note, create_time, enabled
     from tbl_sys_domain
@@ -33,7 +33,7 @@
     </if>
   </select>
 
-  <select id="totalSysDomainByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultType="java.lang.Integer">
+  <select id="totalSysDomainByQry" parameterType="com.ozygod.model.zdconfig.dto.ConfigDto" resultType="java.lang.Integer">
     select
       COUNT(1)
     from tbl_sys_domain
@@ -47,7 +47,7 @@
     delete from tbl_sys_domain
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.SysDomainEntity">
+  <insert id="insert" parameterType="com.ozygod.model.zdconfig.entity.SysDomainEntity">
     insert into tbl_sys_domain (id, domain, note, 
       enabled, create_time, is_del
       )
@@ -55,7 +55,7 @@
       #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.SysDomainEntity">
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdconfig.entity.SysDomainEntity">
     insert into tbl_sys_domain
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -98,7 +98,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.SysDomainEntity">
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdconfig.entity.SysDomainEntity">
     update tbl_sys_domain
     <set>
       <if test="domain != null">
@@ -119,7 +119,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.SysDomainEntity">
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdconfig.entity.SysDomainEntity">
     update tbl_sys_domain
     set domain = #{domain,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},

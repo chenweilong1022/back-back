@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ozygod.model.zdmanage.dao.SysConfigsEntityMapper">
-  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+<mapper namespace="com.ozygod.model.zdconfig.dao.SysConfigsEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdconfig.entity.SysConfigsEntity">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="title" jdbcType="VARCHAR" property="title" />
@@ -15,7 +15,7 @@
     id, code, title, note, content, created_time, updated_time, is_del
   </sql>
 
-  <select id="listSysConfigsByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultMap="BaseResultMap">
+  <select id="listSysConfigsByQry" parameterType="com.ozygod.model.zdconfig.dto.ConfigDto" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tbl_sys_configs
@@ -29,7 +29,7 @@
     </if>
   </select>
 
-  <select id="totalSysConfigsByQry" parameterType="com.ozygod.model.zdmanage.dto.ConfigDto" resultType="int">
+  <select id="totalSysConfigsByQry" parameterType="com.ozygod.model.zdconfig.dto.ConfigDto" resultType="int">
     select
     COUNT(1)
     from tbl_sys_configs
@@ -39,7 +39,7 @@
     </if>
   </select>
 
-  <select id="getSysConfigsByQry" parameterType="java.lang.String" resultType="com.ozygod.model.zdmanage.bo.SysConfigsBO">
+  <select id="getSysConfigsByQry" parameterType="java.lang.String" resultType="com.ozygod.model.zdconfig.bo.SysConfigsBO">
     select
     <include refid="Base_Column_List" />
     from tbl_sys_configs
@@ -57,7 +57,7 @@
     delete from tbl_sys_configs
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+  <insert id="insert" parameterType="com.ozygod.model.zdconfig.entity.SysConfigsEntity">
     insert into tbl_sys_configs (id, code, title, 
       note, content, created_time, 
       updated_time, is_del)
@@ -65,7 +65,7 @@
       #{note,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, 
       #{updatedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdconfig.entity.SysConfigsEntity">
     insert into tbl_sys_configs
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -120,7 +120,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdconfig.entity.SysConfigsEntity">
     update tbl_sys_configs
     <set>
       <if test="code != null">
@@ -147,7 +147,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.SysConfigsEntity">
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdconfig.entity.SysConfigsEntity">
     update tbl_sys_configs
     set code = #{code,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
