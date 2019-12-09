@@ -99,6 +99,7 @@ public class GameRulesController implements Serializable {
      * @return
      */
     @RequestMapping(value = "/domains", method = RequestMethod.GET)
+    @ApiOperation(value = "查询IP归属地", response = String.class)
     public ResponseBO listSysDomain() {
         ResponseBO responseBO = new ResponseBO();
         ConfigDto dto = new ConfigDto();
@@ -112,6 +113,7 @@ public class GameRulesController implements Serializable {
      * @return
      */
     @RequestMapping(value = "/shortUrl", method = RequestMethod.GET)
+    @ApiOperation(value = "获取短链接", response = String.class)
     public ResponseBO getShortUrl(@RequestParam("longUrl") String longUrl) {
         ResponseBO responseBO = new ResponseBO();
         responseBO.setData(weChatUtil.getWeChatShortUrl(longUrl));
@@ -135,6 +137,7 @@ public class GameRulesController implements Serializable {
      * @return
      */
     @RequestMapping(value = "/shareImage", method = RequestMethod.GET)
+    @ApiOperation(value = "查询IP归属地", response = String.class)
     public ResponseBO getShareImage() {
         PlatformDto dto = new PlatformDto();
         dto.setPageNo(1);
