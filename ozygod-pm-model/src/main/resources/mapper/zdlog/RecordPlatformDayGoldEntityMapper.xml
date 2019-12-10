@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.RecordPlatformDayGoldEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.RecordPlatformDayGoldEntity">
+    <id column="record_time" jdbcType="DATE" property="recordTime" />
+    <result column="day_transfer_tax" jdbcType="BIGINT" property="dayTransferTax" />
+    <result column="day_game_tax" jdbcType="BIGINT" property="dayGameTax" />
+    <result column="day_pay_gold" jdbcType="BIGINT" property="dayPayGold" />
+    <result column="day_free_gold" jdbcType="BIGINT" property="dayFreeGold" />
+    <result column="day_grow_honor" jdbcType="BIGINT" property="dayGrowHonor" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_time, day_transfer_tax, day_game_tax, day_pay_gold, day_free_gold, day_grow_honor
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.util.Date" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_record_platform_day_gold
+    where record_time = #{recordTime,jdbcType=DATE}
+  </select>
+
+  <select id="listDailyGoldCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdlog.bo.DailyGoldCountBO">
+    select
+      record_time, day_transfer_tax, day_game_tax, day_pay_gold, day_free_gold, day_grow_honor,
+      (day_transfer_tax+day_game_tax) as total_tax,(day_pay_gold+day_free_gold) as total_in_gold
+    from tbl_record_platform_day_gold
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+    order by record_time desc
+    <if test="pageSize > 0">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalDailyGoldCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
+    select
+      count(1)
+    from tbl_record_platform_day_gold
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+  </select>
+
+  <select id="getDailyGoldCountSumByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdlog.bo.DailyGoldCountBO">
+    select
+    (CASE WHEN (SUM(day_transfer_tax)+SUM(day_game_tax)) IS NULL THEN 0 ELSE (SUM(day_transfer_tax)+SUM(day_game_tax)) END) AS TOTAL_TAX,
+    (CASE WHEN (SUM(day_pay_gold)+SUM(day_free_gold)) IS NULL THEN 0 ELSE (SUM(day_pay_gold)+SUM(day_free_gold)) END) AS TOTAL_IN_GOLD
+    from tbl_record_platform_day_gold
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.util.Date">
+    delete from tbl_record_platform_day_gold
+    where record_time = #{recordTime,jdbcType=DATE}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayGoldEntity">
+    insert into tbl_record_platform_day_gold (record_time, day_transfer_tax, day_game_tax, 
+      day_pay_gold, day_free_gold, day_grow_honor
+      )
+    values (#{recordTime,jdbcType=DATE}, #{dayTransferTax,jdbcType=BIGINT}, #{dayGameTax,jdbcType=BIGINT}, 
+      #{dayPayGold,jdbcType=BIGINT}, #{dayFreeGold,jdbcType=BIGINT}, #{dayGrowHonor,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayGoldEntity">
+    insert into tbl_record_platform_day_gold
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        record_time,
+      </if>
+      <if test="dayTransferTax != null">
+        day_transfer_tax,
+      </if>
+      <if test="dayGameTax != null">
+        day_game_tax,
+      </if>
+      <if test="dayPayGold != null">
+        day_pay_gold,
+      </if>
+      <if test="dayFreeGold != null">
+        day_free_gold,
+      </if>
+      <if test="dayGrowHonor != null">
+        day_grow_honor,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=DATE},
+      </if>
+      <if test="dayTransferTax != null">
+        #{dayTransferTax,jdbcType=BIGINT},
+      </if>
+      <if test="dayGameTax != null">
+        #{dayGameTax,jdbcType=BIGINT},
+      </if>
+      <if test="dayPayGold != null">
+        #{dayPayGold,jdbcType=BIGINT},
+      </if>
+      <if test="dayFreeGold != null">
+        #{dayFreeGold,jdbcType=BIGINT},
+      </if>
+      <if test="dayGrowHonor != null">
+        #{dayGrowHonor,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayGoldEntity">
+    update tbl_record_platform_day_gold
+    <set>
+      <if test="dayTransferTax != null">
+        day_transfer_tax = #{dayTransferTax,jdbcType=BIGINT},
+      </if>
+      <if test="dayGameTax != null">
+        day_game_tax = #{dayGameTax,jdbcType=BIGINT},
+      </if>
+      <if test="dayPayGold != null">
+        day_pay_gold = #{dayPayGold,jdbcType=BIGINT},
+      </if>
+      <if test="dayFreeGold != null">
+        day_free_gold = #{dayFreeGold,jdbcType=BIGINT},
+      </if>
+      <if test="dayGrowHonor != null">
+        day_grow_honor = #{dayGrowHonor,jdbcType=BIGINT},
+      </if>
+    </set>
+    where record_time = #{recordTime,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayGoldEntity">
+    update tbl_record_platform_day_gold
+    set day_transfer_tax = #{dayTransferTax,jdbcType=BIGINT},
+      day_game_tax = #{dayGameTax,jdbcType=BIGINT},
+      day_pay_gold = #{dayPayGold,jdbcType=BIGINT},
+      day_free_gold = #{dayFreeGold,jdbcType=BIGINT},
+      day_grow_honor = #{dayGrowHonor,jdbcType=BIGINT}
+    where record_time = #{recordTime,jdbcType=DATE}
+  </update>
+</mapper>

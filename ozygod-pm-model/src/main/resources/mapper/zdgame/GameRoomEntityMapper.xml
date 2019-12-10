@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.GameRoomEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.GameRoomEntity">
+    <id column="roomid" jdbcType="INTEGER" property="roomid" />
+    <result column="gameid" jdbcType="INTEGER" property="gameid" />
+    <result column="room_name" jdbcType="VARCHAR" property="roomName" />
+    <result column="is_club" jdbcType="BIT" property="isClub" />
+    <result column="room_pwd" jdbcType="VARCHAR" property="roomPwd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    roomid, gameid, room_name, is_club, room_pwd
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_game_room
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </select>
+  <select id="listGameRoomByQry" parameterType="com.ozygod.model.zdgame.dto.GameDto" resultType="com.ozygod.model.zdgame.bo.GameRoomBO">
+    select
+      t1.*
+    from tbl_game_room t1
+    where 1=1
+    <if test="gameId != null">
+      and t1.gameid = #{gameId,jdbcType=INTEGER}
+    </if>
+    order by t1.roomid
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_game_room
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.GameRoomEntity">
+    insert into tbl_game_room (roomid, gameid, room_name, 
+      is_club, room_pwd)
+    values (#{roomid,jdbcType=INTEGER}, #{gameid,jdbcType=INTEGER}, #{roomName,jdbcType=VARCHAR}, 
+      #{isClub,jdbcType=BIT}, #{roomPwd,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.GameRoomEntity">
+    insert into tbl_game_room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roomid != null">
+        roomid,
+      </if>
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="roomName != null">
+        room_name,
+      </if>
+      <if test="isClub != null">
+        is_club,
+      </if>
+      <if test="roomPwd != null">
+        room_pwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roomid != null">
+        #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="gameid != null">
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="roomName != null">
+        #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="isClub != null">
+        #{isClub,jdbcType=BIT},
+      </if>
+      <if test="roomPwd != null">
+        #{roomPwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.GameRoomEntity">
+    update tbl_game_room
+    <set>
+      <if test="gameid != null">
+        gameid = #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="roomName != null">
+        room_name = #{roomName,jdbcType=VARCHAR},
+      </if>
+      <if test="isClub != null">
+        is_club = #{isClub,jdbcType=BIT},
+      </if>
+      <if test="roomPwd != null">
+        room_pwd = #{roomPwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.GameRoomEntity">
+    update tbl_game_room
+    set gameid = #{gameid,jdbcType=INTEGER},
+      room_name = #{roomName,jdbcType=VARCHAR},
+      is_club = #{isClub,jdbcType=BIT},
+      room_pwd = #{roomPwd,jdbcType=VARCHAR}
+    where roomid = #{roomid,jdbcType=INTEGER}
+  </update>
+</mapper>

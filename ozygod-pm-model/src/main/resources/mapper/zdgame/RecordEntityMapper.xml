@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.RecordEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.RecordEntity">
+    <id column="userid" jdbcType="BIGINT" property="userid" />
+    <id column="gameid" jdbcType="INTEGER" property="gameid" />
+    <result column="play_cnt" jdbcType="INTEGER" property="playCnt" />
+    <result column="win_cnt" jdbcType="INTEGER" property="winCnt" />
+    <result column="lose_cnt" jdbcType="INTEGER" property="loseCnt" />
+    <result column="flee_cnt" jdbcType="INTEGER" property="fleeCnt" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
+    <result column="total_gold" jdbcType="BIGINT" property="totalGold" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, gameid, play_cnt, win_cnt, lose_cnt, flee_cnt, create_time, last_time, total_gold
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.RecordEntityKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_record
+    where userid = #{userid,jdbcType=BIGINT}
+      and gameid = #{gameid,jdbcType=INTEGER}
+  </select>
+
+  <select id="listPlayerGameRecordByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.RecordBO">
+    select t1.*,t2.game_name from tbl_record t1
+    left join tbl_game t2 on t1.gameid = t2.gameid
+    where userid = #{playerId, jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.RecordEntityKey">
+    delete from tbl_record
+    where userid = #{userid,jdbcType=BIGINT}
+      and gameid = #{gameid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.RecordEntity">
+    insert into tbl_record (userid, gameid, play_cnt, 
+      win_cnt, lose_cnt, flee_cnt, 
+      create_time, last_time, total_gold
+      )
+    values (#{userid,jdbcType=BIGINT}, #{gameid,jdbcType=INTEGER}, #{playCnt,jdbcType=INTEGER}, 
+      #{winCnt,jdbcType=INTEGER}, #{loseCnt,jdbcType=INTEGER}, #{fleeCnt,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastTime,jdbcType=TIMESTAMP}, #{totalGold,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.RecordEntity">
+    insert into tbl_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="playCnt != null">
+        play_cnt,
+      </if>
+      <if test="winCnt != null">
+        win_cnt,
+      </if>
+      <if test="loseCnt != null">
+        lose_cnt,
+      </if>
+      <if test="fleeCnt != null">
+        flee_cnt,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastTime != null">
+        last_time,
+      </if>
+      <if test="totalGold != null">
+        total_gold,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="gameid != null">
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="playCnt != null">
+        #{playCnt,jdbcType=INTEGER},
+      </if>
+      <if test="winCnt != null">
+        #{winCnt,jdbcType=INTEGER},
+      </if>
+      <if test="loseCnt != null">
+        #{loseCnt,jdbcType=INTEGER},
+      </if>
+      <if test="fleeCnt != null">
+        #{fleeCnt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null">
+        #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalGold != null">
+        #{totalGold,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.RecordEntity">
+    update tbl_record
+    <set>
+      <if test="playCnt != null">
+        play_cnt = #{playCnt,jdbcType=INTEGER},
+      </if>
+      <if test="winCnt != null">
+        win_cnt = #{winCnt,jdbcType=INTEGER},
+      </if>
+      <if test="loseCnt != null">
+        lose_cnt = #{loseCnt,jdbcType=INTEGER},
+      </if>
+      <if test="fleeCnt != null">
+        flee_cnt = #{fleeCnt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastTime != null">
+        last_time = #{lastTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalGold != null">
+        total_gold = #{totalGold,jdbcType=BIGINT},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=BIGINT}
+      and gameid = #{gameid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.RecordEntity">
+    update tbl_record
+    set play_cnt = #{playCnt,jdbcType=INTEGER},
+      win_cnt = #{winCnt,jdbcType=INTEGER},
+      lose_cnt = #{loseCnt,jdbcType=INTEGER},
+      flee_cnt = #{fleeCnt,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_time = #{lastTime,jdbcType=TIMESTAMP},
+      total_gold = #{totalGold,jdbcType=BIGINT}
+    where userid = #{userid,jdbcType=BIGINT}
+      and gameid = #{gameid,jdbcType=INTEGER}
+  </update>
+</mapper>

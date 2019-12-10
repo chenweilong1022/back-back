@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdmanage.dao.RoleEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.RoleEntity">
+    <id column="roleid" jdbcType="INTEGER" property="roleid" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="isdel" jdbcType="BIT" property="isdel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    roleid, role_name, isdel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_role
+    where roleid = #{roleid,jdbcType=INTEGER}
+  </select>
+
+  <select id="listRoleByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_role
+    where 1=1
+    <if test="roleId != null">
+      and roleid = #{roleId,jdbcType=INTEGER}
+    </if>
+    <if test="isDel != null">
+      and isdel = #{isDel,jdbcType=INTEGER}
+    </if>
+    <if test="queryType != null and queryType == 1">
+      and roleid > 1
+    </if>
+  </select>
+
+  <select id="saveAppRoleChannel" parameterType="com.ozygod.model.zdmanage.bo.RoleBO" resultType="int" statementType="CALLABLE">
+    call sp_add_role_channel(#{roleid,jdbcType=INTEGER},#{channelId,jdbcType=VARCHAR},#{managerId,jdbcType=INTEGER})
+  </select>
+
+  <select id="delRoleByQry" parameterType="com.ozygod.model.zdmanage.dto.ManagerDto" resultType="java.lang.Integer" statementType="CALLABLE">
+    call sp_del_role(#{roleId,jdbcType=INTEGER}, #{whoId,jdbcType=INTEGER})
+  </select>
+
+  <select id="addOrUpdateRole" parameterType="com.ozygod.model.zdmanage.bo.RoleBO" resultType="java.lang.Integer" statementType="CALLABLE">
+    call sp_add_update_role(#{roleid,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{managerId,jdbcType=INTEGER})
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_role
+    where roleid = #{roleid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.RoleEntity">
+    insert into tbl_role (roleid, role_name, isdel
+      )
+    values (#{roleid,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{isdel,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.RoleEntity">
+    insert into tbl_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        roleid,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleid != null">
+        #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdmanage.entity.RoleEntity">
+    update tbl_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=BIT},
+      </if>
+    </set>
+    where roleid = #{roleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdmanage.entity.RoleEntity">
+    update tbl_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      isdel = #{isdel,jdbcType=BIT}
+    where roleid = #{roleid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.PoolEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.PoolEntity">
+    <result column="gameid" jdbcType="BIGINT" property="gameid" />
+    <result column="gamename" jdbcType="VARCHAR" property="gamename" />
+    <result column="roomid" jdbcType="BIGINT" property="roomid" />
+    <result column="deskid" jdbcType="BIGINT" property="deskid" />
+    <result column="money" jdbcType="BIGINT" property="money" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.PoolEntity">
+    insert into tbl_pool (gameid, gamename, roomid, 
+      deskid, money, updatetime
+      )
+    values (#{gameid,jdbcType=BIGINT}, #{gamename,jdbcType=VARCHAR}, #{roomid,jdbcType=BIGINT}, 
+      #{deskid,jdbcType=BIGINT}, #{money,jdbcType=BIGINT}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <select id="getPoolMoneyByRoomId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select money from tbl_pool where roomid = #{roomid,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.PoolEntity">
+    insert into tbl_pool
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="gamename != null">
+        gamename,
+      </if>
+      <if test="roomid != null">
+        roomid,
+      </if>
+      <if test="deskid != null">
+        deskid,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gameid != null">
+        #{gameid,jdbcType=BIGINT},
+      </if>
+      <if test="gamename != null">
+        #{gamename,jdbcType=VARCHAR},
+      </if>
+      <if test="roomid != null">
+        #{roomid,jdbcType=BIGINT},
+      </if>
+      <if test="deskid != null">
+        #{deskid,jdbcType=BIGINT},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=BIGINT},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

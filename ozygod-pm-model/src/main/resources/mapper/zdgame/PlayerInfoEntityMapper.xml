@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.PlayerInfoEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.PlayerInfoEntity">
+    <id column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="second_pwd" jdbcType="VARCHAR" property="secondPwd" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="gold" jdbcType="BIGINT" property="gold" />
+    <result column="bank_gold" jdbcType="BIGINT" property="bankGold" />
+    <result column="bind_gold" jdbcType="BIGINT" property="bindGold" />
+    <result column="honor" jdbcType="BIGINT" property="honor" />
+    <result column="diamond" jdbcType="BIGINT" property="diamond" />
+    <result column="show_id" jdbcType="BIGINT" property="showId" />
+    <result column="send_gift" jdbcType="INTEGER" property="sendGift" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_update" jdbcType="TIMESTAMP" property="lastUpdate" />
+    <result column="imageid" jdbcType="VARCHAR" property="imageid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, nickname, second_pwd, sex, gold, bank_gold, bind_gold, honor, diamond, send_gift, create_time,
+    last_update, imageid, show_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_playerinfo
+    where userid = #{userid,jdbcType=BIGINT}
+  </select>
+
+  <select id="listPlayerWealthRankByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PlayerInfoBO">
+    SELECT A.*,(A.GOLD+A.BANK_GOLD) AS TOTALGOLD FROM tbl_playerinfo AS A WHERE USERID>10000
+    ORDER BY (A.GOLD+A.BANK_GOLD) DESC
+    <if test="pageSize > 0">
+      LIMIT #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalPlayerWealthRankByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM tbl_playerinfo AS A WHERE USERID>10000
+  </select>
+
+  <select id="listDebtPlayerQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+    select t1.userid, t1.nickname, t1.owned arrears
+    from tbl_playerinfo t1
+    where t1.userid > 10000 and t1.owned > 0
+    <if test="playerId != null">
+      AND t1.userid = #{playerId,jdbcType=BIGINT}
+    </if>
+    ORDER BY t1.userid DESC
+    <if test="pageSize > 0">
+      LIMIT #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalDebtPlayerByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
+    select COUNT(1)
+    from tbl_playerinfo t1
+    where t1.userid > 10000 and t1.owned > 0
+    <if test="playerId != null">
+      AND t1.userid = #{playerId,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_playerinfo
+    where userid = #{userid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.PlayerInfoEntity">
+    insert into tbl_playerinfo (userid, nickname, second_pwd, 
+      sex, gold, bank_gold, 
+      bind_gold, honor, diamond, send_gift
+      create_time, last_update, imageid
+      )
+    values (#{userid,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{secondPwd,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{gold,jdbcType=BIGINT}, #{bankGold,jdbcType=BIGINT}, 
+      #{bindGold,jdbcType=BIGINT}, #{honor,jdbcType=BIGINT}, #{diamond,jdbcType=BIGINT}, #{sendGift,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{lastUpdate,jdbcType=TIMESTAMP}, #{imageid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.PlayerInfoEntity">
+    insert into tbl_playerinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="secondPwd != null">
+        second_pwd,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="gold != null">
+        gold,
+      </if>
+      <if test="bankGold != null">
+        bank_gold,
+      </if>
+      <if test="bindGold != null">
+        bind_gold,
+      </if>
+      <if test="honor != null">
+        honor,
+      </if>
+      <if test="diamond != null">
+        diamond,
+      </if>
+      <if test="sendGift != null">
+        send_gift,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastUpdate != null">
+        last_update,
+      </if>
+      <if test="imageid != null">
+        imageid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="secondPwd != null">
+        #{secondPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="gold != null">
+        #{gold,jdbcType=BIGINT},
+      </if>
+      <if test="bankGold != null">
+        #{bankGold,jdbcType=BIGINT},
+      </if>
+      <if test="bindGold != null">
+        #{bindGold,jdbcType=BIGINT},
+      </if>
+      <if test="honor != null">
+        #{honor,jdbcType=BIGINT},
+      </if>
+      <if test="diamond != null">
+        #{diamond,jdbcType=BIGINT},
+      </if>
+      <if test="sendGift != null">
+        #{sendGift,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdate != null">
+        #{lastUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageid != null">
+        #{imageid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.PlayerInfoEntity">
+    update tbl_playerinfo
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="secondPwd != null">
+        second_pwd = #{secondPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="gold != null">
+        gold = #{gold,jdbcType=BIGINT},
+      </if>
+      <if test="bankGold != null">
+        bank_gold = #{bankGold,jdbcType=BIGINT},
+      </if>
+      <if test="bindGold != null">
+        bind_gold = #{bindGold,jdbcType=BIGINT},
+      </if>
+      <if test="honor != null">
+        honor = #{honor,jdbcType=BIGINT},
+      </if>
+      <if test="diamond != null">
+        diamond = #{diamond,jdbcType=BIGINT},
+      </if>
+      <if test="sendGift != null">
+        send_gift = #{sendGift,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdate != null">
+        last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageid != null">
+        imageid = #{imageid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.PlayerInfoEntity">
+    update tbl_playerinfo
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      second_pwd = #{secondPwd,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      gold = #{gold,jdbcType=BIGINT},
+      bank_gold = #{bankGold,jdbcType=BIGINT},
+      bind_gold = #{bindGold,jdbcType=BIGINT},
+      honor = #{honor,jdbcType=BIGINT},
+      diamond = #{diamond,jdbcType=BIGINT},
+      send_gift = #{sendGift,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      imageid = #{imageid,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=BIGINT}
+  </update>
+</mapper>

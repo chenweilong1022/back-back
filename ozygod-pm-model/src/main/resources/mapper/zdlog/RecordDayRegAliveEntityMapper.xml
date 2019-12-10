@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.RecordDayRegAliveEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.RecordDayRegAliveEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="record_time" jdbcType="DATE" property="recordTime" />
+    <result column="reg_num" jdbcType="INTEGER" property="regNum" />
+    <result column="morrow_alive_num" jdbcType="INTEGER" property="morrowAliveNum" />
+    <result column="morrow_alive_ratio" jdbcType="INTEGER" property="morrowAliveRatio" />
+    <result column="third_alive_num" jdbcType="INTEGER" property="thirdAliveNum" />
+    <result column="third_alive_ratio" jdbcType="INTEGER" property="thirdAliveRatio" />
+    <result column="seventh_alive_num" jdbcType="INTEGER" property="seventhAliveNum" />
+    <result column="seventh_alive_ratio" jdbcType="INTEGER" property="seventhAliveRatio" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, record_time, reg_num, morrow_alive_num, morrow_alive_ratio, third_alive_num, 
+    third_alive_ratio, seventh_alive_num, seventh_alive_ratio
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_record_day_reg_alive
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="listDailyRegAliveCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdlog.bo.DayRegAliveCountBO">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_record_day_reg_alive
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+    order by record_time desc
+    <if test="pageSize > 0">
+      limit #{start}, #{pageSize}
+    </if>
+  </select>
+
+  <select id="totalDailyRegAliveCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
+    select
+     COUNT(1)
+    from tbl_record_day_reg_alive
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tbl_record_day_reg_alive
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.RecordDayRegAliveEntity">
+    insert into tbl_record_day_reg_alive (id, record_time, reg_num, 
+      morrow_alive_num, morrow_alive_ratio, third_alive_num, 
+      third_alive_ratio, seventh_alive_num, seventh_alive_ratio
+      )
+    values (#{id,jdbcType=BIGINT}, #{recordTime,jdbcType=DATE}, #{regNum,jdbcType=INTEGER}, 
+      #{morrowAliveNum,jdbcType=INTEGER}, #{morrowAliveRatio,jdbcType=INTEGER}, #{thirdAliveNum,jdbcType=INTEGER}, 
+      #{thirdAliveRatio,jdbcType=INTEGER}, #{seventhAliveNum,jdbcType=INTEGER}, #{seventhAliveRatio,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.RecordDayRegAliveEntity">
+    insert into tbl_record_day_reg_alive
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+      <if test="regNum != null">
+        reg_num,
+      </if>
+      <if test="morrowAliveNum != null">
+        morrow_alive_num,
+      </if>
+      <if test="morrowAliveRatio != null">
+        morrow_alive_ratio,
+      </if>
+      <if test="thirdAliveNum != null">
+        third_alive_num,
+      </if>
+      <if test="thirdAliveRatio != null">
+        third_alive_ratio,
+      </if>
+      <if test="seventhAliveNum != null">
+        seventh_alive_num,
+      </if>
+      <if test="seventhAliveRatio != null">
+        seventh_alive_ratio,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=DATE},
+      </if>
+      <if test="regNum != null">
+        #{regNum,jdbcType=INTEGER},
+      </if>
+      <if test="morrowAliveNum != null">
+        #{morrowAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="morrowAliveRatio != null">
+        #{morrowAliveRatio,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAliveNum != null">
+        #{thirdAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAliveRatio != null">
+        #{thirdAliveRatio,jdbcType=INTEGER},
+      </if>
+      <if test="seventhAliveNum != null">
+        #{seventhAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="seventhAliveRatio != null">
+        #{seventhAliveRatio,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.RecordDayRegAliveEntity">
+    update tbl_record_day_reg_alive
+    <set>
+      <if test="recordTime != null">
+        record_time = #{recordTime,jdbcType=DATE},
+      </if>
+      <if test="regNum != null">
+        reg_num = #{regNum,jdbcType=INTEGER},
+      </if>
+      <if test="morrowAliveNum != null">
+        morrow_alive_num = #{morrowAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="morrowAliveRatio != null">
+        morrow_alive_ratio = #{morrowAliveRatio,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAliveNum != null">
+        third_alive_num = #{thirdAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="thirdAliveRatio != null">
+        third_alive_ratio = #{thirdAliveRatio,jdbcType=INTEGER},
+      </if>
+      <if test="seventhAliveNum != null">
+        seventh_alive_num = #{seventhAliveNum,jdbcType=INTEGER},
+      </if>
+      <if test="seventhAliveRatio != null">
+        seventh_alive_ratio = #{seventhAliveRatio,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.RecordDayRegAliveEntity">
+    update tbl_record_day_reg_alive
+    set record_time = #{recordTime,jdbcType=DATE},
+      reg_num = #{regNum,jdbcType=INTEGER},
+      morrow_alive_num = #{morrowAliveNum,jdbcType=INTEGER},
+      morrow_alive_ratio = #{morrowAliveRatio,jdbcType=INTEGER},
+      third_alive_num = #{thirdAliveNum,jdbcType=INTEGER},
+      third_alive_ratio = #{thirdAliveRatio,jdbcType=INTEGER},
+      seventh_alive_num = #{seventhAliveNum,jdbcType=INTEGER},
+      seventh_alive_ratio = #{seventhAliveRatio,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

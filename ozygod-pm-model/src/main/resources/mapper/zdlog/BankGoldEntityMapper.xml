@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.BankGoldEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.BankGoldEntity">
+    <result column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="reason" jdbcType="INTEGER" property="reason" />
+    <result column="begin_gold" jdbcType="BIGINT" property="beginGold" />
+    <result column="change_gold" jdbcType="BIGINT" property="changeGold" />
+    <result column="tax_gold" jdbcType="BIGINT" property="taxGold" />
+    <result column="end_gold" jdbcType="BIGINT" property="endGold" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+  </resultMap>
+
+  <select id="listPlayerBankGoldByQry" parameterType="com.ozygod.model.zdlog.dto.BankGoldDto" resultType="com.ozygod.model.zdlog.bo.BankGoldBO" >
+    SELECT
+        A.*,
+        B.NICKNAME
+    FROM
+        ( SELECT *
+          FROM tbl_bank_gold
+          WHERE userid > 10000
+          and reason > 0
+          <if test="playerId != null">
+            AND USERID = #{playerId,jdbcType=INTEGER}
+          </if>
+          <if test="startTime != null">
+            AND record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+          </if>
+          <if test="endTime != null">
+            AND record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+          </if>
+          ORDER BY record_time DESC
+          <if test="pageSize > 0">
+            LIMIT #{start}, #{pageSize}
+          </if>
+          ) AS A
+        JOIN zdgame.tbl_playerinfo AS B ON A.userid = B.userid
+    ORDER BY A.record_time DESC
+  </select>
+
+  <select id="totalCountPlayerBankGoldByQry" parameterType="com.ozygod.model.zdlog.dto.BankGoldDto" resultType="int" >
+    SELECT
+      count(1)
+    FROM tbl_bank_gold
+    WHERE userid > 10000
+    and reason > 0
+    <if test="playerId != null">
+      AND USERID = #{playerId,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null">
+      AND record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="countBankGoldByQry" parameterType="com.ozygod.model.zdlog.dto.BankGoldDto" resultType="long" >
+    SELECT
+      ifnull(sum(change_gold), 0)
+    FROM tbl_bank_gold
+    WHERE userid > 10000
+    and reason = #{reason,jdbcType=INTEGER}
+    <if test="playerId != null">
+      AND USERID = #{playerId,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null">
+      AND record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      AND record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+  
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.BankGoldEntity">
+    insert into tbl_bank_gold (userid, reason, begin_gold, 
+      change_gold, tax_gold, end_gold, 
+      note, record_time)
+    values (#{userid,jdbcType=BIGINT}, #{reason,jdbcType=INTEGER}, #{beginGold,jdbcType=BIGINT}, 
+      #{changeGold,jdbcType=BIGINT}, #{taxGold,jdbcType=BIGINT}, #{endGold,jdbcType=BIGINT}, 
+      #{note,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.BankGoldEntity">
+    insert into tbl_bank_gold
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="beginGold != null">
+        begin_gold,
+      </if>
+      <if test="changeGold != null">
+        change_gold,
+      </if>
+      <if test="taxGold != null">
+        tax_gold,
+      </if>
+      <if test="endGold != null">
+        end_gold,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=INTEGER},
+      </if>
+      <if test="beginGold != null">
+        #{beginGold,jdbcType=BIGINT},
+      </if>
+      <if test="changeGold != null">
+        #{changeGold,jdbcType=BIGINT},
+      </if>
+      <if test="taxGold != null">
+        #{taxGold,jdbcType=BIGINT},
+      </if>
+      <if test="endGold != null">
+        #{endGold,jdbcType=BIGINT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

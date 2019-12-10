@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.RecordPlatformDayPlayerEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.RecordPlatformDayPlayerEntity">
+    <id column="record_time" jdbcType="DATE" property="recordTime" />
+    <result column="day_reg" jdbcType="INTEGER" property="dayReg" />
+    <result column="day_active" jdbcType="INTEGER" property="dayActive" />
+    <result column="day_login" jdbcType="INTEGER" property="dayLogin" />
+    <result column="day_max_online" jdbcType="INTEGER" property="dayMaxOnline" />
+    <result column="day_avg_online" jdbcType="INTEGER" property="dayAvgOnline" />
+    <result column="day_new_recharge" jdbcType="INTEGER" property="dayNewRecharge" />
+    <result column="day_total_recharge" jdbcType="INTEGER" property="dayTotalRecharge" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_time, day_reg, day_active, day_login, day_max_online, day_avg_online,day_new_recharge,day_total_recharge
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.util.Date" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_record_platform_day_player
+    where record_time = #{recordTime,jdbcType=DATE}
+  </select>
+
+  <select id="listDailyPlayersCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdlog.bo.DailyPlayersCountBO">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_record_platform_day_player
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+    order by record_time desc
+    <if test="pageSize > 0">
+      limit #{start},#{pageSize}
+    </if>
+  </select>
+
+  <select id="totalDailyPlayersCountByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
+    select
+      COUNT(1)
+    from tbl_record_platform_day_player
+    where 1=1
+    <if test="startDate != null">
+      and record_time &gt;= #{startDate,jdbcType=DATE}
+    </if>
+    <if test="endDate != null">
+      and record_time &lt;= #{endDate,jdbcType=DATE}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.util.Date">
+    delete from tbl_record_platform_day_player
+    where record_time = #{recordTime,jdbcType=DATE}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayPlayerEntity">
+    insert into tbl_record_platform_day_player (record_time, day_reg, day_active, 
+      day_login, day_max_online, day_avg_online
+      )
+    values (#{recordTime,jdbcType=DATE}, #{dayReg,jdbcType=INTEGER}, #{dayActive,jdbcType=INTEGER}, 
+      #{dayLogin,jdbcType=INTEGER}, #{dayMaxOnline,jdbcType=INTEGER}, #{dayAvgOnline,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayPlayerEntity">
+    insert into tbl_record_platform_day_player
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        record_time,
+      </if>
+      <if test="dayReg != null">
+        day_reg,
+      </if>
+      <if test="dayActive != null">
+        day_active,
+      </if>
+      <if test="dayLogin != null">
+        day_login,
+      </if>
+      <if test="dayMaxOnline != null">
+        day_max_online,
+      </if>
+      <if test="dayAvgOnline != null">
+        day_avg_online,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=DATE},
+      </if>
+      <if test="dayReg != null">
+        #{dayReg,jdbcType=INTEGER},
+      </if>
+      <if test="dayActive != null">
+        #{dayActive,jdbcType=INTEGER},
+      </if>
+      <if test="dayLogin != null">
+        #{dayLogin,jdbcType=INTEGER},
+      </if>
+      <if test="dayMaxOnline != null">
+        #{dayMaxOnline,jdbcType=INTEGER},
+      </if>
+      <if test="dayAvgOnline != null">
+        #{dayAvgOnline,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayPlayerEntity">
+    update tbl_record_platform_day_player
+    <set>
+      <if test="dayReg != null">
+        day_reg = #{dayReg,jdbcType=INTEGER},
+      </if>
+      <if test="dayActive != null">
+        day_active = #{dayActive,jdbcType=INTEGER},
+      </if>
+      <if test="dayLogin != null">
+        day_login = #{dayLogin,jdbcType=INTEGER},
+      </if>
+      <if test="dayMaxOnline != null">
+        day_max_online = #{dayMaxOnline,jdbcType=INTEGER},
+      </if>
+      <if test="dayAvgOnline != null">
+        day_avg_online = #{dayAvgOnline,jdbcType=INTEGER},
+      </if>
+    </set>
+    where record_time = #{recordTime,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdlog.entity.RecordPlatformDayPlayerEntity">
+    update tbl_record_platform_day_player
+    set day_reg = #{dayReg,jdbcType=INTEGER},
+      day_active = #{dayActive,jdbcType=INTEGER},
+      day_login = #{dayLogin,jdbcType=INTEGER},
+      day_max_online = #{dayMaxOnline,jdbcType=INTEGER},
+      day_avg_online = #{dayAvgOnline,jdbcType=INTEGER}
+    where record_time = #{recordTime,jdbcType=DATE}
+  </update>
+</mapper>

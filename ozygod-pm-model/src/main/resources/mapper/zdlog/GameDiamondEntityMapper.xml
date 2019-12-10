@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdlog.dao.GameDiamondEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdlog.entity.GameDiamondEntity">
+    <result column="userid" jdbcType="BIGINT" property="userid" />
+    <result column="reason" jdbcType="INTEGER" property="reason" />
+    <result column="begin_val" jdbcType="BIGINT" property="beginVal" />
+    <result column="change_val" jdbcType="BIGINT" property="changeVal" />
+    <result column="tax" jdbcType="BIGINT" property="tax" />
+    <result column="end_val" jdbcType="BIGINT" property="endVal" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.GameDiamondEntity">
+    insert into tbl_game_diamond (userid, reason, begin_val, 
+      change_val, tax, end_val, 
+      note, record_time)
+    values (#{userid,jdbcType=BIGINT}, #{reason,jdbcType=INTEGER}, #{beginVal,jdbcType=BIGINT}, 
+      #{changeVal,jdbcType=BIGINT}, #{tax,jdbcType=BIGINT}, #{endVal,jdbcType=BIGINT}, 
+      #{note,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="listPlayerGameLogByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdlog.bo.PlayerGameDiamondLogBO">
+    SELECT
+    A.*,
+    D.nickname nickName
+    FROM
+    ( SELECT * FROM tbl_game_diamond WHERE userid > 10000
+    <if test="playerId != null">
+      and userid = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="startTime != null">
+      and record_time &gt;= #{startTime,jdbcType=BIGINT}
+    </if>
+    <if test="endTime != null">
+      and record_time &lt;= #{endTime,jdbcType=BIGINT}
+    </if>
+    ORDER BY record_time DESC
+    <if test="pageSize > 0">
+      LIMIT #{start}, #{pageSize}
+    </if>
+    ) AS A
+    LEFT JOIN zdgame.tbl_playerinfo AS D ON A.USERID = D.USERID
+    ORDER BY
+    A.record_time DESC
+  </select>
+
+  <select id="totalPlayerGameLogByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="int">
+    SELECT COUNT(1) FROM tbl_game_diamond WHERE userid > 10000
+    <if test="playerId != null">
+      and userid = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="startTime != null">
+      and record_time &gt;= #{startTime,jdbcType=BIGINT}
+    </if>
+    <if test="endTime != null">
+      and record_time &lt;= #{endTime,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.GameDiamondEntity">
+    insert into tbl_game_diamond
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="beginVal != null">
+        begin_val,
+      </if>
+      <if test="changeVal != null">
+        change_val,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="endVal != null">
+        end_val,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="recordTime != null">
+        record_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=INTEGER},
+      </if>
+      <if test="beginVal != null">
+        #{beginVal,jdbcType=BIGINT},
+      </if>
+      <if test="changeVal != null">
+        #{changeVal,jdbcType=BIGINT},
+      </if>
+      <if test="tax != null">
+        #{tax,jdbcType=BIGINT},
+      </if>
+      <if test="endVal != null">
+        #{endVal,jdbcType=BIGINT},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="recordTime != null">
+        #{recordTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

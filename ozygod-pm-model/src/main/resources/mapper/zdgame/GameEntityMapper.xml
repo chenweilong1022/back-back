@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdgame.dao.GameEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdgame.entity.GameEntity">
+    <id column="gameid" jdbcType="INTEGER" property="gameid" />
+    <result column="game_name" jdbcType="VARCHAR" property="gameName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    gameid, game_name
+  </sql>
+
+  <select id="listAllGame" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_game
+  </select>
+
+  <select id="listGameAndOnlineCount" resultType="com.ozygod.model.zdgame.bo.GameBO">
+    select t1.gameid,
+           t1.game_name,
+           ifnull(t2.onlineCount, 0) onlineCount
+    from tbl_game t1
+           left join (
+      select count(t.userid) onlineCount, tt.gameid
+      from tbl_player_location t
+             left join tbl_game_room tt on t.room = tt.roomid
+      group by tt.gameid
+    ) t2 on t1.gameid = t2.gameid
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_game
+    where gameid = #{gameid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_game
+    where gameid = #{gameid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.GameEntity">
+    insert into tbl_game (gameid, game_name)
+    values (#{gameid,jdbcType=INTEGER}, #{gameName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdgame.entity.GameEntity">
+    insert into tbl_game
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gameid != null">
+        gameid,
+      </if>
+      <if test="gameName != null">
+        game_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gameid != null">
+        #{gameid,jdbcType=INTEGER},
+      </if>
+      <if test="gameName != null">
+        #{gameName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ozygod.model.zdgame.entity.GameEntity">
+    update tbl_game
+    <set>
+      <if test="gameName != null">
+        game_name = #{gameName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where gameid = #{gameid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ozygod.model.zdgame.entity.GameEntity">
+    update tbl_game
+    set game_name = #{gameName,jdbcType=VARCHAR}
+    where gameid = #{gameid,jdbcType=INTEGER}
+  </update>
+</mapper>
