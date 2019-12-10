@@ -255,6 +255,10 @@ public class PlayerServiceImpl implements IPlayerService {
         List<PlayerAccountBO> resultList = accountEntityMapper.listPlayerAccountByQry(dto);
         for (PlayerAccountBO bo :
                 resultList) {
+            //修改一个判空bug 如果 bo.getIp为空不处理
+            if (CommonUtil.isEmptyStr(bo.getIp())) {
+                continue;
+            }
             // 取IP前三段
             String firstIP = bo.getIp().substring(0, bo.getIp().lastIndexOf("."));
             bo.setIpAttr(ipUtils.getIPAddrCN(firstIP));
