@@ -13,6 +13,6 @@ phases:
     commands:
       - echo Entered the build phase...
       - echo Build started on `date`
-      - mvn clean install
+      - /usr/local/maven/apache-maven-3.6.2/bin/mvn clean install
     finally:
       - echo This always runs even if the install command fails
