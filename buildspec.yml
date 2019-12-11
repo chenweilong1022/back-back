@@ -8,12 +8,15 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto8
+        java: corretto8
+    commands:
+      - echo Entered the install phase...
+      - apt-get update -y
+      - apt-get install -y maven
+    finally:
+      - echo This always runs even if the update or install command fails
   build:
     commands:
       - echo Entered the build phase...
-      - sudo su
       - echo Build started on `date`
-      - /usr/local/maven/apache-maven-3.6.2/bin/mvn clean install
-    finally:
-      - echo This always runs even if the install command fails
+      - mvn install
