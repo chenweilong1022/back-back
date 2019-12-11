@@ -6,9 +6,6 @@ env:
     MAVEN_HOME: "/usr/local/maven/apache-maven-3.6.2/"
 
 phases:
-  install:
-    runtime-versions:
-      java: 8
   build:
     commands:
       - echo Entered the build phase...
