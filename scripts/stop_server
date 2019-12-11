@@ -1,4 +1,4 @@
 #!/bin/bash
-rm -rf /var/back/
 docker rm -f main
 docker rmi -f main
+rm -rf /var/back
