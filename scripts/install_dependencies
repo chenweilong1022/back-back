@@ -1,2 +1,5 @@
 #!/bin/bash
-/usr/local/maven/apache-maven-3.6.2/bin/mvn clean package -f ../pom.xml
+echo '$0: '$0
+echo "pwd: "`pwd`
+echo "scriptPath1: "$(cd `dirname $0`; pwd)
+/usr/local/maven/apache-maven-3.6.2/bin/mvn clean package
