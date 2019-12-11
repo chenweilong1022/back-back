@@ -1,5 +1,7 @@
 #!/bin/bash
 cd /var/back/ozygod-pm-main/target
 cp /var/back/ozygod-pm-main/src/main/docker/Dockerfile .
+docker rm -f main
+docker rmi -f main
 docker build . -t main
 docker run -id --name main -p 8080:8080 -v /home/web/files/images:/home/web/files/images main
