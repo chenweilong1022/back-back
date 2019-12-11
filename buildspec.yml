@@ -1,22 +1,19 @@
 version: 0.2
 
-env:
-  variables:
-    JAVA_HOME: "/usr/java/jdk1.8.0_221-amd64/"
-    MAVEN_HOME: "/usr/local/maven/apache-maven-3.6.2/"
-
 phases:
   install:
     runtime-versions:
-        java: corretto8
+      java: corretto11
+  pre_build:
     commands:
-      - echo Entered the install phase...
-      - apt-get update -y
-      - apt-get install -y maven
-    finally:
-      - echo This always runs even if the update or install command fails
+      - echo Nothing to do in the pre_build phase...
   build:
     commands:
-      - echo Entered the build phase...
       - echo Build started on `date`
       - mvn install
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - target/messageUtil-1.0.jar
