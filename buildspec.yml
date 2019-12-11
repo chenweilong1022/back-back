@@ -15,5 +15,5 @@ phases:
     commands:
       - echo Build completed on `date`
 artifacts:
-  files:ozygod-pm-main.iml
+  files:
     - ozygod-pm-main/target/ozygod-pm-main-1.0.jar
