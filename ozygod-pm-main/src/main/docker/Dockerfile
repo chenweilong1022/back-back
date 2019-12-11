@@ -16,7 +16,7 @@ RUN sh -c 'touch /app.jar'
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 
 # 开放端口
-EXPOSE 2333
+EXPOSE 8080
 
 # 配置容器启动后执行的命令
 ENTRYPOINT [ "sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -Xms512m -Xmx1024m -jar /app.jar " ]
