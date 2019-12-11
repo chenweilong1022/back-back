@@ -2,4 +2,6 @@
 echo '$0: '$0
 echo "pwd: "`pwd`
 echo "scriptPath1: "$(cd `dirname $0`; pwd)
+cd $(cd `dirname $0`; pwd)
+cd ..
 /usr/local/maven/apache-maven-3.6.2/bin/mvn clean package
