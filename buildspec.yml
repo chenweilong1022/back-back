@@ -15,9 +15,9 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t nginx:1.0 .
-      - docker tag nginx:1.0 391122691900.dkr.ecr.us-east-2.amazonaws.com/nginx:1.0
+      - docker tag nginx:2.0 391122691900.dkr.ecr.us-east-2.amazonaws.com/nginx:2.0
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 391122691900.dkr.ecr.us-east-2.amazonaws.com/nginx:1.0
+      - docker push 391122691900.dkr.ecr.us-east-2.amazonaws.com/nginx:2.0
