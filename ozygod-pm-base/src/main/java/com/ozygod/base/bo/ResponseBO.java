@@ -60,4 +60,17 @@ public class ResponseBO implements Serializable {
     public ResponseBO(Integer code, String msg, Object data) {
         this(code, msg, data, 10, 1, 0, 0);
     }
+
+    public static ResponseBO error(ResponseCode responseCode) {
+        return error(responseCode.getCode(),responseCode.getTitle());
+    }
+
+    public static ResponseBO error(Integer code, String msg) {
+        return new ResponseBO(code,msg);
+    }
+
+    public static ResponseBO error(String msg) {
+        return new ResponseBO(ResponseCode.E500.getCode(),msg);
+    }
+
 }

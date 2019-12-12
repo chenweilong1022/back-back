@@ -34,7 +34,8 @@ public enum ResponseCode {
     R002(51, "重启失败"),
     T001(60, "停止失败"),
     T002(61, "清空失败"),
-    Z001(65, "赠送失败");
+    Z001(65, "赠送失败"),
+    E500(500, "自定义异常");
 
     private int code;
     private String title;
