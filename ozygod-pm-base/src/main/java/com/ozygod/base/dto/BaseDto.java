@@ -78,7 +78,7 @@ public class BaseDto implements Serializable {
     }
 
     public Page getPage() {
-        Page page = new Page(this.pages, this.pageNo);
+        Page page = new Page(this.pageNo, this.pageSize);
         return page;
     }
 }

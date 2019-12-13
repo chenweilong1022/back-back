@@ -1,5 +1,6 @@
 package com.ozygod.base.bo;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ozygod.base.enums.ResponseCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -70,7 +71,20 @@ public class ResponseBO implements Serializable {
     }
 
     public static ResponseBO error(String msg) {
-        return new ResponseBO(ResponseCode.E500.getCode(),msg);
+        return error(ResponseCode.E500.getCode(),msg);
     }
 
+    public static ResponseBO ok() {
+        return new ResponseBO();
+    }
+
+    public static ResponseBO page(IPage page) {
+        ResponseBO bo = ok();
+        bo.setData(page.getRecords());
+        bo.setPages((int) page.getPages());
+        bo.setPageNo((int) page.getCurrent());
+        bo.setTotalCount((int) page.getTotal());
+        bo.setPageSize((int) page.getSize());
+        return bo;
+    }
 }

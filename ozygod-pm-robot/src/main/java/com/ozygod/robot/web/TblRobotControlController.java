@@ -1,34 +1,25 @@
 package com.ozygod.robot.web;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
-import com.ozygod.base.utils.IPUtils;
 import com.ozygod.base.validator.Assert;
 import com.ozygod.model.zdconfig.dto.TblRobotControlAuthDto;
+import com.ozygod.model.zdconfig.dto.TblRobotControlListDto;
 import com.ozygod.model.zdconfig.entity.TblRobotControlEntity;
 import com.ozygod.robot.service.TblRobotControlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
-import sun.net.util.IPAddressUtil;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.List;
-
-import static com.ozygod.base.enums.ResponseCode.P001;
 
 
 /**
@@ -39,7 +30,7 @@ import static com.ozygod.base.enums.ResponseCode.P001;
  * @date 2019-12-12 17:06:41
  */
 @RestController
-@RequestMapping("api/robots")
+@RequestMapping(value = {"api/robots","robots"})
 @Api(value = "机器人控制端账号",tags = "机器人控制端账号")
 public class TblRobotControlController {
 
@@ -49,7 +40,14 @@ public class TblRobotControlController {
     @Value("${robot_url}")
     private String robotUrl;
 
-    @RequestMapping("auth/{method}")
+    /**
+     * 控制端鉴权
+     * @param method
+     * @param tblRobotControlAuthDto
+     * @param request
+     * @return
+     */
+    @PostMapping("auth/{method}")
     @ApiOperation(value = "控制端鉴权", response = String.class)
     public ResponseBO auth(
             @PathVariable("method") String method,
@@ -84,12 +82,41 @@ public class TblRobotControlController {
     /**
      * 列表
      */
-    @RequestMapping("/listTblRobotControl")
-    public ResponseBO list(TblRobotControlEntity tblRobotControl){
-
-        List<TblRobotControlEntity> list = tblRobotControlService.list(null);
-
-        return new ResponseBO(list);
+    @PostMapping("/listRobotControl")
+    public ResponseBO list(@RequestBody TblRobotControlListDto tblRobotControlListDto){
+        return tblRobotControlService.queryPage(tblRobotControlListDto);
     }
+
+    /**
+     * 保存
+     */
+    @PostMapping("/saveRobotControl")
+    public ResponseBO save(@RequestBody TblRobotControlEntity tblRobotControl){
+        /**
+         * 生成uuid key
+         */
+        tblRobotControl.setKey(RandomUtil.simpleUUID().toUpperCase());
+        tblRobotControlService.save(tblRobotControl);
+        return ResponseBO.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @PutMapping("/updateRobotControl")
+    public ResponseBO updateRobotControl(@RequestBody TblRobotControlEntity tblRobotControl){
+        tblRobotControlService.updateById(tblRobotControl);
+        return ResponseBO.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @DeleteMapping("/deleteRobotControl/{id}")
+    public ResponseBO deleteRobotControl(@PathVariable("id") Integer id){
+        tblRobotControlService.removeById(id);
+        return ResponseBO.ok();
+    }
+
 
 }

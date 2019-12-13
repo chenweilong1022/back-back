@@ -2,6 +2,8 @@ package com.ozygod.robot.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.model.zdconfig.dto.TblRobotControlListDto;
 import com.ozygod.model.zdconfig.entity.TblRobotControlEntity;
 
 /**
@@ -13,6 +15,6 @@ import com.ozygod.model.zdconfig.entity.TblRobotControlEntity;
  */
 public interface TblRobotControlService extends IService<TblRobotControlEntity> {
 
-//    PageUtils queryPage(TblRobotControlEntity tblRobotControl);
+    ResponseBO queryPage(TblRobotControlListDto tblRobotControlListDto);
 }
 
