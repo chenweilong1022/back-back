@@ -1,5 +1,6 @@
 package com.ozygod.base.dto;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -74,5 +75,10 @@ public class BaseDto implements Serializable {
             pageNo = 1;
         }
         this.pageNo = pageNo;
+    }
+
+    public Page getPage() {
+        Page page = new Page(this.pages, this.pageNo);
+        return page;
     }
 }
