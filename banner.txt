@@ -9,3 +9,10 @@ CREATE TABLE `tbl_record_account_online_playing` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='玩家在线在玩记录表';
 
 
+CREATE TABLE `tbl_ip_white_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `ip` varchar(50) DEFAULT NULL COMMENT '白名单ip',
+    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='系统ip白名单配置';

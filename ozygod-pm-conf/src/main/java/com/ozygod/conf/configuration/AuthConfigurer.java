@@ -39,6 +39,8 @@ public class AuthConfigurer extends WebMvcConfigurationSupport {
         registry.addInterceptor(loginInterceptor()).addPathPatterns("/**")
                 // 排除登录接口拦截
                 .excludePathPatterns("/managers/login")
+                //鉴白ip白名单
+                .excludePathPatterns("/zdconfig/tblipwhitelist/authenticate")
                 // 排除推广员登录
                 .excludePathPatterns("/spread/users/login")
                 // 排除swagger资源拦截
