@@ -78,6 +78,12 @@ public class ResponseBO implements Serializable {
         return new ResponseBO();
     }
 
+    public static ResponseBO data(Object data) {
+        ResponseBO ok = ok();
+        ok.setData(data);
+        return ok;
+    }
+
     public static ResponseBO page(IPage page) {
         ResponseBO bo = ok();
         bo.setData(page.getRecords());

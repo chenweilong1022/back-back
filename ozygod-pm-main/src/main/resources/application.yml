@@ -4,6 +4,9 @@ spring:
     active: dev
   application:
     name: qy_web_gm
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 # 服务端口配置
 server:

@@ -59,6 +59,7 @@
 		<module>ozygod-pm-player</module>
 		<module>ozygod-pm-game</module>
 		<module>ozygod-pm-platform</module>
+		<module>ozygod-pm-task</module>
 		<!--<module>ozygod-pm-spread</module>-->
 	</modules>
 
@@ -88,6 +89,11 @@
 			<dependency>
 				<groupId>com.ozygod</groupId>
 				<artifactId>ozygod-pm-account</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-task</artifactId>
 				<version>${ozygod.version}</version>
 			</dependency>
 			<dependency>
