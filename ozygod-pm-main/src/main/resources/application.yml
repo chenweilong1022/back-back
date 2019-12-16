@@ -52,6 +52,10 @@ files_url: /home/web/files/
 appId: wx6cef6e4f32ab6e62
 appSecret: 70b64c2889ed54053e8e9f67fc50f562
 
+#谷歌secret配置用于校验googleCode
+googleSecret: 6LcB4McUAAAAAB5zVbvhT5UPu63xDKQEzv3cqTHz
+
+
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   #实体扫描，多个package用逗号或者分号分隔

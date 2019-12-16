@@ -16,3 +16,11 @@ CREATE TABLE `tbl_ip_white_list` (
     `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='系统ip白名单配置';
+
+CREATE TABLE `tbl_test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(50) DEFAULT NULL COMMENT '名称',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='测试生成';

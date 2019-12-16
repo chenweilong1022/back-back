@@ -13,6 +13,7 @@ import lombok.Data;
 public class LoginDto {
     private String username;
     private String password;
+    private String googleCode;
     private String loginFrom;
     private String userIP;
     private String userAgent;
