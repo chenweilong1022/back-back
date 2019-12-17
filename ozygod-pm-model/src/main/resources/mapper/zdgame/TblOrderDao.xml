@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdgame.dao.TblOrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdgame.entity.TblOrderEntity" id="tblOrderMap">
+        <result property="id" column="id"/>
+        <result property="userid" column="userid"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="channel" column="channel"/>
+        <result property="orderId" column="order_id"/>
+        <result property="money" column="money"/>
+        <result property="state" column="state"/>
+        <result property="createTime" column="create_time"/>
+        <result property="invalidTime" column="invalid_time"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="completeTime" column="complete_time"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+
+</mapper>

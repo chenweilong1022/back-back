@@ -1,4 +1,4 @@
-package com.ozygod.model.zdgame.entity;
+package com.ozygod.model.zdgame.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -23,7 +23,7 @@ import java.util.Date;
 @TableName("tbl_account")
 @ApiModel("用户账号表")
 @Accessors(chain = true)
-public class TblAccountEntity implements Serializable {
+public class TblAccountListDto extends BaseDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
