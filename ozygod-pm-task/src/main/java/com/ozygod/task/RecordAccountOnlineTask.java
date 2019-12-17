@@ -3,10 +3,10 @@ package com.ozygod.task;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ozygod.game.service.TblAccountService;
 import com.ozygod.game.service.TblPlayerLocationService;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblPlayerLocationEntity;
+import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
 import com.ozygod.platform.service.TblRecordAccountOnlinePlayingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +51,7 @@ public class RecordAccountOnlineTask {
         /**
          * 在线数
          */
-        int onlineNumber = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
-                .notIn(TblAccountEntity::getLogoutTime, "1970-01-01 00:00:00")
-                .last(" and logout_time < login_time")
-        );
+        int onlineNumber = tblAccountService.onlineNumber();
 
         /**
          * 在玩数
