@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.ozygod.main.OzygodPmMainApplication;
 import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
-import com.ozygod.platform.service.TblRecordAccountOnlinePlayingService;
+import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
