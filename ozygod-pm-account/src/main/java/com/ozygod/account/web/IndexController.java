@@ -1,5 +1,6 @@
 package com.ozygod.account.web;
 
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
@@ -7,23 +8,27 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.IndexCard;
+import com.ozygod.base.enums.PlayerOnlineStatisticsButtons;
 import com.ozygod.base.enums.RedisKeys;
 import com.ozygod.base.redis.IntegerRedisDao;
 import com.ozygod.base.utils.EnumUtil;
-import com.ozygod.base.vo.EnumVo;
 import com.ozygod.base.vo.IndexCardVo;
-import com.ozygod.model.zdconfig.service.TblIpWhiteListService;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
+import com.ozygod.model.zdlog.dto.PlayerOnlineStatisticsDto;
+import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
 import com.ozygod.model.zdlog.entity.TblRecordConversionEverydayEntity;
+import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
 import com.ozygod.model.zdlog.service.TblRecordConversionEverydayService;
+import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsAllVo;
+import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +52,8 @@ public class IndexController {
     private IntegerRedisDao integerRedisDao;
     @Autowired
     private TblRecordConversionEverydayService tblRecordConversionEverydayService;
+    @Autowired
+    private TblRecordAccountOnlinePlayingService tblRecordAccountOnlinePlayingService;
 
 
 
@@ -170,6 +177,115 @@ public class IndexController {
             indexCardVos.add(indexCardVo);
         }
         return ResponseBO.data(indexCardVos);
+    }
+
+    /**
+     * 玩家在线统计
+     */
+    @RequestMapping("/playerOnlineStatistics")
+    public ResponseBO playerOnlineStatistics(@RequestBody PlayerOnlineStatisticsDto playerOnlineStatisticsDto) {
+        System.out.println(playerOnlineStatisticsDto);
+
+        List<Date> dates = new ArrayList();
+        if (PlayerOnlineStatisticsButtons.ONE.getKey().equals(playerOnlineStatisticsDto.getKey())) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_WEEK);
+            dates.addAll(dateTimes);
+        }else if (PlayerOnlineStatisticsButtons.TWO.getKey().equals(playerOnlineStatisticsDto.getKey())) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -2), DateUtil.date(), DateField.DAY_OF_WEEK);
+            dates.addAll(dateTimes);
+        }else if (PlayerOnlineStatisticsButtons.THREE.getKey().equals(playerOnlineStatisticsDto.getKey())) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetMonth(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_MONTH);
+            dates.addAll(dateTimes);
+        }else {
+            /**
+             * 今日
+             */
+            DateTime today = DateUtil.date();
+            /**
+             * 昨日
+             */
+            DateTime yesterday = DateUtil.offsetDay(today, -1);
+            dates.add(yesterday);
+            dates.add(today);
+        }
+
+        List<PlayerOnlineStatisticsVo> playerOnlineStatisticsVos = new ArrayList<>();
+
+
+        /**
+         * 所有分钟数
+         */
+        List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.beginOfDay(DateUtil.date()), DateUtil.offsetMinute(DateUtil.endOfDay(DateUtil.date()), -1), DateField.MINUTE);
+
+
+        /**
+         * 遍历所有需要比对的日期
+         */
+        for (Date date : dates) {
+            /**
+             * 需要返回的vo
+             */
+            PlayerOnlineStatisticsVo playerOnlineStatisticsVo = new PlayerOnlineStatisticsVo();
+
+            /**
+             * 查询当前日期所有在线走势
+             */
+            List<TblRecordAccountOnlinePlayingEntity> list = tblRecordAccountOnlinePlayingService.list(new QueryWrapper<TblRecordAccountOnlinePlayingEntity>().lambda()
+                    .gt(TblRecordAccountOnlinePlayingEntity::getCurrentMinutes, DateUtil.beginOfDay(date))
+                    .lt(TblRecordAccountOnlinePlayingEntity::getCurrentMinutes, DateUtil.endOfDay(date))
+            );
+            /**
+             * 跟分钟数组比对,
+             * 如果list中不存在当前分钟的在线数
+             * 将在线数置为0
+             */
+            List<Integer> integers = new ArrayList<>();
+            for (int i = 0,j = 0; i < dateTimes.size();) {
+                /**
+                 * 当j循环完毕直接结束循环
+                 */
+                if (j == list.size()) {
+                    break;
+                }
+                DateTime all = dateTimes.get(i);
+                TblRecordAccountOnlinePlayingEntity tblRecordAccountOnlinePlayingEntity = list.get(j);
+
+                Date currentMinutes = tblRecordAccountOnlinePlayingEntity.getCurrentMinutes();
+
+                if (DateUtil.format(all,"HH:mm").equals(DateUtil.format(currentMinutes,"HH:mm"))) {
+                    integers.add(tblRecordAccountOnlinePlayingEntity.getOnlineNumber());
+                    i++;
+                    j++;
+                }else {
+                    integers.add(0);
+                    i++;
+                }
+            }
+
+            playerOnlineStatisticsVo.setList(integers);
+            playerOnlineStatisticsVo.setDate(DateUtil.format(date,"yyyyMMdd"));
+            playerOnlineStatisticsVos.add(playerOnlineStatisticsVo);
+        }
+        /**
+         * 统一返回
+         */
+        PlayerOnlineStatisticsAllVo playerOnlineStatisticsAllVo = new PlayerOnlineStatisticsAllVo();
+        playerOnlineStatisticsAllVo.setPlayerOnlineStatisticsVos(playerOnlineStatisticsVos);
+        playerOnlineStatisticsAllVo.setDateTimes(dateTimes);
+
+        Date startTime = dates.get(0);
+        Date endTime = dates.get(dates.size() - 1);
+        playerOnlineStatisticsAllVo.setStartTime(startTime);
+        playerOnlineStatisticsAllVo.setEndTime(endTime);
+        return ResponseBO.data(playerOnlineStatisticsAllVo);
+    }
+
+    /**
+     * 玩家在线走势统计按钮
+     */
+    @RequestMapping("/playerOnlineStatisticsButtons")
+    public ResponseBO playerOnlineStatisticsButtons() {
+        return ResponseBO.data(EnumUtil.enumToVo(PlayerOnlineStatisticsButtons.values()));
     }
 
 
