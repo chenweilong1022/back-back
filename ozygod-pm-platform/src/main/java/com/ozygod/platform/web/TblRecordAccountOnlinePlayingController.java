@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
-import com.ozygod.platform.service.TblRecordAccountOnlinePlayingService;
+import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
