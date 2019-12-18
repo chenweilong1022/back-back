@@ -1,9 +1,9 @@
-package com.ozygod.platform.service.impl;
+package com.ozygod.model.zdlog.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ozygod.model.zdlog.dao.TblRecordAccountOnlinePlayingDao;
 import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
-import com.ozygod.platform.service.TblRecordAccountOnlinePlayingService;
+import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
 import org.springframework.stereotype.Service;
 
 

@@ -1,4 +1,4 @@
-package com.ozygod.platform.service;
+package com.ozygod.model.zdlog.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
