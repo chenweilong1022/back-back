@@ -7,9 +7,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
-import com.ozygod.base.enums.IndexCard;
-import com.ozygod.base.enums.PlayerOnlineStatisticsButtons;
-import com.ozygod.base.enums.RedisKeys;
+import com.ozygod.base.enums.*;
 import com.ozygod.base.redis.IntegerRedisDao;
 import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.vo.IndexCardVo;
@@ -17,11 +15,16 @@ import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
+import com.ozygod.model.zdlog.dto.AccountLoginRegisterEverydayStatisticsDto;
 import com.ozygod.model.zdlog.dto.PlayerOnlineStatisticsDto;
+import com.ozygod.model.zdlog.entity.TblRecordAccountLoginRegisterEverydayEntity;
 import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
 import com.ozygod.model.zdlog.entity.TblRecordConversionEverydayEntity;
+import com.ozygod.model.zdlog.service.TblRecordAccountLoginRegisterEverydayService;
 import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
 import com.ozygod.model.zdlog.service.TblRecordConversionEverydayService;
+import com.ozygod.model.zdlog.vo.AccountLoginRegisterEverydayStatisticsAllVo;
+import com.ozygod.model.zdlog.vo.AccountLoginRegisterEverydayStatisticsVo;
 import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsAllVo;
 import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -54,6 +58,8 @@ public class IndexController {
     private TblRecordConversionEverydayService tblRecordConversionEverydayService;
     @Autowired
     private TblRecordAccountOnlinePlayingService tblRecordAccountOnlinePlayingService;
+    @Autowired
+    private TblRecordAccountLoginRegisterEverydayService tblRecordAccountLoginRegisterEverydayService;
 
 
 
@@ -157,6 +163,9 @@ public class IndexController {
                 value = "0";
                 if (ObjectUtil.isNotNull(yesterdayOne)) {
                     value = NumberUtil.decimalFormatMoney(NumberUtil.div(totalCount - yesterdayOne.getTotalConversion(),100));
+                }else {
+                    yesterdayOne = new TblRecordConversionEverydayEntity();
+                    yesterdayOne.setTotalConversion(totalCount);
                 }
                 /**
                  * 兑换金额
@@ -186,28 +195,8 @@ public class IndexController {
     public ResponseBO playerOnlineStatistics(@RequestBody PlayerOnlineStatisticsDto playerOnlineStatisticsDto) {
         System.out.println(playerOnlineStatisticsDto);
 
-        List<Date> dates = new ArrayList();
-        if (PlayerOnlineStatisticsButtons.ONE.getKey().equals(playerOnlineStatisticsDto.getKey())) {
-            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_WEEK);
-            dates.addAll(dateTimes);
-        }else if (PlayerOnlineStatisticsButtons.TWO.getKey().equals(playerOnlineStatisticsDto.getKey())) {
-            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -2), DateUtil.date(), DateField.DAY_OF_WEEK);
-            dates.addAll(dateTimes);
-        }else if (PlayerOnlineStatisticsButtons.THREE.getKey().equals(playerOnlineStatisticsDto.getKey())) {
-            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetMonth(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_MONTH);
-            dates.addAll(dateTimes);
-        }else {
-            /**
-             * 今日
-             */
-            DateTime today = DateUtil.date();
-            /**
-             * 昨日
-             */
-            DateTime yesterday = DateUtil.offsetDay(today, -1);
-            dates.add(yesterday);
-            dates.add(today);
-        }
+        List<DateTime> dates = new ArrayList();
+        getDatesByButton(playerOnlineStatisticsDto.getKey(), dates);
 
         List<PlayerOnlineStatisticsVo> playerOnlineStatisticsVos = new ArrayList<>();
 
@@ -280,12 +269,81 @@ public class IndexController {
         return ResponseBO.data(playerOnlineStatisticsAllVo);
     }
 
+    private void getDatesByButton(Integer key, List<DateTime> dates) {
+        if (PlayerOnlineStatisticsButtons.ONE.getKey().equals(key)) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_WEEK);
+            dates.addAll(dateTimes);
+        }else if (PlayerOnlineStatisticsButtons.TWO.getKey().equals(key)) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(DateUtil.date(), -2), DateUtil.date(), DateField.DAY_OF_WEEK);
+            dates.addAll(dateTimes);
+        }else if (PlayerOnlineStatisticsButtons.THREE.getKey().equals(key)) {
+            List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetMonth(DateUtil.date(), -1), DateUtil.date(), DateField.DAY_OF_MONTH);
+            dates.addAll(dateTimes);
+        }else {
+            /**
+             * 今日
+             */
+            DateTime today = DateUtil.date();
+            /**
+             * 昨日
+             */
+            DateTime yesterday = DateUtil.offsetDay(today, -1);
+            dates.add(yesterday);
+            dates.add(today);
+        }
+    }
+
     /**
      * 玩家在线走势统计按钮
      */
     @RequestMapping("/playerOnlineStatisticsButtons")
     public ResponseBO playerOnlineStatisticsButtons() {
         return ResponseBO.data(EnumUtil.enumToVo(PlayerOnlineStatisticsButtons.values()));
+    }
+
+
+    /**
+     * 每日登录统计
+     */
+    @RequestMapping("/accountLoginEverydayStatistics")
+    public ResponseBO accountLoginEverydayStatistics(@RequestBody AccountLoginRegisterEverydayStatisticsDto accountLoginRegisterEverydayStatisticsDto) {
+
+        List<DateTime> dates = new ArrayList<>();
+        getDatesByButton(accountLoginRegisterEverydayStatisticsDto.getKey(),dates);
+
+        AccountLoginRegisterEverydayStatisticsAllVo accountLoginRegisterEverydayStatisticsAllVo = new AccountLoginRegisterEverydayStatisticsAllVo();
+        accountLoginRegisterEverydayStatisticsAllVo.setStartTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(0)))));
+        accountLoginRegisterEverydayStatisticsAllVo.setEndTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(dates.size() - 1)))));
+        accountLoginRegisterEverydayStatisticsAllVo.setDateTimes(dates);
+
+        if(accountLoginRegisterEverydayStatisticsDto.getType() == 1) {
+            for (AccountLoginWay enumVo : AccountLoginWay.values()) {
+                AccountLoginRegisterEverydayStatisticsVo accountLoginEverydayStatisticsVo = getAccountLoginRegisterEverydayStatisticsVo(accountLoginRegisterEverydayStatisticsAllVo, enumVo.getKey());
+                accountLoginEverydayStatisticsVo.setAccountLoginWay(enumVo.getLoginWay());
+                accountLoginRegisterEverydayStatisticsAllVo.add(accountLoginEverydayStatisticsVo);
+            }
+        }else if(accountLoginRegisterEverydayStatisticsDto.getType() == 2) {
+            for (AccountLoginType enumVo : AccountLoginType.values()) {
+                AccountLoginRegisterEverydayStatisticsVo accountLoginEverydayStatisticsVo = getAccountLoginRegisterEverydayStatisticsVo(accountLoginRegisterEverydayStatisticsAllVo, enumVo.getKey());
+                accountLoginEverydayStatisticsVo.setAccountLoginWay(enumVo.getLoginType());
+                accountLoginRegisterEverydayStatisticsAllVo.add(accountLoginEverydayStatisticsVo);
+            }
+        }
+
+        return ResponseBO.data(accountLoginRegisterEverydayStatisticsAllVo);
+    }
+
+    private AccountLoginRegisterEverydayStatisticsVo getAccountLoginRegisterEverydayStatisticsVo(AccountLoginRegisterEverydayStatisticsAllVo accountLoginRegisterEverydayStatisticsAllVo, Integer key) {
+        AccountLoginRegisterEverydayStatisticsVo accountLoginRegisterEverydayStatisticsVo = new AccountLoginRegisterEverydayStatisticsVo();
+        List<TblRecordAccountLoginRegisterEverydayEntity> list = tblRecordAccountLoginRegisterEverydayService.list(new QueryWrapper<TblRecordAccountLoginRegisterEverydayEntity>().lambda()
+                .ge(TblRecordAccountLoginRegisterEverydayEntity::getCurrentDates, accountLoginRegisterEverydayStatisticsAllVo.getStartTime())
+                .le(TblRecordAccountLoginRegisterEverydayEntity::getCurrentDates, accountLoginRegisterEverydayStatisticsAllVo.getEndTime())
+                .eq(TblRecordAccountLoginRegisterEverydayEntity::getType, key)
+                .orderByAsc(TblRecordAccountLoginRegisterEverydayEntity::getCurrentDates)
+        );
+        List<Integer> counts = list.stream().map(TblRecordAccountLoginRegisterEverydayEntity::getCount).collect(Collectors.toList());
+        accountLoginRegisterEverydayStatisticsVo.setCounts(counts);
+        return accountLoginRegisterEverydayStatisticsVo;
     }
 
 
