@@ -9,18 +9,27 @@ CREATE TABLE `tbl_record_account_online_playing` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='玩家在线在玩记录表';
 
 
-CREATE TABLE `tbl_ip_white_list` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `ip` varchar(50) DEFAULT NULL COMMENT '白名单ip',
-    `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='系统ip白名单配置';
 
-CREATE TABLE `tbl_test` (
+
+CREATE TABLE `tbl_record_account_login_everyday` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `name` varchar(50) DEFAULT NULL COMMENT '名称',
+  `current_dates` varchar(50) DEFAULT NULL COMMENT '日期',
+  `count` varchar(100) DEFAULT NULL COMMENT '登录数量',
+  `type` varchar(500) DEFAULT NULL COMMENT '登录类型/登录方式',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='测试生成';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='用户每日登录记录';
+
+
+CREATE TABLE `tbl_record_account_register_everyday` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `current_dates` datetime DEFAULT NULL COMMENT '日期',
+  `count` int(11) DEFAULT NULL COMMENT '登录数量',
+  `type` int(3) DEFAULT NULL COMMENT '注册渠道/注册来源',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='用户每日注册记录';
+
+
