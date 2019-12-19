@@ -1,19 +1,12 @@
 package com.ozygod.task;
 
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.enums.RedisKeys;
 import com.ozygod.base.redis.IntegerRedisDao;
-import com.ozygod.game.service.TblPlayerLocationService;
-import com.ozygod.model.zdgame.entity.TblPlayerLocationEntity;
-import com.ozygod.model.zdgame.service.TblAccountService;
-import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
 import com.ozygod.model.zdlog.entity.TblRecordConversionEverydayEntity;
 import com.ozygod.model.zdlog.service.TblRecordConversionEverydayService;
-import com.ozygod.platform.service.TblRecordAccountOnlinePlayingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -42,7 +35,7 @@ public class RecordConversionEverydayTask {
 
 
     /**
-     * 每分钟执行一次
+     * 每天23点59分执行
      */
     @Scheduled(cron = "0 59 23 * * ?")
     public void configureTasks() {
