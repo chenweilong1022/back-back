@@ -1,5 +1,6 @@
 package com.ozygod.account.web;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
@@ -466,15 +467,16 @@ public class IndexController {
        totalGoldEverydayStatisticsAllVo.setEndTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(dates.size() - 1)))));
        totalGoldEverydayStatisticsAllVo.setXAxis(xAxis);
 
-
-        TblRecordTotalGoldEverydayEntity newOne = tblRecordTotalGoldEverydayService.getOne(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
-                .orderByDesc(TblRecordTotalGoldEverydayEntity::getCurrentDates)
+        List<TblRecordTotalGoldEverydayEntity> newList = tblRecordTotalGoldEverydayService.list(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
+                .eq(TblRecordTotalGoldEverydayEntity::getCurrentDates,totalGoldEverydayStatisticsAllVo.getEndTime())
         );
-
-        if (ObjectUtil.isNotNull(newOne)) {
-            totalGoldEverydayStatisticsAllVo.setGold(newOne.getGold());
-            totalGoldEverydayStatisticsAllVo.setBankGold(newOne.getBankGold());
-            totalGoldEverydayStatisticsAllVo.setTotalGold(newOne.getTotalGold());
+        if (CollUtil.isNotEmpty(newList)) {
+            long gold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getGold).sum();
+            long bankgold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getBankGold).sum();
+            long totalgold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getTotalGold).sum();
+            totalGoldEverydayStatisticsAllVo.setGold(gold);
+            totalGoldEverydayStatisticsAllVo.setBankGold(bankgold);
+            totalGoldEverydayStatisticsAllVo.setTotalGold(totalgold);
         }
 
         AccountRegisterChannel[] accountRegisterChannels = AccountRegisterChannel.values();
