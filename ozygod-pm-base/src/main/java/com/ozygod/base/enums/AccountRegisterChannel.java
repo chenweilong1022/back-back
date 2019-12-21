@@ -14,7 +14,8 @@ public enum AccountRegisterChannel implements BaseEnum {
 
 //    GUEST(1,"guest","快速登录"),
 //    OTHER(2,"非guest","手机登录");
-        C3521(5,"3521");
+        C3521(5,"3521","渠道3521"),
+        COTHER(6,"其他渠道","其他渠道");
 //    SIX(6,"总充值成功率"),
 //    SEVEN(7,"兑换金额(元)"),
 //    EIGHT(8,"今日兑换率");
@@ -23,7 +24,7 @@ public enum AccountRegisterChannel implements BaseEnum {
     private Integer key;
     private String value;
 
-    private String loginWay;
+    private String registerChannel;
 
 
     public static final String DESCRIBE = "1:不是 2:是 ";
@@ -47,10 +48,10 @@ public enum AccountRegisterChannel implements BaseEnum {
         this.value = value;
     }
 
-    AccountRegisterChannel(Integer key, String value, String loginWay) {
+    AccountRegisterChannel(Integer key, String value, String registerChannel) {
         this.key = key;
         this.value = value;
-        this.loginWay = loginWay;
+        this.registerChannel = registerChannel;
     }
 
 }

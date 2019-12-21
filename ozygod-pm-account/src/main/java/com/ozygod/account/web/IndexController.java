@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.*;
@@ -15,18 +16,14 @@ import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
+import com.ozygod.model.zdgame.service.TblPlayerinfoService;
 import com.ozygod.model.zdlog.dto.AccountLoginRegisterEverydayStatisticsDto;
 import com.ozygod.model.zdlog.dto.PlayerOnlineStatisticsDto;
-import com.ozygod.model.zdlog.entity.TblRecordAccountLoginRegisterEverydayEntity;
-import com.ozygod.model.zdlog.entity.TblRecordAccountOnlinePlayingEntity;
-import com.ozygod.model.zdlog.entity.TblRecordConversionEverydayEntity;
-import com.ozygod.model.zdlog.service.TblRecordAccountLoginRegisterEverydayService;
-import com.ozygod.model.zdlog.service.TblRecordAccountOnlinePlayingService;
-import com.ozygod.model.zdlog.service.TblRecordConversionEverydayService;
-import com.ozygod.model.zdlog.vo.AccountLoginRegisterEverydayStatisticsAllVo;
-import com.ozygod.model.zdlog.vo.AccountLoginRegisterEverydayStatisticsVo;
-import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsAllVo;
-import com.ozygod.model.zdlog.vo.PlayerOnlineStatisticsVo;
+import com.ozygod.model.zdlog.dto.RechargeAmountStatisticsDto;
+import com.ozygod.model.zdlog.dto.TotalGoldEverydayStatisticsDto;
+import com.ozygod.model.zdlog.entity.*;
+import com.ozygod.model.zdlog.service.*;
+import com.ozygod.model.zdlog.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 
@@ -60,6 +58,13 @@ public class IndexController {
     private TblRecordAccountOnlinePlayingService tblRecordAccountOnlinePlayingService;
     @Autowired
     private TblRecordAccountLoginRegisterEverydayService tblRecordAccountLoginRegisterEverydayService;
+    @Autowired
+    private TblRecordRechargeAmountEverydayService tblRecordRechargeAmountEverydayService;
+    @Autowired
+    private TblRecordTotalGoldEverydayService tblRecordTotalGoldEverydayService;
+    @Autowired
+    private TblPlayerinfoService tblPlayerinfoService;
+
 
 
 
@@ -110,7 +115,6 @@ public class IndexController {
                  */
                 int count = tblOrderService.count(new QueryWrapper<TblOrderEntity>().lambda()
                         .gt(TblOrderEntity::getPayTime, beginOfDay)
-                        .groupBy(TblOrderEntity::getUserid)
                 );
                 value = String.valueOf(count);
             }else if (key.equals(IndexCard.FIVE.getKey())) {
@@ -305,8 +309,8 @@ public class IndexController {
     /**
      * 每日登录统计
      */
-    @RequestMapping("/accountLoginEverydayStatistics")
-    public ResponseBO accountLoginEverydayStatistics(@RequestBody AccountLoginRegisterEverydayStatisticsDto accountLoginRegisterEverydayStatisticsDto) {
+    @RequestMapping("/accountLoginRegistrEverydayStatistics")
+    public ResponseBO accountLoginRegistrEverydayStatistics(@RequestBody AccountLoginRegisterEverydayStatisticsDto accountLoginRegisterEverydayStatisticsDto) {
 
         List<DateTime> dates = new ArrayList<>();
         getDatesByButton(accountLoginRegisterEverydayStatisticsDto.getKey(),dates);
@@ -328,6 +332,18 @@ public class IndexController {
                 accountLoginEverydayStatisticsVo.setAccountLoginWay(enumVo.getLoginType());
                 accountLoginRegisterEverydayStatisticsAllVo.add(accountLoginEverydayStatisticsVo);
             }
+        }else if(accountLoginRegisterEverydayStatisticsDto.getType() == 3) {
+            for (AccountRegisterChannel enumVo : AccountRegisterChannel.values()) {
+                AccountLoginRegisterEverydayStatisticsVo accountLoginEverydayStatisticsVo = getAccountLoginRegisterEverydayStatisticsVo(accountLoginRegisterEverydayStatisticsAllVo, enumVo.getKey());
+                accountLoginEverydayStatisticsVo.setAccountLoginWay(enumVo.getRegisterChannel());
+                accountLoginRegisterEverydayStatisticsAllVo.add(accountLoginEverydayStatisticsVo);
+            }
+        }else if(accountLoginRegisterEverydayStatisticsDto.getType() == 4) {
+            for (AccountRegisterType enumVo : AccountRegisterType.values()) {
+                AccountLoginRegisterEverydayStatisticsVo accountLoginEverydayStatisticsVo = getAccountLoginRegisterEverydayStatisticsVo(accountLoginRegisterEverydayStatisticsAllVo, enumVo.getKey());
+                accountLoginEverydayStatisticsVo.setAccountLoginWay(enumVo.getRegisterType());
+                accountLoginRegisterEverydayStatisticsAllVo.add(accountLoginEverydayStatisticsVo);
+            }
         }
 
         return ResponseBO.data(accountLoginRegisterEverydayStatisticsAllVo);
@@ -344,6 +360,160 @@ public class IndexController {
         List<Integer> counts = list.stream().map(TblRecordAccountLoginRegisterEverydayEntity::getCount).collect(Collectors.toList());
         accountLoginRegisterEverydayStatisticsVo.setCounts(counts);
         return accountLoginRegisterEverydayStatisticsVo;
+    }
+
+    /**
+     * 平台充值金额统计
+     */
+    @RequestMapping("/rechargeAmountStatistics")
+    public ResponseBO rechargeAmountStatistics(@RequestBody RechargeAmountStatisticsDto rechargeAmountStatisticsDto) {
+
+
+        List<DateTime> dates = new ArrayList<>();
+        getDatesByButton(rechargeAmountStatisticsDto.getKey(),dates);
+
+        List<String> xAxis = dates.stream().map(dateTime -> DateUtil.format(dateTime, "yyMMdd")).collect(Collectors.toList());
+
+        Integer totalweixin = 0;
+        Integer totalali = 0;
+        Integer totalapple = 0;
+        Integer totalPrice = 0;
+
+        RechargeAmountStatisticsAllVo rechargeAmountStatisticsAllVo = new RechargeAmountStatisticsAllVo();
+        rechargeAmountStatisticsAllVo.setStartTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(0)))));
+        rechargeAmountStatisticsAllVo.setEndTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(dates.size() - 1)))));
+        rechargeAmountStatisticsAllVo.setXAxis(xAxis);
+
+        AccountRegisterChannel[] accountRegisterChannels = AccountRegisterChannel.values();
+        AccountLoginType[] accountLoginTypes = AccountLoginType.values();
+        AppPayChannel[] appPayChannels = AppPayChannel.values();
+
+        for (AccountRegisterChannel accountRegisterChannel : accountRegisterChannels) {
+            //暂时不处理其他渠道
+            if (accountRegisterChannel.getKey().equals(AccountRegisterChannel.COTHER.getKey())) {
+                continue;
+            }
+            for (AccountLoginType accountLoginType : accountLoginTypes) {
+
+                RechargeAmountStatisticsVo rechargeAmountStatisticsVo = new RechargeAmountStatisticsVo();
+
+                rechargeAmountStatisticsVo.setRechargeSource(accountLoginType.getValue() + accountRegisterChannel.getValue());
+                /**
+                 * 查询当前登录渠道当前日期所有的记录
+                 */
+                List<TblRecordRechargeAmountEverydayEntity> list = tblRecordRechargeAmountEverydayService.list(new QueryWrapper<TblRecordRechargeAmountEverydayEntity>().lambda()
+                        .eq(TblRecordRechargeAmountEverydayEntity::getAppChannel, accountRegisterChannel.getValue())
+                        .eq(TblRecordRechargeAmountEverydayEntity::getPlatform, accountLoginType.getValue())
+                        .orderByAsc(TblRecordRechargeAmountEverydayEntity::getCurrentDates)
+                        .eq(StrUtil.isNotBlank(rechargeAmountStatisticsDto.getPayChannel()), TblRecordRechargeAmountEverydayEntity::getPayChannel, rechargeAmountStatisticsDto.getPayChannel())
+                        .ge(TblRecordRechargeAmountEverydayEntity::getCurrentDates, rechargeAmountStatisticsAllVo.getStartTime())
+                        .le(TblRecordRechargeAmountEverydayEntity::getCurrentDates, rechargeAmountStatisticsAllVo.getEndTime())
+                );
+
+                int weixin = list.stream().filter(tblRecordRechargeAmountEverydayEntity -> tblRecordRechargeAmountEverydayEntity.getPayChannel().equals(AppPayChannel.WEIXIN.getValue())).mapToInt(TblRecordRechargeAmountEverydayEntity::getMoney).sum();
+                int alipay = list.stream().filter(tblRecordRechargeAmountEverydayEntity -> tblRecordRechargeAmountEverydayEntity.getPayChannel().equals(AppPayChannel.ALIPAY.getValue())).mapToInt(TblRecordRechargeAmountEverydayEntity::getMoney).sum();
+                int apple = list.stream().filter(tblRecordRechargeAmountEverydayEntity -> tblRecordRechargeAmountEverydayEntity.getPayChannel().equals(AppPayChannel.APPLE.getValue())).mapToInt(TblRecordRechargeAmountEverydayEntity::getMoney).sum();
+                totalweixin = totalweixin + weixin;
+                totalali = totalali + alipay;
+                totalapple = totalapple + apple;
+
+                /**
+                 * 根据日期分组然后将日期金额累加
+                 */
+                TreeMap<Date, List<TblRecordRechargeAmountEverydayEntity>> listTreeMap = list.stream().collect(Collectors.groupingBy(TblRecordRechargeAmountEverydayEntity::getCurrentDates, TreeMap::new, Collectors.toList()));
+                List<Double> moneys = new ArrayList<>();
+                listTreeMap.forEach((k,v)-> {
+                    int sum = v.stream().mapToInt(TblRecordRechargeAmountEverydayEntity::getMoney).sum();
+                    moneys.add(NumberUtil.div(sum,100));
+                });
+                rechargeAmountStatisticsVo.setMoneys(moneys);
+                rechargeAmountStatisticsAllVo.add(rechargeAmountStatisticsVo);
+            }
+
+        }
+
+        totalPrice = totalali + totalapple + totalweixin;
+        rechargeAmountStatisticsAllVo.setTotalali(totalali);
+        rechargeAmountStatisticsAllVo.setTotalweixin(totalweixin);
+        rechargeAmountStatisticsAllVo.setTotalapple(totalapple);
+        rechargeAmountStatisticsAllVo.setTotalPrice(totalPrice);
+
+        return ResponseBO.data(rechargeAmountStatisticsAllVo);
+    }
+
+
+    /**
+     * 支付方式
+     */
+    @RequestMapping("/appPayChannel")
+    public ResponseBO appPayChannel() {
+        return ResponseBO.data(EnumUtil.enumToVo(AppPayChannel.values()));
+    }
+
+    /**
+     * 平台-总金币走势
+     */
+    @RequestMapping("/totalGoldEverydayStatistics")
+    public ResponseBO totalGoldEverydayStatistics(@RequestBody TotalGoldEverydayStatisticsDto totalGoldEverydayStatisticsDto) {
+
+        List<DateTime> dates = new ArrayList<>();
+        getDatesByButton(totalGoldEverydayStatisticsDto.getKey(),dates);
+
+        List<String> xAxis = dates.stream().map(dateTime -> DateUtil.format(dateTime, "yyMMdd")).collect(Collectors.toList());
+
+        TotalGoldEverydayStatisticsAllVo totalGoldEverydayStatisticsAllVo = new TotalGoldEverydayStatisticsAllVo();
+       totalGoldEverydayStatisticsAllVo.setStartTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(0)))));
+       totalGoldEverydayStatisticsAllVo.setEndTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(dates.size() - 1)))));
+       totalGoldEverydayStatisticsAllVo.setXAxis(xAxis);
+
+
+        TblRecordTotalGoldEverydayEntity newOne = tblRecordTotalGoldEverydayService.getOne(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
+                .orderByDesc(TblRecordTotalGoldEverydayEntity::getCurrentDates)
+        );
+
+        if (ObjectUtil.isNotNull(newOne)) {
+            totalGoldEverydayStatisticsAllVo.setGold(newOne.getGold());
+            totalGoldEverydayStatisticsAllVo.setBankGold(newOne.getBankGold());
+            totalGoldEverydayStatisticsAllVo.setTotalGold(newOne.getTotalGold());
+        }
+
+        AccountRegisterChannel[] accountRegisterChannels = AccountRegisterChannel.values();
+        AccountLoginType[] accountLoginTypes = AccountLoginType.values();
+
+        List<TotalGoldEverydayStatisticsVo> totalGoldEverydayStatisticsVos = new ArrayList<>();
+        for (AccountRegisterChannel accountRegisterChannel : accountRegisterChannels) {
+            //暂时不处理其他渠道
+            if(accountRegisterChannel.getKey().equals(AccountRegisterChannel.COTHER.getKey())) {
+                continue;
+            }
+            for (AccountLoginType accountLoginType : accountLoginTypes) {
+
+
+                /**
+                 * 根据渠道和登录端查询当前区间段的总金币统计记录
+                 * 排序方式根据日期
+                 */
+                TotalGoldEverydayStatisticsVo totalGoldEverydayStatisticsVo = new TotalGoldEverydayStatisticsVo();
+                List<TblRecordTotalGoldEverydayEntity> tblRecordTotalGoldEverydayEntities  = tblRecordTotalGoldEverydayService.list(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
+                        .eq(TblRecordTotalGoldEverydayEntity::getAppChannel, accountRegisterChannel.getValue())
+                        .eq(TblRecordTotalGoldEverydayEntity::getPlatform, accountLoginType.getValue())
+                        .ge(TblRecordTotalGoldEverydayEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getStartTime())
+                        .le(TblRecordTotalGoldEverydayEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getEndTime())
+                        .orderByAsc(TblRecordTotalGoldEverydayEntity::getCurrentDates)
+                );
+                /**
+                 * 拿到所有的总金币list
+                 */
+                List<Long> totalGolds = tblRecordTotalGoldEverydayEntities.stream().map(TblRecordTotalGoldEverydayEntity::getTotalGold).collect(Collectors.toList());
+                /**
+                 * 设置
+                 */
+                totalGoldEverydayStatisticsVo.setGoldSource(accountLoginType.getValue()+accountRegisterChannel.getValue());
+                totalGoldEverydayStatisticsVo.setGolds(totalGolds);
+                totalGoldEverydayStatisticsAllVo.add(totalGoldEverydayStatisticsVo);
+            }
+        }
+        return ResponseBO.data(totalGoldEverydayStatisticsAllVo);
     }
 
 

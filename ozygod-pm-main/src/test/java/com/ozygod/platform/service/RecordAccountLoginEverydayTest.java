@@ -5,7 +5,10 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ozygod.base.enums.AccountLoginType;
 import com.ozygod.base.enums.AccountLoginWay;
+import com.ozygod.base.enums.AccountRegisterChannel;
+import com.ozygod.base.enums.AccountRegisterType;
 import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.vo.EnumVo;
 import com.ozygod.main.OzygodPmMainApplication;
@@ -41,6 +44,13 @@ public class RecordAccountLoginEverydayTest {
          * 登录注册渠道类型枚举
          */
         List<EnumVo> enumVos = EnumUtil.enumToVo(AccountLoginWay.values());
+        List<EnumVo> enumVos1 = EnumUtil.enumToVo(AccountLoginType.values());
+        List<EnumVo> enumVos2 = EnumUtil.enumToVo(AccountRegisterChannel.values());
+        List<EnumVo> enumVos3 = EnumUtil.enumToVo(AccountRegisterType.values());
+
+        enumVos.addAll(enumVos1);
+        enumVos.addAll(enumVos2);
+        enumVos.addAll(enumVos3);
 
 
         for (DateTime dateTime : dateTimes) {

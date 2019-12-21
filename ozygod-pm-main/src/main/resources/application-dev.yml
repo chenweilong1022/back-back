@@ -1,3 +1,14 @@
+project:
+  host:
+    name: ${PROJECT_HOST_NAME:127.0.0.1}
+  mysql:
+    port: ${PROJECT_MYSQL_PORT:3306}
+    url: ${project.host.name}:${project.mysql.port}
+    username: ${PROJECT_MYSQL_USERNAME:root}
+    password: ${PROJECT_MYSQL_PASSWORD:Jz123456}
+  redis:
+    port: ${PROJECT_REDIS_PORT:6379}
+    password: ${PROJECT_REDIS_PASSWORD:}
 # Spring相关配置
 spring:
   datasource:
@@ -7,10 +18,10 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
 #      url: jdbc:mysql://localhost:13306/zdmanage?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      url: jdbc:mysql://127.0.0.1:3307/zdmanage?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
-      username: root
+      url: jdbc:mysql://${project.mysql.url}/zdmanage?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+      username: ${project.mysql.username}
 #      password: 123456
-      password: Jz123456
+      password: ${project.mysql.password}
       # 连接池配置
       # 连接池容量大小设置：初始，最小，最大
       initialSize: 1
@@ -37,11 +48,11 @@ spring:
       # JDBC配置
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
-      url: jdbc:mysql://127.0.0.1:3307/zdspread?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+      url: jdbc:mysql://${project.mysql.url}/zdspread?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
 #      url: jdbc:mysql://localhost:13306/zdspread?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      username: root
+      username: ${project.mysql.username}
 #      password: 123456
-      password: Jz123456
+      password: ${project.mysql.password}
       # 连接池配置
       # 连接池容量大小设置：初始，最小，最大
       initialSize: 5
@@ -69,10 +80,10 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
 #      url: jdbc:mysql://localhost:13306/zdgame?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      url: jdbc:mysql://127.0.0.1:3307/zdgame?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
-      username: root
+      url: jdbc:mysql://${project.mysql.url}/zdgame?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+      username: ${project.mysql.username}
 #      password: 123456
-      password: Jz123456
+      password: ${project.mysql.password}
       # 连接池配置
       # 连接池容量大小设置：初始，最小，最大
       initialSize: 5
@@ -100,10 +111,10 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
 #      url: jdbc:mysql://localhost:13306/zdlog?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      url: jdbc:mysql://127.0.0.1:3307/zdlog?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
-      username: root
+      url: jdbc:mysql://${project.mysql.url}/zdlog?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+      username: ${project.mysql.username}
 #      password: 123456
-      password: Jz123456
+      password: ${project.mysql.password}
       # 连接池配置
       # 连接池容量大小设置：初始，最小，最大
       initialSize: 5
@@ -131,10 +142,10 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
 #      url: jdbc:mysql://localhost:13306/zdconfig?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-      url: jdbc:mysql://127.0.0.1:3307/zdconfig?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
-      username: root
+      url: jdbc:mysql://${project.mysql.url}/zdconfig?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useTimezone=true&serverTimezone=GMT%2B8
+      username: ${project.mysql.username}
 #      password: 123456
-      password: Jz123456
+      password: ${project.mysql.password}
       # 连接池配置
       # 连接池容量大小设置：初始，最小，最大
       initialSize: 5
@@ -162,11 +173,11 @@ spring:
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器地址
-    host: 127.0.0.1
+    host: ${project.host.name}
     # Redis服务器连接端口
-    port: 6379
+    port: ${project.redis.port}
     # Redis服务器连接密码（默认为空）
-    password:
+    password: ${project.redis.password}
     jedis:
       pool:
         # 连接池最大连接数（使用负值表示没有限制）
@@ -190,6 +201,8 @@ swagger:
   enabled: true
 
 # 机器人系统地址
-robot_url: http://172.16.17.26:8692
-
-game_url: http://47.104.247.143:8691
+robot_url: http://127.0.0.1:8692
+# 游戏api地址
+game_url: http://127.0.0.1:8691
+# 代理api地址
+agent_url: http://127.0.0.1:6002

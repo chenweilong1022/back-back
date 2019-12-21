@@ -1,6 +1,7 @@
 package com.ozygod.robot.web;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.servlet.ServletUtil;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,8 +41,8 @@ public class TblRobotControlController {
 
     @Autowired
     private TblRobotControlService tblRobotControlService;
-    @Value("${robot_url}")
-    private String robotUrl;
+    @Value("${game_url}")
+    private String gameUrl;
 
     /**
      * 控制端鉴权
@@ -49,15 +53,24 @@ public class TblRobotControlController {
      */
     @PostMapping("auth/{method}")
     @ApiOperation(value = "控制端鉴权", response = String.class)
-    public ResponseBO auth(
+    public String auth(
             @PathVariable("method") String method,
-            TblRobotControlAuthDto tblRobotControlAuthDto,
+//            TblRobotControlAuthDto tblRobotControlAuthDto,
+            @RequestHeader("key") String key,
+            @RequestHeader("token") String token,
+            @RequestParam Map<String,Object> map,
             HttpServletRequest request
     ) {
 
 
+
+        TblRobotControlAuthDto tblRobotControlAuthDto = new TblRobotControlAuthDto();
+        tblRobotControlAuthDto.setKey(key);
+        tblRobotControlAuthDto.setToken(token);
+
+
+
         Assert.isBlank(tblRobotControlAuthDto.getKey(),"key不能为空");
-        Assert.isBlank(tblRobotControlAuthDto.getRoomid(),"roomid不能为空");
         Assert.isBlank(tblRobotControlAuthDto.getToken(),"token不能为空");
 
         TblRobotControlEntity one = tblRobotControlService.getOne(new QueryWrapper<TblRobotControlEntity>().lambda()
@@ -66,17 +79,29 @@ public class TblRobotControlController {
 
         Assert.isNull(one,"key错误");
 
+        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(tblRobotControlAuthDto);
+        stringObjectMap.remove("token");
+        String s1 = HttpUtil.toParams(stringObjectMap);
+
+        if (CollUtil.isNotEmpty(map)) {
+            String collect = map.keySet().stream().sorted().map(k -> k + "=" + map.get(k)).collect(Collectors.joining("","",s1 + one.getSecret()));
+            String s = SecureUtil.md5(collect);
+            Assert.isTrue(!tblRobotControlAuthDto.getToken().equals(s),"鉴权失败");
+        }else {
+            Assert.isTrue(!tblRobotControlAuthDto.getToken().equals(SecureUtil.md5(  s1 + one.getSecret())),"鉴权失败");
+        }
+
+
+
         String clientIP = ServletUtil.getClientIP(request, "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP");
 
         Assert.isTrue(!one.getIp().contains(clientIP),"当前ip不能登录");
 
-        Assert.isTrue(!tblRobotControlAuthDto.getToken().equals(SecureUtil.md5(tblRobotControlAuthDto.getRoomid() + tblRobotControlAuthDto.getKey())),"鉴权失败");
-
-        System.out.println(robotUrl + File.separator + method);
-        String s = HttpUtil.get(robotUrl + File.separator + method, BeanUtil.beanToMap(tblRobotControlAuthDto),3000);
+        System.out.println(gameUrl + File.separator + method);
+        String s = HttpUtil.get(gameUrl + File.separator + method,map,3000);
         System.out.println(s);
 
-        return new ResponseBO(s);
+        return s;
     }
 
     /**
@@ -96,6 +121,7 @@ public class TblRobotControlController {
          * 生成uuid key
          */
         tblRobotControl.setKey(RandomUtil.simpleUUID().toUpperCase());
+        tblRobotControl.setSecret(RandomUtil.simpleUUID().toUpperCase());
         tblRobotControlService.save(tblRobotControl);
         return ResponseBO.ok();
     }

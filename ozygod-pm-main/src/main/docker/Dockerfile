@@ -2,7 +2,7 @@
 FROM java:8
 
 # 维护人
-MAINTAINER Joey<ozygod@163.com>
+MAINTAINER chenweilong<1433471850@qq.com>
 
 # 将本地文件夹挂载到当前容器
 VOLUME /tmp
