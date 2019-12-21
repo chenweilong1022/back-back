@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdlog.dao.TblRecordTotalGoldEverydayDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdlog.entity.TblRecordTotalGoldEverydayEntity" id="tblRecordTotalGoldEverydayMap">
+        <result property="id" column="id"/>
+        <result property="currentDates" column="current_dates"/>
+        <result property="gold" column="gold"/>
+        <result property="bankGold" column="bank_gold"/>
+        <result property="totalGold" column="total_gold"/>
+        <result property="platform" column="platform"/>
+        <result property="appChannel" column="app_channel"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+
+</mapper>

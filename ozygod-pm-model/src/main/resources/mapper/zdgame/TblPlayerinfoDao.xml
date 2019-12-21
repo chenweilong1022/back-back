@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdgame.dao.TblPlayerinfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdgame.entity.TblPlayerinfoEntity" id="tblPlayerinfoMap">
+        <result property="userid" column="userid"/>
+        <result property="nickname" column="nickname"/>
+        <result property="secondPwd" column="second_pwd"/>
+        <result property="sex" column="sex"/>
+        <result property="gold" column="gold"/>
+        <result property="bankGold" column="bank_gold"/>
+        <result property="honor" column="honor"/>
+        <result property="diamond" column="diamond"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdate" column="last_update"/>
+        <result property="imageid" column="imageid"/>
+        <result property="owned" column="owned"/>
+        <result property="showId" column="show_id"/>
+        <result property="sendGift" column="send_gift"/>
+        <result property="recharge" column="recharge"/>
+    </resultMap>
+
+
+</mapper>
