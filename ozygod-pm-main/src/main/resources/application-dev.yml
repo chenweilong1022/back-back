@@ -1,12 +1,12 @@
 project:
-  host:
-    name: ${PROJECT_HOST_NAME:127.0.0.1}
   mysql:
+    hostname: ${PROJECT_MYSQL_HOSTNAME:127.0.0.1}
     port: ${PROJECT_MYSQL_PORT:3307}
-    url: ${project.host.name}:${project.mysql.port}
+    url: ${project.mysql.hostname}:${project.mysql.port}
     username: ${PROJECT_MYSQL_USERNAME:root}
     password: ${PROJECT_MYSQL_PASSWORD:Jz123456}
   redis:
+    hostname: ${PROJECT_REDIS_HOSTNAME:127.0.0.1}
     port: ${PROJECT_REDIS_PORT:6379}
     password: ${PROJECT_REDIS_PASSWORD:}
 # Spring相关配置
@@ -173,7 +173,7 @@ spring:
     # Redis数据库索引（默认为0）
     database: 0
     # Redis服务器地址
-    host: ${project.host.name}
+    host: ${project.redis.hostname}
     # Redis服务器连接端口
     port: ${project.redis.port}
     # Redis服务器连接密码（默认为空）
