@@ -2,7 +2,7 @@ project:
   host:
     name: ${PROJECT_HOST_NAME:127.0.0.1}
   mysql:
-    port: ${PROJECT_MYSQL_PORT:3306}
+    port: ${PROJECT_MYSQL_PORT:3307}
     url: ${project.host.name}:${project.mysql.port}
     username: ${PROJECT_MYSQL_USERNAME:root}
     password: ${PROJECT_MYSQL_PASSWORD:Jz123456}
