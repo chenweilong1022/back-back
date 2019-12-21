@@ -14,10 +14,10 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build . -t back-back:1.0
-      - docker tag back-back:1.0 391122691900.dkr.ecr.ap-northeast-2.amazonaws.com/back-back:1.0
+      - docker build . -t back:1.0
+      - docker tag back:1.0 391122691900.dkr.ecr.ap-northeast-2.amazonaws.com/back:1.0
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 391122691900.dkr.ecr.ap-northeast-2.amazonaws.com/back-back:1.0
+      - docker push 391122691900.dkr.ecr.ap-northeast-2.amazonaws.com/back:1.0
