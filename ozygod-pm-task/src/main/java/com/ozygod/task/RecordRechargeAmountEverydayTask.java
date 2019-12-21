@@ -82,9 +82,6 @@ public class RecordRechargeAmountEverydayTask {
                         .eq(TblAccountEntity::getAppChannel, accountRegisterChannel.getValue())
                         .eq(TblAccountEntity::getPlatform, accountLoginType.getValue())
                 );
-                if (CollUtil.isEmpty(list)) {
-                    continue;
-                }
 
                 List<Long> userids = list.stream().map(TblAccountEntity::getUserid).collect(Collectors.toList());
                 for (AppPayChannel appPayChannel : appPayChannels) {
@@ -94,14 +91,15 @@ public class RecordRechargeAmountEverydayTask {
                             .eq(TblOrderEntity::getChannel, appPayChannel.getValue())
                             .gt(TblOrderEntity::getPayTime,beginOfDay)
                     );
-                    if (CollUtil.isEmpty(tblOrderEntities)) {
-                        continue;
+                    int sum = 0;
+
+                    if (CollUtil.isNotEmpty(tblOrderEntities)) {
+                        /**
+                         * 当前的总金额
+                         */
+                        sum = tblOrderEntities.stream().mapToInt(TblOrderEntity::getMoney).sum();
                     }
 
-                    /**
-                     * 当前的总金额
-                     */
-                    int sum = tblOrderEntities.stream().mapToInt(TblOrderEntity::getMoney).sum();
 
                     TblRecordRechargeAmountEverydayEntity tblRecordRechargeAmountEverydayEntity = new TblRecordRechargeAmountEverydayEntity();
                     tblRecordRechargeAmountEverydayEntity.setCurrentDates(dateTime);
