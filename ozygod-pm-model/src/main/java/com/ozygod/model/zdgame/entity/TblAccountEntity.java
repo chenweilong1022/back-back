@@ -1,6 +1,7 @@
 package com.ozygod.model.zdgame.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ozygod.base.dto.BaseDto;
@@ -14,7 +15,7 @@ import java.util.Date;
 
 /**
  * 用户账号表
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-16 15:29:37
@@ -48,7 +49,7 @@ public class TblAccountEntity implements Serializable {
 	@ApiModelProperty(required=false,value="渠道")
 	private String channel;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String appChannel;
@@ -56,6 +57,7 @@ public class TblAccountEntity implements Serializable {
 	 * 封号时间
 	 */
 	@ApiModelProperty(required=false,value="封号时间")
+	@TableField(value = "`lock`")
 	private Date lock;
 	/**
 	 * 登陆时间
@@ -88,47 +90,47 @@ public class TblAccountEntity implements Serializable {
 	@ApiModelProperty(required=false,value="注册终端")
 	private String platform;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String ip;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer vipType;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Date vipInvalidTime;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String phoneNum;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Long saler;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String realName;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String idCode;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String lastLoginIp;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private String createIp;

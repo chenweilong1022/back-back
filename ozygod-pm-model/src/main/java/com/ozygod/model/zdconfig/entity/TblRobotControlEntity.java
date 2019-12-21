@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * 机器人控制
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-12 17:06:41
@@ -44,6 +44,12 @@ public class TblRobotControlEntity implements Serializable {
 	@ApiModelProperty(required=false,value="key")
 	@TableField("`key`")
 	private String key;
+	/**
+	 * secret
+	 */
+	@ApiModelProperty(required=false,value="secret")
+	@TableField("`secret`")
+	private String secret;
 	/**
 	 * 限制ip地址
 	 */

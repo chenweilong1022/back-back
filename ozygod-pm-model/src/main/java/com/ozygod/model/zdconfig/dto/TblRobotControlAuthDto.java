@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * 机器人控制
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-12 17:06:41
@@ -33,15 +33,9 @@ public class TblRobotControlAuthDto implements Serializable {
 	@TableField("`key`")
 	private String key;
 	/**
-	 * roomid
-	 */
-	@ApiModelProperty(required=false,value="roomid")
-	@TableField("`roomid`")
-	private String roomid;
-	/**
 	 * token
 	 */
-	@ApiModelProperty(required=false,value="token = md5(rommoid + key)")
+	@ApiModelProperty(required=false,value="token= md5(key=123secret)")
 	@TableField("`token`")
 	private String token;
 

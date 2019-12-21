@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author chenweilong
  * @email 1433471850@qq.com
- * @date 2019-12-16 15:59:14
+ * @date 2019-12-19 14:18:44
  */
 @Mapper
 public interface TblOrderDao extends BaseMapper<TblOrderEntity> {
