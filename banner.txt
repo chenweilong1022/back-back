@@ -10,26 +10,17 @@ CREATE TABLE `tbl_record_account_online_playing` (
 
 
 
-
-CREATE TABLE `tbl_record_account_login_everyday` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `current_dates` varchar(50) DEFAULT NULL COMMENT '日期',
-  `count` varchar(100) DEFAULT NULL COMMENT '登录数量',
-  `type` varchar(500) DEFAULT NULL COMMENT '登录类型/登录方式',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='用户每日登录记录';
-
-
-CREATE TABLE `tbl_record_account_register_everyday` (
+CREATE TABLE `tbl_record_total_gold_everyday` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `current_dates` datetime DEFAULT NULL COMMENT '日期',
-  `count` int(11) DEFAULT NULL COMMENT '登录数量',
-  `type` int(3) DEFAULT NULL COMMENT '注册渠道/注册来源',
+  `gold` datetime DEFAULT NULL COMMENT '玩家身上金币',
+  `bank_gold` datetime DEFAULT NULL COMMENT '玩家银行金币',
+  `total_gold` datetime DEFAULT NULL COMMENT '玩家总金币',
+  `platform` varchar(11) DEFAULT NULL COMMENT '终端',
+  `app_channel` varchar(11) DEFAULT NULL COMMENT 'app渠道',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='用户每日注册记录';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='每日总金币统计表';
 
 
