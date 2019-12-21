@@ -42,6 +42,7 @@ public class RecordAccountLoginEverydayTask {
     public void configureTasks() {
 
         DateTime date = DateUtil.endOfDay(DateUtil.date());
+        DateTime beginOfDay = DateUtil.beginOfDay(DateUtil.date());
         /**
          * 今日最后一分钟
          */
@@ -52,6 +53,7 @@ public class RecordAccountLoginEverydayTask {
          */
         int count1 = tblRecordAccountLoginRegisterEverydayService.count(new QueryWrapper<TblRecordAccountLoginRegisterEverydayEntity>().lambda()
                 .eq(TblRecordAccountLoginRegisterEverydayEntity::getCurrentDates, dateTime)
+                .le(TblRecordAccountLoginRegisterEverydayEntity::getType,AccountLoginType.ANDROID.getKey())
         );
 
         /**
@@ -85,6 +87,7 @@ public class RecordAccountLoginEverydayTask {
             if(AccountLoginWay.GUEST.getKey().equals(enumVo.getKey())) {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getChannel, enumVo.getValue())
+                        .gt(TblAccountEntity::getLoginTime,beginOfDay)
                         .gt(TblAccountEntity::getUserid,20000)
                 );
                 /**
@@ -94,6 +97,7 @@ public class RecordAccountLoginEverydayTask {
 
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .notIn(TblAccountEntity::getChannel, AccountLoginWay.GUEST.getValue())
+                        .gt(TblAccountEntity::getLoginTime,beginOfDay)
                         .gt(TblAccountEntity::getUserid,20000)
                 );
                 /**
@@ -103,6 +107,7 @@ public class RecordAccountLoginEverydayTask {
 
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform,enumVo.getValue())
+                        .gt(TblAccountEntity::getLoginTime,beginOfDay)
                         .gt(TblAccountEntity::getUserid,20000)
                 );
                 /**
@@ -111,6 +116,7 @@ public class RecordAccountLoginEverydayTask {
             }else if(AccountLoginType.ANDROID.getKey().equals(enumVo.getKey())) {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform, enumVo.getValue())
+                        .gt(TblAccountEntity::getLoginTime,beginOfDay)
                         .gt(TblAccountEntity::getUserid,20000)
                 );
             }
