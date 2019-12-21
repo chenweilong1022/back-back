@@ -24,11 +24,11 @@
   </resultMap>
   <sql id="Base_Column_List">
     userid, account, pwd, channel, app_channel, `lock`, login_time, logout_time, create_time,
-    token, token_invalid_time, platform, ip, vip_type, vip_invalid_time, phone_num, saler, 
+    token, token_invalid_time, platform, ip, vip_type, vip_invalid_time, phone_num, saler,
      real_name, id_code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_account
     where userid = #{userid,jdbcType=BIGINT}
@@ -38,9 +38,7 @@
   <select id="getPlayerAccountById" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
     SELECT
         C.*,
-        D.channel_name,
-        ifnull(t1.id, 0) spreadUserId,
-        ifnull(t1.ratio, 0) spreadRatio
+        D.channel_name
     FROM
         (
         SELECT
@@ -98,17 +96,13 @@
     ) C
     LEFT JOIN tbl_app_channel_type AS D
     ON C.APP_CHANNEL = D.CHANNEL_ID
-    LEFT JOIN zdspread.tbl_spread_users t1
-    on t1.id = C.USERID
   </select>
 
 
   <select id="getPlayerAccountByShowId" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
     SELECT
         C.*,
-        D.channel_name,
-        ifnull(t1.id, 0) spreadUserId,
-        ifnull(t1.ratio, 0) spreadRatio
+        D.channel_name
     FROM
         (
         SELECT
@@ -136,8 +130,6 @@
     ) C
     LEFT JOIN tbl_app_channel_type AS D
     ON C.APP_CHANNEL = D.CHANNEL_ID
-    LEFT JOIN zdspread.tbl_spread_users t1
-    on t1.id = C.USERID
   </select>
 
   <select id="listPlayerAccountByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
@@ -214,16 +206,8 @@
     FROM
     tbl_account AS A
     INNER JOIN tbl_playerinfo AS B ON A.USERID = B.USERID
-    LEFT JOIN (select count(1) existFlag, t1.id from zdspread.tbl_spread_users t1 group by t1.id) t2
-    on A.USERID = t2.id
     WHERE
     A.USERID > 10000
-    <if test="playerTypes != null and playerTypes.size > 0">
-      and ifnull(t2.existFlag, 0) in
-      <foreach close=")" collection="playerTypes" item="item" open="(" separator=",">
-        #{item, jdbcType=INTEGER}
-      </foreach>
-    </if>
     <if test="playerId != null">
       AND A.USERID = #{playerId,jdbcType=BIGINT}
     </if>
@@ -337,18 +321,18 @@
     where userid = #{userid,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.AccountEntity">
-    insert into tbl_account (userid, account, pwd, 
-      channel, app_channel, lock, 
-      login_time, logout_time, create_time, 
-      token, token_invalid_time, platform, 
-      ip, vip_type, vip_invalid_time, 
+    insert into tbl_account (userid, account, pwd,
+      channel, app_channel, lock,
+      login_time, logout_time, create_time,
+      token, token_invalid_time, platform,
+      ip, vip_type, vip_invalid_time,
       phone_num, saler,
       real_name, id_code)
-    values (#{userid,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
-      #{channel,jdbcType=VARCHAR}, #{appChannel,jdbcType=VARCHAR}, #{lock,jdbcType=TIMESTAMP}, 
-      #{loginTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{token,jdbcType=VARCHAR}, #{tokenInvalidTime,jdbcType=TIMESTAMP}, #{platform,jdbcType=CHAR}, 
-      #{ip,jdbcType=CHAR}, #{vipType,jdbcType=TINYINT}, #{vipInvalidTime,jdbcType=TIMESTAMP}, 
+    values (#{userid,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},
+      #{channel,jdbcType=VARCHAR}, #{appChannel,jdbcType=VARCHAR}, #{lock,jdbcType=TIMESTAMP},
+      #{loginTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+      #{token,jdbcType=VARCHAR}, #{tokenInvalidTime,jdbcType=TIMESTAMP}, #{platform,jdbcType=CHAR},
+      #{ip,jdbcType=CHAR}, #{vipType,jdbcType=TINYINT}, #{vipInvalidTime,jdbcType=TIMESTAMP},
       #{phoneNum,jdbcType=VARCHAR}, #{saler,jdbcType=BIGINT},
       #{realName,jdbcType=VARCHAR}, #{idCode,jdbcType=VARCHAR})
   </insert>

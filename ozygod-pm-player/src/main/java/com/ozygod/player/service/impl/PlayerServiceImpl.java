@@ -136,25 +136,25 @@ public class PlayerServiceImpl implements IPlayerService {
             accountBO.setIpAttr(ipUtils.getIPAddrCN(firstIP));
 
             // 玩家如果开通了代理，则增加代理参数
-            if (accountBO.getSpreadUserId() > 0) {
-                PlayerLogDto logDto = new PlayerLogDto();
-                logDto.setPlayerId((long)playerId);
-                // 当日返佣
-                Map<String, Date> todayMap = getDurationBeginEndByType(0);
-                logDto.setStartTime(todayMap.get("begin"));
-                logDto.setEndTime(todayMap.get("end"));
-                accountBO.setTodayRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-                // 本周返佣
-                Map<String, Date> thisWeekMap = getDurationBeginEndByType(1);
-                logDto.setStartTime(thisWeekMap.get("begin"));
-                logDto.setEndTime(thisWeekMap.get("end"));
-                accountBO.setThisWeekRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-                // 本月返佣
-                Map<String, Date> thisMonthMap = getDurationBeginEndByType(2);
-                logDto.setStartTime(thisMonthMap.get("begin"));
-                logDto.setEndTime(thisMonthMap.get("end"));
-                accountBO.setThisMonthRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-            }
+//            if (accountBO.getSpreadUserId() > 0) {
+//                PlayerLogDto logDto = new PlayerLogDto();
+//                logDto.setPlayerId((long)playerId);
+//                // 当日返佣
+//                Map<String, Date> todayMap = getDurationBeginEndByType(0);
+//                logDto.setStartTime(todayMap.get("begin"));
+//                logDto.setEndTime(todayMap.get("end"));
+//                accountBO.setTodayRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//                // 本周返佣
+//                Map<String, Date> thisWeekMap = getDurationBeginEndByType(1);
+//                logDto.setStartTime(thisWeekMap.get("begin"));
+//                logDto.setEndTime(thisWeekMap.get("end"));
+//                accountBO.setThisWeekRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//                // 本月返佣
+//                Map<String, Date> thisMonthMap = getDurationBeginEndByType(2);
+//                logDto.setStartTime(thisMonthMap.get("begin"));
+//                logDto.setEndTime(thisMonthMap.get("end"));
+//                accountBO.setThisMonthRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//            }
         }
         return accountBO;
     }
@@ -174,25 +174,25 @@ public class PlayerServiceImpl implements IPlayerService {
             accountBO.setIpAttr(ipUtils.getIPAddrCN(firstIP));
 
             // 玩家如果开通了代理，则增加代理参数
-            if (accountBO.getSpreadUserId() > 0) {
-                PlayerLogDto logDto = new PlayerLogDto();
-                logDto.setPlayerId(accountBO.getUserid());
-                // 当日返佣
-                Map<String, Date> todayMap = getDurationBeginEndByType(0);
-                logDto.setStartTime(todayMap.get("begin"));
-                logDto.setEndTime(todayMap.get("end"));
-                accountBO.setTodayRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-                // 本周返佣
-                Map<String, Date> thisWeekMap = getDurationBeginEndByType(1);
-                logDto.setStartTime(thisWeekMap.get("begin"));
-                logDto.setEndTime(thisWeekMap.get("end"));
-                accountBO.setThisWeekRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-                // 本月返佣
-                Map<String, Date> thisMonthMap = getDurationBeginEndByType(2);
-                logDto.setStartTime(thisMonthMap.get("begin"));
-                logDto.setEndTime(thisMonthMap.get("end"));
-                accountBO.setThisMonthRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
-            }
+//            if (accountBO.getSpreadUserId() > 0) {
+//                PlayerLogDto logDto = new PlayerLogDto();
+//                logDto.setPlayerId(accountBO.getUserid());
+//                // 当日返佣
+//                Map<String, Date> todayMap = getDurationBeginEndByType(0);
+//                logDto.setStartTime(todayMap.get("begin"));
+//                logDto.setEndTime(todayMap.get("end"));
+//                accountBO.setTodayRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//                // 本周返佣
+//                Map<String, Date> thisWeekMap = getDurationBeginEndByType(1);
+//                logDto.setStartTime(thisWeekMap.get("begin"));
+//                logDto.setEndTime(thisWeekMap.get("end"));
+//                accountBO.setThisWeekRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//                // 本月返佣
+//                Map<String, Date> thisMonthMap = getDurationBeginEndByType(2);
+//                logDto.setStartTime(thisMonthMap.get("begin"));
+//                logDto.setEndTime(thisMonthMap.get("end"));
+//                accountBO.setThisMonthRebate(gameGoldEntityMapper.countSpreadMoneyByQry(logDto));
+//            }
         }
         return accountBO;
     }
