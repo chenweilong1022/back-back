@@ -1,0 +1,176 @@
+2019-12-17 10:17:45.383 [main] INFO  c.ozygod.platform.service.RedisTest - Starting RedisTest on chenweilongdeMacBook-Pro.local with PID 73564 (started by chenweilong in /Users/chenweilong/Desktop/边锋网络/back-back/ozygod-pm-main)
+2019-12-17 10:17:45.389 [main] INFO  c.ozygod.platform.service.RedisTest - The following profiles are active: dev
+2019-12-17 10:17:46.633 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-12-17 10:17:46.637 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-17 10:17:46.665 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10ms. Found 0 repository interfaces.
+2019-12-17 10:17:47.287 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$5724b9be] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.548 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.context.properties.ConversionServiceDeducer$Factory' of type [org.springframework.boot.context.properties.ConversionServiceDeducer$Factory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.568 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.584 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration$$EnhancerBySpringCGLIB$$6c3e7808] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.824 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.964 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:47.982 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfigurer' of type [com.ozygod.conf.configuration.RedisConfigurer$$EnhancerBySpringCGLIB$$1aac2fdb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:17:48.924 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2019-12-17 10:17:49.565 [main] INFO  c.o.c.configuration.RedisConfigurer - redis: org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory@4342c13
+2019-12-17 10:17:49.566 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.database: 0
+2019-12-17 10:17:49.566 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.host: 127.0.0.1
+2019-12-17 10:17:49.566 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.port: 6379
+2019-12-17 10:17:49.566 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.timeout: 5000
+2019-12-17 10:17:49.566 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.password: null
+2019-12-17 10:17:52.160 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
+2019-12-17 10:17:54.537 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} inited
+2019-12-17 10:17:54.895 [main] WARN  com.ozygod.base.utils.ReflectionUtil - AuthSetRedisDao not set the actual class on superclass generic parameter
+2019-12-17 10:17:57.037 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} inited
+2019-12-17 10:17:58.618 [main] INFO  c.o.c.c.DruidConfiguration - init Druid Servlet Configuration 
+2019-12-17 10:17:58.908 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-12-17 10:17:59.438 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService  'applicationTaskExecutor'
+2019-12-17 10:18:00.120 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService  'taskScheduler'
+2019-12-17 10:18:00.203 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2019-12-17 10:18:00.231 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-12-17 10:18:00.278 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2019-12-17 10:18:00.837 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: authUsingPOST_1
+2019-12-17 10:18:00.846 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: deleteRobotControlUsingDELETE_1
+2019-12-17 10:18:00.851 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: listUsingPOST_1
+2019-12-17 10:18:00.855 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: saveUsingPOST_1
+2019-12-17 10:18:00.857 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: updateRobotControlUsingPUT_1
+2019-12-17 10:18:00.887 [main] INFO  c.ozygod.platform.service.RedisTest - Started RedisTest in 16.271 seconds (JVM running for 17.337)
+2019-12-17 10:18:01.299 [main] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2019-12-17 10:18:01.300 [main] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2019-12-17 10:18:01.531 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2019-12-17 10:18:01.533 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2019-12-17 10:18:01.544 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} closed
+2019-12-17 10:18:01.546 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} closed
+2019-12-17 10:18:01.549 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
+2019-12-17 10:18:01.550 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2019-12-17 10:18:27.962 [main] INFO  c.ozygod.platform.service.RedisTest - Starting RedisTest on chenweilongdeMacBook-Pro.local with PID 73584 (started by chenweilong in /Users/chenweilong/Desktop/边锋网络/back-back/ozygod-pm-main)
+2019-12-17 10:18:27.963 [main] INFO  c.ozygod.platform.service.RedisTest - The following profiles are active: dev
+2019-12-17 10:18:29.245 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-12-17 10:18:29.249 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-17 10:18:29.277 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10ms. Found 0 repository interfaces.
+2019-12-17 10:18:29.902 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a6f8106a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.135 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.context.properties.ConversionServiceDeducer$Factory' of type [org.springframework.boot.context.properties.ConversionServiceDeducer$Factory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.154 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.169 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration$$EnhancerBySpringCGLIB$$bc11ceb4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.349 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.466 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:30.482 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfigurer' of type [com.ozygod.conf.configuration.RedisConfigurer$$EnhancerBySpringCGLIB$$6a7f8687] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:18:31.345 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2019-12-17 10:18:32.047 [main] INFO  c.o.c.configuration.RedisConfigurer - redis: org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory@72443081
+2019-12-17 10:18:32.048 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.database: 0
+2019-12-17 10:18:32.048 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.host: 127.0.0.1
+2019-12-17 10:18:32.049 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.port: 6379
+2019-12-17 10:18:32.049 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.timeout: 5000
+2019-12-17 10:18:32.049 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.password: null
+2019-12-17 10:18:34.237 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
+2019-12-17 10:18:36.557 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} inited
+2019-12-17 10:18:36.904 [main] WARN  com.ozygod.base.utils.ReflectionUtil - AuthSetRedisDao not set the actual class on superclass generic parameter
+2019-12-17 10:18:39.013 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} inited
+2019-12-17 10:18:40.530 [main] INFO  c.o.c.c.DruidConfiguration - init Druid Servlet Configuration 
+2019-12-17 10:18:40.794 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-12-17 10:18:41.337 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService  'applicationTaskExecutor'
+2019-12-17 10:18:42.047 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService  'taskScheduler'
+2019-12-17 10:18:42.148 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2019-12-17 10:18:42.170 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-12-17 10:18:42.220 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2019-12-17 10:18:42.745 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: authUsingPOST_1
+2019-12-17 10:18:42.748 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: deleteRobotControlUsingDELETE_1
+2019-12-17 10:18:42.754 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: listUsingPOST_1
+2019-12-17 10:18:42.757 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: saveUsingPOST_1
+2019-12-17 10:18:42.759 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: updateRobotControlUsingPUT_1
+2019-12-17 10:18:42.784 [main] INFO  c.ozygod.platform.service.RedisTest - Started RedisTest in 15.496 seconds (JVM running for 16.421)
+2019-12-17 10:18:43.140 [main] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2019-12-17 10:18:43.142 [main] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2019-12-17 10:18:43.415 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2019-12-17 10:18:43.417 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2019-12-17 10:18:43.427 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} closed
+2019-12-17 10:18:43.431 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} closed
+2019-12-17 10:18:43.434 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
+2019-12-17 10:18:43.435 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2019-12-17 10:57:57.103 [main] INFO  c.ozygod.platform.service.RedisTest - Starting RedisTest on chenweilongdeMacBook-Pro.local with PID 74482 (started by chenweilong in /Users/chenweilong/Desktop/边锋网络/back-back/ozygod-pm-main)
+2019-12-17 10:57:57.105 [main] INFO  c.ozygod.platform.service.RedisTest - The following profiles are active: dev
+2019-12-17 10:57:58.580 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-12-17 10:57:58.583 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-17 10:57:58.614 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10ms. Found 0 repository interfaces.
+2019-12-17 10:57:59.260 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$fb208d09] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.491 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.context.properties.ConversionServiceDeducer$Factory' of type [org.springframework.boot.context.properties.ConversionServiceDeducer$Factory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.512 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.529 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration$$EnhancerBySpringCGLIB$$103a4b53] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.745 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.889 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:57:59.907 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfigurer' of type [com.ozygod.conf.configuration.RedisConfigurer$$EnhancerBySpringCGLIB$$bea80326] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 10:58:00.909 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2019-12-17 10:58:01.590 [main] INFO  c.o.c.configuration.RedisConfigurer - redis: org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory@5af5d76f
+2019-12-17 10:58:01.591 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.database: 0
+2019-12-17 10:58:01.592 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.host: 127.0.0.1
+2019-12-17 10:58:01.592 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.port: 6379
+2019-12-17 10:58:01.592 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.timeout: 5000
+2019-12-17 10:58:01.592 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.password: null
+2019-12-17 10:58:04.518 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
+2019-12-17 10:58:07.457 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} inited
+2019-12-17 10:58:10.125 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} inited
+2019-12-17 10:58:10.292 [main] WARN  com.ozygod.base.utils.ReflectionUtil - AuthSetRedisDao not set the actual class on superclass generic parameter
+2019-12-17 10:58:11.635 [main] INFO  c.o.c.c.DruidConfiguration - init Druid Servlet Configuration 
+2019-12-17 10:58:11.903 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-12-17 10:58:12.494 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService  'applicationTaskExecutor'
+2019-12-17 10:58:13.206 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService  'taskScheduler'
+2019-12-17 10:58:13.293 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2019-12-17 10:58:13.317 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-12-17 10:58:13.361 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2019-12-17 10:58:13.866 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: authUsingPOST_1
+2019-12-17 10:58:13.868 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: deleteRobotControlUsingDELETE_1
+2019-12-17 10:58:13.872 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: listUsingPOST_1
+2019-12-17 10:58:13.875 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: saveUsingPOST_1
+2019-12-17 10:58:13.877 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: updateRobotControlUsingPUT_1
+2019-12-17 10:58:13.905 [main] INFO  c.ozygod.platform.service.RedisTest - Started RedisTest in 17.575 seconds (JVM running for 18.612)
+2019-12-17 10:58:14.256 [main] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2019-12-17 10:58:14.257 [main] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2019-12-17 10:58:14.596 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2019-12-17 10:58:14.598 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2019-12-17 10:58:14.607 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} closed
+2019-12-17 10:58:14.609 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} closed
+2019-12-17 10:58:14.612 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
+2019-12-17 10:58:14.614 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2019-12-17 11:03:06.176 [main] INFO  c.ozygod.platform.service.RedisTest - Starting RedisTest on chenweilongdeMacBook-Pro.local with PID 74607 (started by chenweilong in /Users/chenweilong/Desktop/边锋网络/back-back/ozygod-pm-main)
+2019-12-17 11:03:06.177 [main] INFO  c.ozygod.platform.service.RedisTest - The following profiles are active: dev
+2019-12-17 11:03:07.657 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-12-17 11:03:07.661 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-12-17 11:03:07.688 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9ms. Found 0 repository interfaces.
+2019-12-17 11:03:08.304 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a6f8106a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.534 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.context.properties.ConversionServiceDeducer$Factory' of type [org.springframework.boot.context.properties.ConversionServiceDeducer$Factory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.553 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'spring.redis-org.springframework.boot.autoconfigure.data.redis.RedisProperties' of type [org.springframework.boot.autoconfigure.data.redis.RedisProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.569 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration' of type [org.springframework.boot.autoconfigure.data.redis.LettuceConnectionConfiguration$$EnhancerBySpringCGLIB$$bc11ceb4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.748 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'lettuceClientResources' of type [io.lettuce.core.resource.DefaultClientResources] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.866 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConnectionFactory' of type [org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:08.882 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'redisConfigurer' of type [com.ozygod.conf.configuration.RedisConfigurer$$EnhancerBySpringCGLIB$$6a7f8687] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-12-17 11:03:09.729 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2019-12-17 11:03:10.356 [main] INFO  c.o.c.configuration.RedisConfigurer - redis: org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory@72443081
+2019-12-17 11:03:10.357 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.database: 0
+2019-12-17 11:03:10.357 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.host: 127.0.0.1
+2019-12-17 11:03:10.357 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.port: 6379
+2019-12-17 11:03:10.358 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.timeout: 5000
+2019-12-17 11:03:10.358 [main] INFO  c.o.c.configuration.RedisConfigurer - spring.redis.password: null
+2019-12-17 11:03:12.523 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} inited
+2019-12-17 11:03:14.915 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} inited
+2019-12-17 11:03:17.508 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} inited
+2019-12-17 11:03:17.652 [main] WARN  com.ozygod.base.utils.ReflectionUtil - AuthSetRedisDao not set the actual class on superclass generic parameter
+2019-12-17 11:03:18.960 [main] INFO  c.o.c.c.DruidConfiguration - init Druid Servlet Configuration 
+2019-12-17 11:03:19.213 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-12-17 11:03:19.742 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService  'applicationTaskExecutor'
+2019-12-17 11:03:20.397 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService  'taskScheduler'
+2019-12-17 11:03:20.485 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2019-12-17 11:03:20.508 [main] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2019-12-17 11:03:20.558 [main] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2019-12-17 11:03:21.026 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: authUsingPOST_1
+2019-12-17 11:03:21.029 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: deleteRobotControlUsingDELETE_1
+2019-12-17 11:03:21.034 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: listUsingPOST_1
+2019-12-17 11:03:21.038 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: saveUsingPOST_1
+2019-12-17 11:03:21.040 [main] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: updateRobotControlUsingPUT_1
+2019-12-17 11:03:21.069 [main] INFO  c.ozygod.platform.service.RedisTest - Started RedisTest in 15.528 seconds (JVM running for 16.387)
+2019-12-17 11:03:21.438 [main] INFO  io.lettuce.core.EpollProvider - Starting without optional epoll library
+2019-12-17 11:03:21.440 [main] INFO  io.lettuce.core.KqueueProvider - Starting without optional kqueue library
+2019-12-17 11:03:21.760 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
+2019-12-17 11:03:21.762 [Thread-2] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2019-12-17 11:03:21.773 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-4} closed
+2019-12-17 11:03:21.775 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-3} closed
+2019-12-17 11:03:21.777 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-2} closed
+2019-12-17 11:03:21.779 [Thread-2] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

@@ -24,6 +24,14 @@ public class EnumUtil {
         return Arrays.stream(baseEnums).map(EnumUtil::toEnumVo).collect(Collectors.toList());
     }
 
+    public static List<String> values(BaseEnum[] baseEnums) {
+        return enumToVo(baseEnums).stream().map(EnumVo::getValue).collect(Collectors.toList());
+    }
+
+    public static List<Integer> keys(BaseEnum[] baseEnums) {
+        return enumToVo(baseEnums).stream().map(EnumVo::getKey).collect(Collectors.toList());
+    }
+
     public static String queryValueByKey(Integer key, BaseEnum[] baseEnums) {
         BaseEnum baseEnum1 = Arrays.stream(baseEnums).filter(baseEnum -> baseEnum.getKey().equals(key)).findAny().orElse(null);
         return ObjectUtil.isNotNull(baseEnum1) ? baseEnum1.getValue() : null;
