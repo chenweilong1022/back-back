@@ -60,7 +60,6 @@ public class MessagecenterTask {
                 stringRedisDao.push2Queue(RedisKeys.MESSAGECENTERSENDERROR.getValue(),jsonArray.toString());
             }
 
-            log.info("getStatus = {}",response.getStatus());
             /**
              * 如果不成功在压进去
              */
