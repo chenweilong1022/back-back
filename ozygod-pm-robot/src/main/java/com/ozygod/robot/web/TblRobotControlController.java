@@ -6,6 +6,8 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.validator.Assert;
@@ -53,7 +55,7 @@ public class TblRobotControlController {
      */
     @PostMapping("auth/{method}")
     @ApiOperation(value = "控制端鉴权", response = String.class)
-    public String auth(
+    public JSONObject auth(
             @PathVariable("method") String method,
 //            TblRobotControlAuthDto tblRobotControlAuthDto,
             @RequestHeader("key") String key,
@@ -97,11 +99,10 @@ public class TblRobotControlController {
 
         Assert.isTrue(!one.getIp().contains(clientIP),"当前ip不能登录");
 
-        System.out.println(gameUrl + File.separator + method);
         String s = HttpUtil.get(gameUrl + File.separator + method,map,3000);
-        System.out.println(s);
+        Assert.isTrue(!JSONUtil.isJson(s),s);
 
-        return s;
+        return JSONUtil.parseObj(s);
     }
 
     /**
