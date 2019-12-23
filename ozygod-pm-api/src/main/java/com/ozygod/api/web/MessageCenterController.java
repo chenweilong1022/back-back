@@ -58,23 +58,31 @@ public class MessageCenterController {
         String link = stringRedisDao.readFromJSONStr(RedisKeys.MESSAGECENTER.getValue() + type);
         Assert.isBlank(link,"你还没有注册回调");
 
-
-        HttpResponse response = HttpRequest.post(link).timeout(3000).body(body).execute();
+        HttpResponse response = null;
+        try {
+            response = HttpRequest.post(link).timeout(3000).body(body).execute();
+        }catch (Exception e) {
+            messageCenterSendErrorPush(body, link);
+        }
 
         /**
          * 如果发送失败
          * 存入redis
          */
-        if (HttpStatus.HTTP_OK != response.getStatus()) {
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.add(link);
-            jsonArray.add(body);
-            /**
-             * 添加元素到Queue
-             */
-            stringRedisDao.push2Queue(RedisKeys.MESSAGECENTERSENDERROR.getValue(),jsonArray.toString());
+        if (response != null && HttpStatus.HTTP_OK != response.getStatus()) {
+            messageCenterSendErrorPush(body, link);
         }
         return ResponseBO.ok();
+    }
+
+    private void messageCenterSendErrorPush(@RequestBody String body, String link) {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(link);
+        jsonArray.add(body);
+        /**
+         * 添加元素到Queue
+         */
+        stringRedisDao.push2Queue(RedisKeys.MESSAGECENTERSENDERROR.getValue(), jsonArray.toString());
     }
 
 }
