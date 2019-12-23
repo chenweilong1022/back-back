@@ -13,7 +13,11 @@ import lombok.Getter;
 public enum RedisKeys implements BaseEnum {
 
     // 总兑换数的key
-    ONE(1,"platform:totalBonus");
+    ONE(1,"platform:totalBonus"),
+    //    消息中心的key
+    MESSAGECENTER(2,"messagecenter:"),
+    // 发送消息失败的
+    MESSAGECENTERSENDERROR(3,"messagecenter:senderror");
 
 
     private Integer key;
