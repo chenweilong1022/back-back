@@ -1,5 +1,6 @@
 package com.ozygod.task;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
@@ -52,13 +53,18 @@ public class MessagecenterTask {
 
             log.info("link = {},body = {}",link,body);
 
-            HttpResponse response = HttpRequest.post(link).timeout(3000).body(body).execute();
+            HttpResponse response = null;
+            try {
+                response = HttpRequest.post(link).timeout(3000).body(body).execute();
+            }catch (Exception e) {
+                stringRedisDao.push2Queue(RedisKeys.MESSAGECENTERSENDERROR.getValue(),jsonArray.toString());
+            }
 
             log.info("getStatus = {}",response.getStatus());
             /**
              * 如果不成功在压进去
              */
-            if (response.getStatus() != HttpStatus.HTTP_OK) {
+            if (ObjectUtil.isNotNull(response) && response.getStatus() != HttpStatus.HTTP_OK) {
                 stringRedisDao.push2Queue(RedisKeys.MESSAGECENTERSENDERROR.getValue(),jsonArray.toString());
             }
 
