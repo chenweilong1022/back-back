@@ -17,6 +17,7 @@ import com.ozygod.model.zdconfig.entity.TblRobotControlEntity;
 import com.ozygod.robot.service.TblRobotControlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
  * @date 2019-12-12 17:06:41
  */
 @RestController
+@Slf4j
 @RequestMapping(value = {"api/robots","robots"})
 @Api(value = "机器人控制端账号",tags = "机器人控制端账号")
 public class TblRobotControlController {
@@ -87,6 +89,7 @@ public class TblRobotControlController {
 
         if (CollUtil.isNotEmpty(map)) {
             String collect = map.keySet().stream().sorted().map(k -> k + "=" + map.get(k)).collect(Collectors.joining("","",s1 + one.getSecret()));
+            log.info("加密字符串 = {}",collect);
             String s = SecureUtil.md5(collect);
             Assert.isTrue(!tblRobotControlAuthDto.getToken().equals(s),"鉴权失败");
         }else {
