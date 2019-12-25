@@ -24,3 +24,4 @@ CREATE TABLE `tbl_record_total_gold_everyday` (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='每日总金币统计表';
 
 
+
