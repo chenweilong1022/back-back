@@ -24,4 +24,17 @@ CREATE TABLE `tbl_record_total_gold_everyday` (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='每日总金币统计表';
 
 
+docker run -id --name back \
+ --env PROJECT_MYSQL_HOSTNAME=172.17.0.1 \
+  --env PROJECT_MYSQL_PORT=3306 --env PROJECT_MYSQL_USERNAME=root \
+   --env PROJECT_MYSQL_PASSWORD=Jz123456 \
+    --env PROJECT_REDIS_HOSTNAME=172.17.0.1 \
+     --env PROJECT_REDIS_PORT=6379 \
+      --env PROJECT_REDIS_PASSWORD= \
+      --env ROBOT_URL_8692=127.0.0.1 \
+      --env GAME_URL_8691=127.0.0.1 \
+       --env AGENT_URL_6002=127.0.0.1 \
+        -v /Users/chenweilong/Desktop/upload/logs:/Users/chenweilong/Desktop/upload/logs \
+         -v /Users/chenweilong/Desktop/upload/image:/home/web/files \
+          -p 8080:8080 3a149c9e76ef
 
