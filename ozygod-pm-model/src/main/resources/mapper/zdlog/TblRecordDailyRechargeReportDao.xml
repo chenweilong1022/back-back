@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdlog.dao.TblRecordDailyRechargeReportDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdlog.entity.TblRecordDailyRechargeReportEntity" id="tblRecordDailyRechargeReportMap">
+        <result property="id" column="id"/>
+        <result property="currentDate" column="current_date"/>
+        <result property="newUser" column="new_user"/>
+        <result property="newMachine" column="new_machine"/>
+        <result property="newBinding" column="new_binding"/>
+        <result property="totalRegistered" column="total_registered"/>
+        <result property="totalMachine" column="total_machine"/>
+        <result property="loginUser" column="login_user"/>
+        <result property="oldUser" column="old_user"/>
+        <result property="loginMachine" column="login_machine"/>
+        <result property="oldLoginMachine" column="old_login_machine"/>
+        <result property="totalOrder" column="total_order"/>
+        <result property="effectiveOrder" column="effective_order"/>
+        <result property="proportion" column="proportion"/>
+        <result property="newUserRecharge" column="new_user_recharge"/>
+        <result property="newUsersRechargeNumber" column="new_users_recharge_number"/>
+        <result property="oldUsersRecharge" column="old_users_recharge"/>
+        <result property="oldUsersRechargeNumber" column="old_users_recharge_number"/>
+        <result property="totalRecharge" column="total_recharge"/>
+        <result property="totalRechargeNumber" column="total_recharge_number"/>
+        <result property="totalBack" column="total_back"/>
+        <result property="totalBackNumber" column="total_back_number"/>
+        <result property="morrowRetained" column="morrow_retained"/>
+        <result property="rechargeRetained" column="recharge_retained"/>
+        <result property="weeksRetained" column="weeks_retained"/>
+        <result property="arpo" column="arpo"/>
+        <result property="arpu" column="arpu"/>
+        <result property="arppu" column="arppu"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDel" column="is_del"/>
+        <result property="newUserYesterday" column="new_user_yesterday"/>
+        <result property="todayUserRetained" column="today_user_retained"/>
+        <result property="newUserYesterdayRecharge" column="new_user_yesterday_recharge"/>
+        <result property="todayUserRechargeRetained" column="today_user_recharge_retained"/>
+    </resultMap>
+
+
+</mapper>

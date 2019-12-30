@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ozygod.base.enums.AccountLoginType;
 import com.ozygod.base.enums.AccountRegisterChannel;
 import com.ozygod.base.enums.AppPayChannel;
+import com.ozygod.base.enums.Global;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
@@ -78,7 +79,7 @@ public class RecordRechargeAmountEverydayTask {
                  * 获取当前渠道 当前登录方式的用户
                  */
                 List<TblAccountEntity> list = tblAccountService.list(new QueryWrapper<TblAccountEntity>().lambda()
-                        .gt(TblAccountEntity::getUserid, 20000)
+                        .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
                         .eq(TblAccountEntity::getAppChannel, accountRegisterChannel.getValue())
                         .eq(TblAccountEntity::getPlatform, accountLoginType.getValue())
                 );

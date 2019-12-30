@@ -1,6 +1,13 @@
 package com.ozygod.model.zdgame.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.ObjectUtil;
+import com.ozygod.base.enums.Global;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -11,6 +18,8 @@ import com.ozygod.model.zdgame.dao.TblAccountDao;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.dto.TblAccountListDto;
 import com.ozygod.model.zdgame.service.TblAccountService;
+
+import javax.xml.bind.annotation.XmlElementDecl;
 
 
 @Service("tblAccountService")
@@ -34,7 +43,20 @@ public class TblAccountServiceImpl extends ServiceImpl<TblAccountDao, TblAccount
         int onlineNumber = this.count(new QueryWrapper<TblAccountEntity>().lambda()
                 .notIn(TblAccountEntity::getLogoutTime, "1970-01-01 00:00:00")
                 .last(" and logout_time < login_time")
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
         );
         return onlineNumber;
+    }
+
+    @Override
+    public int loginNumber(DateTime begin, DateTime end, DateTime oldTime, List<Long> userIds) {
+        int count = this.count(new QueryWrapper<TblAccountEntity>().lambda()
+                .ge(ObjectUtil.isNotNull(begin),TblAccountEntity::getLoginTime, begin)
+                .le(ObjectUtil.isNotNull(end),TblAccountEntity::getLoginTime, end)
+                .lt(ObjectUtil.isNotNull(oldTime),TblAccountEntity::getCreateTime, oldTime)
+                .in(CollUtil.isNotEmpty(userIds),TblAccountEntity::getUserid,userIds)
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
+        );
+        return count;
     }
 }

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.enums.AccountLoginType;
 import com.ozygod.base.enums.AccountLoginWay;
+import com.ozygod.base.enums.Global;
 import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.vo.EnumVo;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
@@ -88,7 +89,7 @@ public class RecordAccountLoginEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getChannel, enumVo.getValue())
                         .gt(TblAccountEntity::getLoginTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
                 );
                 /**
                  * 查询非快速登录的
@@ -98,7 +99,7 @@ public class RecordAccountLoginEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .notIn(TblAccountEntity::getChannel, AccountLoginWay.GUEST.getValue())
                         .gt(TblAccountEntity::getLoginTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
                 /**
                  * 查询ios登录的
@@ -108,7 +109,7 @@ public class RecordAccountLoginEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform,enumVo.getValue())
                         .gt(TblAccountEntity::getLoginTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
                 /**
                  * 查询安卓登录的
@@ -117,7 +118,7 @@ public class RecordAccountLoginEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform, enumVo.getValue())
                         .gt(TblAccountEntity::getLoginTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
             }
             /**

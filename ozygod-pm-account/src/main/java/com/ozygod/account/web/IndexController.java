@@ -106,26 +106,22 @@ public class IndexController {
                 /**
                  * 今日登陆数
                  */
-                int count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
-                        .gt(TblAccountEntity::getLoginTime, beginOfDay)
-                );
+                int count = tblAccountService.loginNumber(beginOfDay,null,null,null);
+
                 value = String.valueOf(count);
             }else if (key.equals(IndexCard.FOUR.getKey())) {
                 /**
                  * 今日充值数
                  */
-                int count = tblOrderService.count(new QueryWrapper<TblOrderEntity>().lambda()
-                        .gt(TblOrderEntity::getPayTime, beginOfDay)
-                );
+                int count = tblOrderService.orderCount(null,null,beginOfDay);
+
                 value = String.valueOf(count);
             }else if (key.equals(IndexCard.FIVE.getKey())) {
                 /**
                  * 充值金额
                  */
-                List<TblOrderEntity> list = tblOrderService.list(new QueryWrapper<TblOrderEntity>().lambda()
-                        .gt(TblOrderEntity::getPayTime, beginOfDay)
-                );
-                int sum = list.stream().mapToInt(TblOrderEntity::getMoney).sum();
+                int sum = tblOrderService.recharge(beginOfDay, null, null);
+
                 value = NumberUtil.decimalFormatMoney(NumberUtil.div(sum,100));
                 /**
                  * 充值金额

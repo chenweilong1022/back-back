@@ -10,6 +10,103 @@ CREATE TABLE `tbl_record_account_online_playing` (
 
 
 
+
+CREATE TABLE `tbl_record_daily_recharge_report` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `current_date` varchar(50) DEFAULT NULL COMMENT '日期',
+  `new_user` varchar(50) DEFAULT NULL COMMENT '新用户',
+  `new_machine` varchar(100) DEFAULT NULL COMMENT '新机器',
+  `new_binding` varchar(500) DEFAULT NULL COMMENT '新绑定',
+  `total_registered` varchar(500) DEFAULT NULL COMMENT '总注册',
+  `total_machine` varchar(500) DEFAULT NULL COMMENT '总机器',
+  `login_user` varchar(500) DEFAULT NULL COMMENT '登录用户',
+  `old_user` varchar(500) DEFAULT NULL COMMENT '老用户',
+  `login_machine` varchar(500) DEFAULT NULL COMMENT '登录机器',
+  `old_login_machine` varchar(500) DEFAULT NULL COMMENT '老登录机器',
+  `total_order` varchar(500) DEFAULT NULL COMMENT '总订单',
+  `effective_order` varchar(500) DEFAULT NULL COMMENT '有效订单',
+  `proportion` varchar(500) DEFAULT NULL COMMENT '比例',
+  `new_user_recharge` varchar(500) DEFAULT NULL COMMENT '新用户充值',
+  `new_users_recharge_number` varchar(500) DEFAULT NULL COMMENT '新用户充值人数',
+  `old_users_recharge` varchar(500) DEFAULT NULL COMMENT '老用户充值',
+  `old_users_recharge_number` varchar(500) DEFAULT NULL COMMENT '老用户充值人数',
+  `total_recharge` varchar(500) DEFAULT NULL COMMENT '总充值',
+  `total_recharge_number` varchar(500) DEFAULT NULL COMMENT '总充值人数',
+  `total_back` varchar(500) DEFAULT NULL COMMENT '总返现',
+  `total_back_number` varchar(500) DEFAULT NULL COMMENT '总返现人数',
+  `morrow_retained` varchar(500) DEFAULT NULL COMMENT '次留',
+  `recharge_retained` varchar(500) DEFAULT NULL COMMENT '充值留存',
+  `weeks_retained` varchar(500) DEFAULT NULL COMMENT '周留存',
+  `arpo` varchar(500) DEFAULT NULL COMMENT 'arpo',
+  `arpu` varchar(500) DEFAULT NULL COMMENT 'arpu',
+  `arppu` varchar(500) DEFAULT NULL COMMENT 'arppu',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='每日充值报表';
+
+
+每日充值报表
+日期
+新用户
+新机器
+新绑定
+总注册
+总机器
+登录用户
+老用户
+登录机器
+老登录机器
+总订单
+有效订单
+比例
+新用户充值
+新用户充值人数
+老用户充值
+老用户充值人数
+总充值
+总充值人数
+总返现
+总返现人数
+次留
+充值留存
+周留存
+arpo
+arpu
+arppu
+
+
+current_date
+new_user
+new_machine
+New_binding
+Total_registered
+total_machine
+login_user
+Old_user
+Login_machine
+Old_login_machine
+total_order
+Effective_order
+proportion
+New_user_recharge
+new_users_recharge_Number
+Old_users_recharge
+old_users_recharge_Number
+Total_recharge
+Total_recharge_number
+total_back
+Total_back_number
+morrow_retained
+recharge_retained
+Weeks_retained
+arpo
+arpu
+arppu
+
+
+
+
 CREATE TABLE `tbl_record_total_gold_everyday` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `current_dates` datetime DEFAULT NULL COMMENT '日期',
@@ -25,10 +122,10 @@ CREATE TABLE `tbl_record_total_gold_everyday` (
 
 
 docker run -id --name back \
- --env PROJECT_MYSQL_HOSTNAME=172.17.0.1 \
-  --env PROJECT_MYSQL_PORT=3306 --env PROJECT_MYSQL_USERNAME=root \
+ --env PROJECT_MYSQL_HOSTNAME=docker.for.mac.host.internal \
+  --env PROJECT_MYSQL_PORT=3307 --env PROJECT_MYSQL_USERNAME=root \
    --env PROJECT_MYSQL_PASSWORD=Jz123456 \
-    --env PROJECT_REDIS_HOSTNAME=172.17.0.1 \
+    --env PROJECT_REDIS_HOSTNAME=docker.for.mac.host.internal \
      --env PROJECT_REDIS_PORT=6379 \
       --env PROJECT_REDIS_PASSWORD= \
       --env ROBOT_URL_8692=127.0.0.1 \

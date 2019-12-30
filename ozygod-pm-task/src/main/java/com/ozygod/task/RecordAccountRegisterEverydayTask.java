@@ -3,10 +3,7 @@ package com.ozygod.task;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ozygod.base.enums.AccountLoginType;
-import com.ozygod.base.enums.AccountLoginWay;
-import com.ozygod.base.enums.AccountRegisterChannel;
-import com.ozygod.base.enums.AccountRegisterType;
+import com.ozygod.base.enums.*;
 import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.vo.EnumVo;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
@@ -43,14 +40,12 @@ public class RecordAccountRegisterEverydayTask {
      */
     @Scheduled(cron = "0 0 0-23 * * ?")
     public void configureTasks() {
-
         DateTime date = DateUtil.endOfDay(DateUtil.date());
         DateTime beginOfDay = DateUtil.beginOfDay(DateUtil.date());
         /**
          * 今日最后一分钟
          */
         DateTime dateTime = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
-
         /**
          * 查询是否已经统计过了
          */
@@ -58,19 +53,16 @@ public class RecordAccountRegisterEverydayTask {
                 .eq(TblRecordAccountLoginRegisterEverydayEntity::getCurrentDates, dateTime)
                 .ge(TblRecordAccountLoginRegisterEverydayEntity::getType,AccountRegisterChannel.C3521.getKey())
         );
-
         /**
          * 注册渠道类型枚举
          */
         List<EnumVo> enumVos = EnumUtil.enumToVo(AccountRegisterChannel.values());
         List<EnumVo> enumVos1 = EnumUtil.enumToVo(AccountRegisterType.values());
         enumVos.addAll(enumVos1);
-
         /**
          * 用户每日登录记录list
          */
         List<TblRecordAccountLoginRegisterEverydayEntity> tblRecordAccountLoginRegisterEverydayEntities = new ArrayList<>();
-
         /**
          * 遍历
          */
@@ -91,7 +83,7 @@ public class RecordAccountRegisterEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getAppChannel, enumVo.getValue())
                         .gt(TblAccountEntity::getCreateTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
                 );
                 /**
                  * 非3521的注册数量
@@ -101,7 +93,7 @@ public class RecordAccountRegisterEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .notIn(TblAccountEntity::getAppChannel,AccountRegisterChannel.C3521.getValue())
                         .gt(TblAccountEntity::getCreateTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
                 /**
                  * 查询安卓注册的
@@ -111,7 +103,7 @@ public class RecordAccountRegisterEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform,enumVo.getValue())
                         .gt(TblAccountEntity::getCreateTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
                 /**
                  * 查询安卓注册的
@@ -120,7 +112,7 @@ public class RecordAccountRegisterEverydayTask {
                 count = tblAccountService.count(new QueryWrapper<TblAccountEntity>().lambda()
                         .eq(TblAccountEntity::getPlatform, enumVo.getValue())
                         .gt(TblAccountEntity::getCreateTime,beginOfDay)
-                        .gt(TblAccountEntity::getUserid,20000)
+                        .gt(TblAccountEntity::getUserid,Global.REAL_USER_ID)
                 );
             }
             /**
