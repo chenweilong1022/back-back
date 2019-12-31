@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * 渠道日报
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-31 11:11:19
@@ -101,7 +101,7 @@ public class TblRecordChannelDailyEntity implements Serializable {
 	 * 总税收
 	 */
 	@ApiModelProperty(required=false,value="总税收")
-	private Integer totalRevenue;
+	private Long totalRevenue;
 	/**
 	 * 游戏记录
 	 */
