@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.enums.Global;
+import com.ozygod.base.enums.WithdrawOrderState;
 import com.ozygod.base.redis.StringRedisDao;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
@@ -19,6 +21,8 @@ import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
 import com.ozygod.model.zdlog.entity.TblRecordDailyRechargeReportEntity;
 import com.ozygod.model.zdlog.service.TblRecordDailyRechargeReportService;
+import com.ozygod.model.zdmanage.entity.TblWithdrawOrderEntity;
+import com.ozygod.model.zdmanage.service.TblWithdrawOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +52,9 @@ public class RecordDailyRechargeReportTask {
     @Autowired
     private TblOrderService tblOrderService;
 
+    @Autowired
+    private TblWithdrawOrderService tblWithdrawOrderService;
+
 
     /**
      * 每五分钟重新发送一次
@@ -74,6 +81,13 @@ public class RecordDailyRechargeReportTask {
          * 昨日最后一秒
          */
         DateTime lastEndOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(lastTime));
+        /**
+         * 本周
+         */
+        List<DateTime> dateTimes = DateUtil.rangeToList(DateUtil.offsetWeek(new Date(), -1), DateUtil.offsetDay(new Date(), -1), DateField.DAY_OF_WEEK);
+
+
+
         /**
          * 新用户
          */
@@ -210,6 +224,47 @@ public class RecordDailyRechargeReportTask {
             double div1 = NumberUtil.div(todayUserRechargeRetained, lastDayRechargeUsers.size());
             rechargeRetained = NumberUtil.decimalFormat("#.##%",div1);
         }
+        /**
+         * 今日提现
+         */
+        List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys = tblWithdrawOrderService.list(new QueryWrapper<TblWithdrawOrderEntity>().lambda()
+                .ge(TblWithdrawOrderEntity::getCompletetime, beginOfDay)
+                .le(TblWithdrawOrderEntity::getCompletetime, endOfDay)
+                .eq(TblWithdrawOrderEntity::getState, WithdrawOrderState.TWO.getKey())
+        );
+        /**
+         * 总提现
+         */
+        int totalBack = 0;
+        /**
+         * 总体现人数
+         */
+        int totalBackNumber = 0;
+        if (CollUtil.isNotEmpty(tblWithdrawOrderEntitys)) {
+            totalBack = tblWithdrawOrderEntitys.stream().mapToInt(TblWithdrawOrderEntity::getAmount).sum();
+            totalBackNumber = tblWithdrawOrderEntitys.stream().map(TblWithdrawOrderEntity::getUserid).distinct().collect(Collectors.toList()).size();
+        }
+        /**
+         * 查询往日留存记录
+         */
+        List<TblRecordDailyRechargeReportEntity> weeksRetainedWeeksRetaineds = tblRecordDailyRechargeReportService.list(new QueryWrapper<TblRecordDailyRechargeReportEntity>().lambda()
+                .ge(TblRecordDailyRechargeReportEntity::getCurrentDate, beginOfDay)
+                .le(TblRecordDailyRechargeReportEntity::getCurrentDate, endOfDay)
+        );
+        /**
+         * 周留存
+         */
+        String weeksRetained = Global.PROPORTION;
+        if (CollUtil.isNotEmpty(weeksRetainedWeeksRetaineds)) {
+            int weekNewUserYesterday = weeksRetainedWeeksRetaineds.stream().mapToInt(TblRecordDailyRechargeReportEntity::getNewUserYesterday).sum() + lastDayNewAccountEntitys.size();
+            int weekTodayUserRetained =  weeksRetainedWeeksRetaineds.stream().mapToInt(TblRecordDailyRechargeReportEntity::getTodayUserRetained).sum() + todayUserRetained;
+            if (weekNewUserYesterday > 0) {
+                double div = NumberUtil.div(weekTodayUserRetained, weekNewUserYesterday);
+                weeksRetained = NumberUtil.decimalFormat("#.##%",div);
+            }
+        }
+
+
 
         /**
          * 填充数据
@@ -234,11 +289,11 @@ public class RecordDailyRechargeReportTask {
         tblRecordDailyRechargeReportEntity.setOldUsersRechargeNumber(oldUsersRechargeNumber);
         tblRecordDailyRechargeReportEntity.setTotalRecharge(totalRecharge);
         tblRecordDailyRechargeReportEntity.setTotalRechargeNumber(totalRechargeNumber);
-//        tblRecordDailyRechargeReportEntity.setTotalBack(0);
-//        tblRecordDailyRechargeReportEntity.setTotalBackNumber(0);
+        tblRecordDailyRechargeReportEntity.setTotalBack(totalBack);
+        tblRecordDailyRechargeReportEntity.setTotalBackNumber(totalBackNumber);
         tblRecordDailyRechargeReportEntity.setMorrowRetained(morrowRetained);
         tblRecordDailyRechargeReportEntity.setRechargeRetained(rechargeRetained);
-        tblRecordDailyRechargeReportEntity.setWeeksRetained("");
+        tblRecordDailyRechargeReportEntity.setWeeksRetained(weeksRetained);
         tblRecordDailyRechargeReportEntity.setArpo(new BigDecimal("0"));
         tblRecordDailyRechargeReportEntity.setArpu(new BigDecimal("0"));
         tblRecordDailyRechargeReportEntity.setArppu(new BigDecimal("0"));
