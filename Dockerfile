@@ -4,6 +4,9 @@ FROM java:8
 # 维护人
 MAINTAINER chenweilong<1433471850@qq.com>
 
+ENV TZ="Asia/Shanghai"
+RUN date
+
 # 将本地文件夹挂载到当前容器
 VOLUME /tmp
 
