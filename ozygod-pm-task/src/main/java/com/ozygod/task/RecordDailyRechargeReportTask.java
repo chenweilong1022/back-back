@@ -57,9 +57,9 @@ public class RecordDailyRechargeReportTask {
 
 
     /**
-     * 每五分钟重新发送一次
+     * 每小时更新一次数据
      */
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 59 0-23 * * ?")
     public void configureTasks() {
 
         DateTime date = DateUtil.endOfDay(DateUtil.date());

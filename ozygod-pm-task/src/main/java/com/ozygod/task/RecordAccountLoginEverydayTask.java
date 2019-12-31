@@ -39,7 +39,7 @@ public class RecordAccountLoginEverydayTask {
     /**
      * 每小时统计一次
      */
-    @Scheduled(cron = "0 0 0-23 * * ?")
+    @Scheduled(cron = "0 59 0-23 * * ?")
     public void configureTasks() {
 
         DateTime date = DateUtil.endOfDay(DateUtil.date());
