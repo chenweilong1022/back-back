@@ -227,23 +227,15 @@ public class RecordDailyRechargeReportTask {
         /**
          * 今日提现
          */
-        List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys = tblWithdrawOrderService.list(new QueryWrapper<TblWithdrawOrderEntity>().lambda()
-                .ge(TblWithdrawOrderEntity::getCompletetime, beginOfDay)
-                .le(TblWithdrawOrderEntity::getCompletetime, endOfDay)
-                .eq(TblWithdrawOrderEntity::getState, WithdrawOrderState.TWO.getKey())
-        );
+        List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys = tblWithdrawOrderService.haveWithdrawal(beginOfDay, endOfDay,null);
         /**
          * 总提现
          */
-        int totalBack = 0;
+        int totalBack = tblWithdrawOrderService.totalBack(tblWithdrawOrderEntitys);
         /**
          * 总体现人数
          */
-        int totalBackNumber = 0;
-        if (CollUtil.isNotEmpty(tblWithdrawOrderEntitys)) {
-            totalBack = tblWithdrawOrderEntitys.stream().mapToInt(TblWithdrawOrderEntity::getAmount).sum();
-            totalBackNumber = tblWithdrawOrderEntitys.stream().map(TblWithdrawOrderEntity::getUserid).distinct().collect(Collectors.toList()).size();
-        }
+        int totalBackNumber = tblWithdrawOrderService.totalBackNumber(tblWithdrawOrderEntitys);
         /**
          * 查询往日留存记录
          */
