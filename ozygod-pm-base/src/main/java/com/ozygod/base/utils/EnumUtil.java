@@ -19,6 +19,11 @@ public class EnumUtil {
         System.out.println(enumToVo(IndexCard.values()));
     }
 
+    public static String describe(BaseEnum[] baseEnums) {
+        String describe = enumToVo(IndexCard.values()).stream().map(enumVo -> enumVo.getKey() + ":" + enumVo.getValue() + " ,").collect(Collectors.joining());
+        return describe;
+    }
+
 
     public static List<EnumVo> enumToVo(BaseEnum[] baseEnums) {
         return Arrays.stream(baseEnums).map(EnumUtil::toEnumVo).collect(Collectors.toList());

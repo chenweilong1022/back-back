@@ -107,6 +107,11 @@ arppu
 
 
 
+
+
+
+
+
 CREATE TABLE `tbl_record_total_gold_everyday` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `current_dates` datetime DEFAULT NULL COMMENT '日期',
