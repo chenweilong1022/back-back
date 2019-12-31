@@ -9,6 +9,14 @@ project:
     hostname: ${PROJECT_REDIS_HOSTNAME:127.0.0.1}
     port: ${PROJECT_REDIS_PORT:6379}
     password: ${PROJECT_REDIS_PASSWORD:}
+  log:
+    path: ${PROJECT_LOG_PATH:/Users/chenweilong/Desktop/upload/logs/ozygod-pm}
+#    path: ${PROJECT_LOG_PATH:/home/web/logs/ozygod-pm}
+logging:
+  config: classpath:logback-spring.xml
+  path: ${project.log.path}
+
+
 # Spring相关配置
 spring:
   datasource:
@@ -199,7 +207,6 @@ spring:
 # swagger api文档是否启用
 swagger:
   enabled: true
-
 # 机器人系统地址
 robot_url: http://${ROBOT_URL_8692:127.0.0.1}:8692
 # 游戏api地址

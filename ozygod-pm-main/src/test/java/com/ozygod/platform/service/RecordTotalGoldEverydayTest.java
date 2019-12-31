@@ -1,6 +1,4 @@
 package com.ozygod.platform.service;
-import java.util.ArrayList;
-import java.util.Date;
 
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -11,16 +9,16 @@ import com.ozygod.base.enums.AccountRegisterChannel;
 import com.ozygod.main.OzygodPmMainApplication;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblPlayerinfoService;
-import com.ozygod.model.zdlog.entity.TblRecordTotalGoldEverydayEntity;
-import com.ozygod.model.zdlog.service.TblRecordTotalGoldEverydayService;
+import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
+import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author chenweilong
@@ -35,7 +33,7 @@ public class RecordTotalGoldEverydayTest {
     @Autowired
     private TblAccountService tblAccountService;
     @Autowired
-    private TblRecordTotalGoldEverydayService tblRecordTotalGoldEverydayService;
+    private TblRecordChannelDailyService tblRecordChannelDailyService;
     @Autowired
     private TblPlayerinfoService tblPlayerinfoService;
 
@@ -49,7 +47,7 @@ public class RecordTotalGoldEverydayTest {
         AccountRegisterChannel[] accountRegisterChannels = AccountRegisterChannel.values();
         AccountLoginType[] accountLoginTypes = AccountLoginType.values();
 
-        List<TblRecordTotalGoldEverydayEntity> tblRecordTotalGoldEverydayEntities = new ArrayList();
+        List<TblRecordChannelDailyEntity> tblRecordTotalGoldEverydayEntities = new ArrayList();
 
         for (DateTime dateTime2 : dateTimes) {
 
@@ -77,7 +75,7 @@ public class RecordTotalGoldEverydayTest {
                     long totalGold = gold + bankGold;
 
 
-                    TblRecordTotalGoldEverydayEntity tblRecordTotalGoldEverydayEntity = new TblRecordTotalGoldEverydayEntity();
+                    TblRecordChannelDailyEntity tblRecordTotalGoldEverydayEntity = new TblRecordChannelDailyEntity();
                     tblRecordTotalGoldEverydayEntity.setCurrentDates(dateTime);
                     tblRecordTotalGoldEverydayEntity.setGold(gold);
                     tblRecordTotalGoldEverydayEntity.setBankGold(bankGold);
@@ -90,7 +88,7 @@ public class RecordTotalGoldEverydayTest {
             }
         }
 
-        tblRecordTotalGoldEverydayService.saveBatch(tblRecordTotalGoldEverydayEntities,1000);
+        tblRecordChannelDailyService.saveBatch(tblRecordTotalGoldEverydayEntities,1000);
     }
 
 
