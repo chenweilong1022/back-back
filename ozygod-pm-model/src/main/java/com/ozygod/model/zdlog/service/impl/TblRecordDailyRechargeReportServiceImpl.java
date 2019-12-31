@@ -21,7 +21,8 @@ public class TblRecordDailyRechargeReportServiceImpl extends ServiceImpl<TblReco
     public ResponseBO queryPage(TblRecordDailyRechargeReportListDto tblRecordDailyRechargeReport) {
         IPage<TblRecordDailyRechargeReportEntity> page = baseMapper.selectPage(
                 tblRecordDailyRechargeReport.getPage(),
-                new QueryWrapper<TblRecordDailyRechargeReportEntity>()
+                new QueryWrapper<TblRecordDailyRechargeReportEntity>().lambda()
+                .orderByDesc(TblRecordDailyRechargeReportEntity::getCurrentDate)
         );
         return ResponseBO.page(page);
     }
