@@ -30,6 +30,11 @@ public interface TblAccountService extends IService<TblAccountEntity> {
      * @return
      */
     int loginNumber(DateTime begin, DateTime end, DateTime oldTime,List<Long> userIds);
+    /**
+     * 注册
+     * @return
+     */
+    int registerNumber(DateTime begin, DateTime end,List<Long> userIds);
 
 }
 

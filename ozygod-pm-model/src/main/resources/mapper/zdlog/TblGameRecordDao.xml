@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdlog.dao.TblGameRecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdlog.entity.TblGameRecordEntity" id="tblGameRecordMap">
+        <result property="userid" column="userid"/>
+        <result property="id" column="id"/>
+        <result property="roomid" column="roomid"/>
+        <result property="bet" column="bet"/>
+        <result property="beforeBet" column="before_bet"/>
+        <result property="result" column="result"/>
+        <result property="afterBet" column="after_bet"/>
+        <result property="time" column="time"/>
+    </resultMap>
+
+
+</mapper>

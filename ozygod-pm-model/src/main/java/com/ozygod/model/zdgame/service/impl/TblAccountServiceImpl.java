@@ -59,4 +59,15 @@ public class TblAccountServiceImpl extends ServiceImpl<TblAccountDao, TblAccount
         );
         return count;
     }
+
+    @Override
+    public int registerNumber(DateTime begin, DateTime end, List<Long> userIds) {
+        int count = this.count(new QueryWrapper<TblAccountEntity>().lambda()
+                .ge(ObjectUtil.isNotNull(begin),TblAccountEntity::getCreateTime, begin)
+                .le(ObjectUtil.isNotNull(end),TblAccountEntity::getCreateTime, end)
+                .in(CollUtil.isNotEmpty(userIds),TblAccountEntity::getUserid,userIds)
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
+        );
+        return count;
+    }
 }

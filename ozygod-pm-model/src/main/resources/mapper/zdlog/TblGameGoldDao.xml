@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdlog.dao.TblGameGoldDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdlog.entity.TblGameGoldEntity" id="tblGameGoldMap">
+        <result property="userid" column="userid"/>
+        <result property="reason" column="reason"/>
+        <result property="roomid" column="roomid"/>
+        <result property="tableid" column="tableid"/>
+        <result property="seatid" column="seatid"/>
+        <result property="beginGold" column="begin_gold"/>
+        <result property="changeGold" column="change_gold"/>
+        <result property="taxGold" column="tax_gold"/>
+        <result property="endGold" column="end_gold"/>
+        <result property="note" column="note"/>
+        <result property="recordTime" column="record_time"/>
+    </resultMap>
+
+
+</mapper>
