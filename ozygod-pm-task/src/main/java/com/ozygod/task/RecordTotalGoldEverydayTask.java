@@ -1,4 +1,5 @@
 package com.ozygod.task;
+import java.util.Date;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
@@ -10,9 +11,14 @@ import com.ozygod.base.enums.Global;
 import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblPlayerinfoEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
+import com.ozygod.model.zdgame.service.TblOrderService;
 import com.ozygod.model.zdgame.service.TblPlayerinfoService;
+import com.ozygod.model.zdlog.entity.TblGameGoldEntity;
 import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
+import com.ozygod.model.zdlog.service.TblGameGoldService;
 import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
+import com.ozygod.model.zdmanage.entity.TblWithdrawOrderEntity;
+import com.ozygod.model.zdmanage.service.TblWithdrawOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -38,6 +44,12 @@ public class RecordTotalGoldEverydayTask {
     private TblRecordChannelDailyService tblRecordChannelDailyService;
     @Autowired
     private TblPlayerinfoService tblPlayerinfoService;
+    @Autowired
+    private TblOrderService tblOrderService;
+    @Autowired
+    private TblWithdrawOrderService tblWithdrawOrderService;
+    @Autowired
+    private TblGameGoldService tblGameGoldService;
 
     /**
      * 每小时统计一次
@@ -50,7 +62,7 @@ public class RecordTotalGoldEverydayTask {
         /**
          * 今日最后一分钟
          */
-        DateTime dateTime = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
+        DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
 
 
 
@@ -59,7 +71,7 @@ public class RecordTotalGoldEverydayTask {
 
 
         int count = tblRecordChannelDailyService.count(new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
-                .eq(TblRecordChannelDailyEntity::getCurrentDates, dateTime)
+                .eq(TblRecordChannelDailyEntity::getCurrentDates, endOfDay)
         );
 
 
@@ -105,9 +117,52 @@ public class RecordTotalGoldEverydayTask {
                  * 总金币
                  */
                 long totalGold = gold + bankGold;
+                /**
+                 * 今日充值
+                 */
+                int recharge = tblOrderService.recharge(beginOfDay, endOfDay, userids);
+
+                /**
+                 * 今日提现
+                 */
+                List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys = tblWithdrawOrderService.haveWithdrawal(beginOfDay, endOfDay,userids);
+                /**
+                 * 总提现
+                 */
+                int conversion = tblWithdrawOrderService.totalBack(tblWithdrawOrderEntitys);
+                /**
+                 * 今日注册用户
+                 */
+                int registerUsers = tblAccountService.registerNumber(beginOfDay, endOfDay, userids);
+                /**
+                 * 今日登录用户
+                 */
+                int loginUsers = tblAccountService.loginNumber(beginOfDay, endOfDay, null, userids);
+                /**
+                 * 今日营收
+                 */
+                int profit = recharge - conversion;
+                /**
+                 * 今日税收用户
+                 */
+                List<TblGameGoldEntity> tblGameGoldEntities = tblGameGoldService.tblGameGoldEntities(beginOfDay, endOfDay, userids);
+                /**
+                 * 总税收
+                 */
+                long totalRevenue = tblGameGoldService.totalRevenue(tblGameGoldEntities);
+
 
                 TblRecordChannelDailyEntity tblRecordChannelDailyEntity = new TblRecordChannelDailyEntity();
-                tblRecordChannelDailyEntity.setCurrentDates(dateTime);
+                tblRecordChannelDailyEntity.setProfit(profit);
+                tblRecordChannelDailyEntity.setRecharge(recharge);
+                tblRecordChannelDailyEntity.setConversion(conversion);
+                tblRecordChannelDailyEntity.setRegisterUsers(registerUsers);
+                tblRecordChannelDailyEntity.setLoginUsers(loginUsers);
+                tblRecordChannelDailyEntity.setTotalRevenue(totalRevenue);
+                tblRecordChannelDailyEntity.setGameRecord(0);
+                tblRecordChannelDailyEntity.setLastUpdateTime(new Date());
+
+                tblRecordChannelDailyEntity.setCurrentDates(endOfDay);
                 tblRecordChannelDailyEntity.setGold(gold);
                 tblRecordChannelDailyEntity.setBankGold(bankGold);
                 tblRecordChannelDailyEntity.setTotalGold(totalGold);
@@ -124,7 +179,7 @@ public class RecordTotalGoldEverydayTask {
                 tblRecordChannelDailyService.update(tblRecordChannelDailyEntity,new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
                         .eq(TblRecordChannelDailyEntity::getAppChannel,tblRecordChannelDailyEntity.getAppChannel())
                         .eq(TblRecordChannelDailyEntity::getAppChannel,tblRecordChannelDailyEntity.getPlatform())
-                        .eq(TblRecordChannelDailyEntity::getCurrentDates,dateTime)
+                        .eq(TblRecordChannelDailyEntity::getCurrentDates,endOfDay)
                 );
             });
         }else {
