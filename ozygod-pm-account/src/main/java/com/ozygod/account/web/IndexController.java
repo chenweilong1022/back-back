@@ -62,7 +62,7 @@ public class IndexController {
     @Autowired
     private TblRecordRechargeAmountEverydayService tblRecordRechargeAmountEverydayService;
     @Autowired
-    private TblRecordTotalGoldEverydayService tblRecordTotalGoldEverydayService;
+    private TblRecordChannelDailyService tblRecordChannelDailyService;
     @Autowired
     private TblPlayerinfoService tblPlayerinfoService;
 
@@ -463,13 +463,13 @@ public class IndexController {
        totalGoldEverydayStatisticsAllVo.setEndTime(DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.endOfDay(dates.get(dates.size() - 1)))));
        totalGoldEverydayStatisticsAllVo.setXAxis(xAxis);
 
-        List<TblRecordTotalGoldEverydayEntity> newList = tblRecordTotalGoldEverydayService.list(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
-                .eq(TblRecordTotalGoldEverydayEntity::getCurrentDates,totalGoldEverydayStatisticsAllVo.getEndTime())
+        List<TblRecordChannelDailyEntity> newList = tblRecordChannelDailyService.list(new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
+                .eq(TblRecordChannelDailyEntity::getCurrentDates,totalGoldEverydayStatisticsAllVo.getEndTime())
         );
         if (CollUtil.isNotEmpty(newList)) {
-            long gold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getGold).sum();
-            long bankgold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getBankGold).sum();
-            long totalgold = newList.stream().mapToLong(TblRecordTotalGoldEverydayEntity::getTotalGold).sum();
+            long gold = newList.stream().mapToLong(TblRecordChannelDailyEntity::getGold).sum();
+            long bankgold = newList.stream().mapToLong(TblRecordChannelDailyEntity::getBankGold).sum();
+            long totalgold = newList.stream().mapToLong(TblRecordChannelDailyEntity::getTotalGold).sum();
             totalGoldEverydayStatisticsAllVo.setGold(gold);
             totalGoldEverydayStatisticsAllVo.setBankGold(bankgold);
             totalGoldEverydayStatisticsAllVo.setTotalGold(totalgold);
@@ -492,17 +492,17 @@ public class IndexController {
                  * 排序方式根据日期
                  */
                 TotalGoldEverydayStatisticsVo totalGoldEverydayStatisticsVo = new TotalGoldEverydayStatisticsVo();
-                List<TblRecordTotalGoldEverydayEntity> tblRecordTotalGoldEverydayEntities  = tblRecordTotalGoldEverydayService.list(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
-                        .eq(TblRecordTotalGoldEverydayEntity::getAppChannel, accountRegisterChannel.getValue())
-                        .eq(TblRecordTotalGoldEverydayEntity::getPlatform, accountLoginType.getValue())
-                        .ge(TblRecordTotalGoldEverydayEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getStartTime())
-                        .le(TblRecordTotalGoldEverydayEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getEndTime())
-                        .orderByAsc(TblRecordTotalGoldEverydayEntity::getCurrentDates)
+                List<TblRecordChannelDailyEntity> tblRecordChannelDailyEntities  = tblRecordChannelDailyService.list(new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
+                        .eq(TblRecordChannelDailyEntity::getAppChannel, accountRegisterChannel.getValue())
+                        .eq(TblRecordChannelDailyEntity::getPlatform, accountLoginType.getValue())
+                        .ge(TblRecordChannelDailyEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getStartTime())
+                        .le(TblRecordChannelDailyEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getEndTime())
+                        .orderByAsc(TblRecordChannelDailyEntity::getCurrentDates)
                 );
                 /**
                  * 拿到所有的总金币list
                  */
-                List<Long> totalGolds = tblRecordTotalGoldEverydayEntities.stream().map(TblRecordTotalGoldEverydayEntity::getTotalGold).collect(Collectors.toList());
+                List<Long> totalGolds = tblRecordChannelDailyEntities.stream().map(TblRecordChannelDailyEntity::getTotalGold).collect(Collectors.toList());
                 /**
                  * 设置
                  */

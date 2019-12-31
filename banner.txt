@@ -46,67 +46,15 @@ CREATE TABLE `tbl_record_daily_recharge_report` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='每日充值报表';
 
 
-每日充值报表
-日期
-新用户
-新机器
-新绑定
-总注册
-总机器
-登录用户
-老用户
-登录机器
-老登录机器
-总订单
-有效订单
-比例
-新用户充值
-新用户充值人数
-老用户充值
-老用户充值人数
-总充值
-总充值人数
-总返现
-总返现人数
-次留
-充值留存
-周留存
-arpo
-arpu
-arppu
 
-
-current_date
-new_user
-new_machine
-New_binding
-Total_registered
-total_machine
-login_user
-Old_user
-Login_machine
-Old_login_machine
-total_order
-Effective_order
-proportion
-New_user_recharge
-new_users_recharge_Number
-Old_users_recharge
-old_users_recharge_Number
-Total_recharge
-Total_recharge_number
-total_back
-Total_back_number
-morrow_retained
-recharge_retained
-Weeks_retained
-arpo
-arpu
-arppu
-
-
-
-
+ALTER TABLE tbl_record_total_gold_everyday add `profit` varchar(11) DEFAULT NULL COMMENT'营收';
+ALTER TABLE tbl_record_total_gold_everyday add `recharge` varchar(11) DEFAULT NULL COMMENT'充值';
+ALTER TABLE tbl_record_total_gold_everyday add `conversion` varchar(11) DEFAULT NULL COMMENT'兑换';
+ALTER TABLE tbl_record_total_gold_everyday add `register_users` varchar(11) DEFAULT NULL COMMENT'注册用户数';
+ALTER TABLE tbl_record_total_gold_everyday add `login_users` varchar(11) DEFAULT NULL COMMENT'登录用户数';
+ALTER TABLE tbl_record_total_gold_everyday add `total_revenue` varchar(11) DEFAULT NULL COMMENT'总税收';
+ALTER TABLE tbl_record_total_gold_everyday add `game_record` varchar(11) DEFAULT NULL COMMENT'游戏记录';
+ALTER TABLE tbl_record_total_gold_everyday add `last_update_time` varchar(11) DEFAULT NULL COMMENT'最后更新时间';
 
 
 

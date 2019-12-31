@@ -1,4 +1,4 @@
-package com.ozygod.model.zdlog.entity;
+package com.ozygod.model.zdlog.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,17 +13,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 每日总金币统计表
- *
+ * 渠道日报
+ * 
  * @author chenweilong
  * @email 1433471850@qq.com
- * @date 2019-12-20 11:38:17
+ * @date 2019-12-31 11:11:19
  */
 @Data
-@TableName("tbl_record_total_gold_everyday")
-@ApiModel("每日总金币统计表")
+@TableName("tbl_record_channel_daily")
+@ApiModel("渠道日报")
 @Accessors(chain = true)
-public class TblRecordTotalGoldEverydayEntity implements Serializable {
+public class TblRecordChannelDailyListDto extends BaseDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -72,5 +72,45 @@ public class TblRecordTotalGoldEverydayEntity implements Serializable {
 	 */
 	@ApiModelProperty(required=false,value="删除标志")
 	private Integer isDel;
+	/**
+	 * 营收
+	 */
+	@ApiModelProperty(required=false,value="营收")
+	private Integer profit;
+	/**
+	 * 充值
+	 */
+	@ApiModelProperty(required=false,value="充值")
+	private Integer recharge;
+	/**
+	 * 兑换
+	 */
+	@ApiModelProperty(required=false,value="兑换")
+	private Integer conversion;
+	/**
+	 * 注册用户数
+	 */
+	@ApiModelProperty(required=false,value="注册用户数")
+	private Integer registerUsers;
+	/**
+	 * 登录用户数
+	 */
+	@ApiModelProperty(required=false,value="登录用户数")
+	private Integer loginUsers;
+	/**
+	 * 总税收
+	 */
+	@ApiModelProperty(required=false,value="总税收")
+	private Integer totalRevenue;
+	/**
+	 * 游戏记录
+	 */
+	@ApiModelProperty(required=false,value="游戏记录")
+	private Integer gameRecord;
+	/**
+	 * 最后更新时间
+	 */
+	@ApiModelProperty(required=false,value="最后更新时间")
+	private Date lastUpdateTime;
 
 }

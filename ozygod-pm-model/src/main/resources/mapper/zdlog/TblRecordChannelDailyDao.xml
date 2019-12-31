@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ozygod.model.zdlog.dao.TblRecordTotalGoldEverydayDao">
+<mapper namespace="com.ozygod.model.zdlog.dao.TblRecordChannelDailyDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.ozygod.model.zdlog.entity.TblRecordTotalGoldEverydayEntity" id="tblRecordTotalGoldEverydayMap">
+    <resultMap type="com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity" id="tblRecordChannelDailyMap">
         <result property="id" column="id"/>
         <result property="currentDates" column="current_dates"/>
         <result property="gold" column="gold"/>
@@ -14,6 +14,14 @@
         <result property="appChannel" column="app_channel"/>
         <result property="createTime" column="create_time"/>
         <result property="isDel" column="is_del"/>
+        <result property="profit" column="profit"/>
+        <result property="recharge" column="recharge"/>
+        <result property="conversion" column="conversion"/>
+        <result property="registerUsers" column="register_users"/>
+        <result property="loginUsers" column="login_users"/>
+        <result property="totalRevenue" column="total_revenue"/>
+        <result property="gameRecord" column="game_record"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
     </resultMap>
 
 

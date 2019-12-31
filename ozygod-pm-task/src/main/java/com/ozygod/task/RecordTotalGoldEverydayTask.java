@@ -11,8 +11,8 @@ import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblPlayerinfoEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblPlayerinfoService;
-import com.ozygod.model.zdlog.entity.TblRecordTotalGoldEverydayEntity;
-import com.ozygod.model.zdlog.service.TblRecordTotalGoldEverydayService;
+import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
+import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -35,7 +35,7 @@ public class RecordTotalGoldEverydayTask {
     @Autowired
     private TblAccountService tblAccountService;
     @Autowired
-    private TblRecordTotalGoldEverydayService tblRecordTotalGoldEverydayService;
+    private TblRecordChannelDailyService tblRecordChannelDailyService;
     @Autowired
     private TblPlayerinfoService tblPlayerinfoService;
 
@@ -58,14 +58,14 @@ public class RecordTotalGoldEverydayTask {
         AccountLoginType[] accountLoginTypes = AccountLoginType.values();
 
 
-        int count = tblRecordTotalGoldEverydayService.count(new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
-                .eq(TblRecordTotalGoldEverydayEntity::getCurrentDates, dateTime)
+        int count = tblRecordChannelDailyService.count(new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
+                .eq(TblRecordChannelDailyEntity::getCurrentDates, dateTime)
         );
 
 
 
 
-        List<TblRecordTotalGoldEverydayEntity> tblRecordTotalGoldEverydayEntities = new ArrayList();
+        List<TblRecordChannelDailyEntity> tblRecordChannelDailyEntities = new ArrayList();
         for (AccountRegisterChannel accountRegisterChannel : accountRegisterChannels) {
             //暂时不处理其他渠道
             if(accountRegisterChannel.getKey().equals(AccountRegisterChannel.COTHER.getKey())) {
@@ -106,29 +106,29 @@ public class RecordTotalGoldEverydayTask {
                  */
                 long totalGold = gold + bankGold;
 
-                TblRecordTotalGoldEverydayEntity tblRecordTotalGoldEverydayEntity = new TblRecordTotalGoldEverydayEntity();
-                tblRecordTotalGoldEverydayEntity.setCurrentDates(dateTime);
-                tblRecordTotalGoldEverydayEntity.setGold(gold);
-                tblRecordTotalGoldEverydayEntity.setBankGold(bankGold);
-                tblRecordTotalGoldEverydayEntity.setTotalGold(totalGold);
-                tblRecordTotalGoldEverydayEntity.setPlatform(accountLoginType.getValue());
-                tblRecordTotalGoldEverydayEntity.setAppChannel(accountRegisterChannel.getValue());
-                tblRecordTotalGoldEverydayEntities.add(tblRecordTotalGoldEverydayEntity);
+                TblRecordChannelDailyEntity tblRecordChannelDailyEntity = new TblRecordChannelDailyEntity();
+                tblRecordChannelDailyEntity.setCurrentDates(dateTime);
+                tblRecordChannelDailyEntity.setGold(gold);
+                tblRecordChannelDailyEntity.setBankGold(bankGold);
+                tblRecordChannelDailyEntity.setTotalGold(totalGold);
+                tblRecordChannelDailyEntity.setPlatform(accountLoginType.getValue());
+                tblRecordChannelDailyEntity.setAppChannel(accountRegisterChannel.getValue());
+                tblRecordChannelDailyEntities.add(tblRecordChannelDailyEntity);
             }
         }
 
 
 
         if (count > 0) {
-            tblRecordTotalGoldEverydayEntities.forEach(tblRecordTotalGoldEverydayEntity -> {
-                tblRecordTotalGoldEverydayService.update(tblRecordTotalGoldEverydayEntity,new QueryWrapper<TblRecordTotalGoldEverydayEntity>().lambda()
-                        .eq(TblRecordTotalGoldEverydayEntity::getAppChannel,tblRecordTotalGoldEverydayEntity.getAppChannel())
-                        .eq(TblRecordTotalGoldEverydayEntity::getAppChannel,tblRecordTotalGoldEverydayEntity.getPlatform())
-                        .eq(TblRecordTotalGoldEverydayEntity::getCurrentDates,dateTime)
+            tblRecordChannelDailyEntities.forEach(tblRecordChannelDailyEntity -> {
+                tblRecordChannelDailyService.update(tblRecordChannelDailyEntity,new QueryWrapper<TblRecordChannelDailyEntity>().lambda()
+                        .eq(TblRecordChannelDailyEntity::getAppChannel,tblRecordChannelDailyEntity.getAppChannel())
+                        .eq(TblRecordChannelDailyEntity::getAppChannel,tblRecordChannelDailyEntity.getPlatform())
+                        .eq(TblRecordChannelDailyEntity::getCurrentDates,dateTime)
                 );
             });
         }else {
-            tblRecordTotalGoldEverydayService.saveBatch(tblRecordTotalGoldEverydayEntities);
+            tblRecordChannelDailyService.saveBatch(tblRecordChannelDailyEntities);
         }
 
 
