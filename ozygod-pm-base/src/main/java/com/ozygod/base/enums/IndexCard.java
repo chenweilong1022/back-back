@@ -27,7 +27,7 @@ public enum IndexCard implements BaseEnum {
 
     private String icon;
 
-    public static final String DESCRIBE = "1:不是 2:是 ";
+    public static final String DESCRIBE = EnumUtil.describe(IndexCard.values());
 
 
     /**

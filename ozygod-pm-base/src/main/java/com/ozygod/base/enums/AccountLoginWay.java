@@ -26,7 +26,7 @@ public enum AccountLoginWay implements BaseEnum {
     private String loginWay;
 
 
-    public static final String DESCRIBE = "1:不是 2:是 ";
+    public static final String DESCRIBE = EnumUtil.describe(AccountLoginWay.values());
 
 
     /**

@@ -20,6 +20,9 @@ public enum AppPayChannel implements BaseEnum {
     private String value;
 
     private String payChannel;
+
+    public static final String DESCRIBE = EnumUtil.describe(AppPayChannel.values());
+
     /**
      * 内部接口,实现该接口可获得中文描述
      */

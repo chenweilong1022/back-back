@@ -19,7 +19,7 @@ public enum PlayerOnlineStatisticsButtons implements BaseEnum {
     private Integer key;
     private String value;
 
-    public static final String DESCRIBE = "1:不是 2:是 ";
+    public static final String DESCRIBE = EnumUtil.describe(PlayerOnlineStatisticsButtons.values());
 
 
     /**
