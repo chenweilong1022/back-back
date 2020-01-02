@@ -34,12 +34,13 @@ public class TblRecordChannelDailyController {
      */
     @RequestMapping("/list")
     public ResponseBO list(@RequestBody TblRecordChannelDailyListDto tblRecordChannelDaily){
-
         if (ObjectUtil.isNotNull(tblRecordChannelDaily.getCurrentDates())) {
-            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(tblRecordChannelDaily.getCurrentDates()));
+            DateTime date = DateUtil.endOfDay(tblRecordChannelDaily.getCurrentDates());
+            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
             tblRecordChannelDaily.setCurrentDates(endOfDay);
         }else {
-            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.date()));
+            DateTime date = DateUtil.endOfDay(DateUtil.date());
+            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
             tblRecordChannelDaily.setCurrentDates(endOfDay);
         }
         return tblRecordChannelDailyService.queryPage(tblRecordChannelDaily);
