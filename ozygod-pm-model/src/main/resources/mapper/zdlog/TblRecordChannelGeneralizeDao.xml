@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdlog.dao.TblRecordChannelGeneralizeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdlog.entity.TblRecordChannelGeneralizeEntity" id="tblRecordChannelGeneralizeMap">
+        <result property="id" column="id"/>
+        <result property="channel" column="channel"/>
+        <result property="currentDates" column="current_dates"/>
+        <result property="agentUserId" column="agent_user_id"/>
+        <result property="newUser" column="new_user"/>
+        <result property="newEquipment" column="new_equipment"/>
+        <result property="newUserGame" column="new_user_game"/>
+        <result property="newEquipmentGame" column="new_equipment_game"/>
+        <result property="newUserGameRatio" column="new_user_game_ratio"/>
+        <result property="newEquipmentGameRatio" column="new_equipment_game_ratio"/>
+        <result property="activeUsers" column="active_users"/>
+        <result property="activeEquipment" column="active_equipment"/>
+        <result property="newUserRecharge" column="new_user_recharge"/>
+        <result property="newUsersRechargeNumber" column="new_users_recharge_number"/>
+        <result property="newUserRechargeRatio" column="new_user_recharge_ratio"/>
+        <result property="newUserEquipmentRatio" column="new_user_equipment_ratio"/>
+        <result property="newUserConversion" column="new_user_conversion"/>
+        <result property="newUserConversionNumber" column="new_user_conversion_number"/>
+        <result property="todayRecharge" column="today_recharge"/>
+        <result property="todayRechargeNumber" column="today_recharge_number"/>
+        <result property="todayConversion" column="today_conversion"/>
+        <result property="todayConversionNumber" column="today_conversion_number"/>
+        <result property="todayRechargeConversionRatio" column="today_recharge_conversion_ratio"/>
+        <result property="todayRechargeConversionRatioNumber" column="today_recharge_conversion_ratio_number"/>
+        <result property="rechargePoor" column="recharge_poor"/>
+        <result property="createTime" column="create_time"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+
+</mapper>
