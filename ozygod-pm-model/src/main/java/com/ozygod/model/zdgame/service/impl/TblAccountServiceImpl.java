@@ -3,6 +3,7 @@ package com.ozygod.model.zdgame.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ozygod.base.enums.Global;
 import org.springframework.stereotype.Service;
 
@@ -62,12 +63,27 @@ public class TblAccountServiceImpl extends ServiceImpl<TblAccountDao, TblAccount
 
     @Override
     public int registerNumber(DateTime begin, DateTime end, List<Long> userIds) {
-        int count = this.count(new QueryWrapper<TblAccountEntity>().lambda()
-                .ge(ObjectUtil.isNotNull(begin),TblAccountEntity::getCreateTime, begin)
-                .le(ObjectUtil.isNotNull(end),TblAccountEntity::getCreateTime, end)
-                .in(CollUtil.isNotEmpty(userIds),TblAccountEntity::getUserid,userIds)
-                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
+        int count = this.count(
+                queryWrapper(begin,end,userIds)
         );
         return count;
+    }
+
+    @Override
+    public List<TblAccountEntity> registerList(DateTime begin, DateTime end, List<Long> userIds) {
+        List<TblAccountEntity> list = this.list(
+                queryWrapper(begin,end,userIds)
+        );
+        return list;
+    }
+
+
+    private LambdaQueryWrapper queryWrapper(DateTime begin, DateTime end, List<Long> userIds) {
+        LambdaQueryWrapper<TblAccountEntity> gt = new QueryWrapper<TblAccountEntity>().lambda()
+                .ge(ObjectUtil.isNotNull(begin), TblAccountEntity::getCreateTime, begin)
+                .le(ObjectUtil.isNotNull(end), TblAccountEntity::getCreateTime, end)
+                .in(CollUtil.isNotEmpty(userIds), TblAccountEntity::getUserid, userIds)
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID);
+        return gt;
     }
 }

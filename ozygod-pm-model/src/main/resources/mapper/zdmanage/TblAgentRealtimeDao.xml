@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ozygod.model.zdmanage.dao.TblAgentRealtimeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.ozygod.model.zdmanage.entity.TblAgentRealtimeEntity" id="tblAgentRealtimeMap">
+        <result property="userId" column="user_id"/>
+        <result property="superId" column="super_id"/>
+        <result property="totalPerformance" column="total_performance"/>
+        <result property="agentLevel" column="agent_level"/>
+        <result property="ratio" column="ratio"/>
+        <result property="rebate" column="rebate"/>
+        <result property="performance" column="performance"/>
+        <result property="directPerformance" column="direct_performance"/>
+        <result property="teamPerformance" column="team_performance"/>
+        <result property="underCount" column="under_count"/>
+    </resultMap>
+
+
+</mapper>

@@ -35,6 +35,11 @@ public interface TblAccountService extends IService<TblAccountEntity> {
      * @return
      */
     int registerNumber(DateTime begin, DateTime end,List<Long> userIds);
+    /**
+     * 注册根据时间查询注册时间
+     * @return
+     */
+    List<TblAccountEntity> registerList(DateTime begin, DateTime end,List<Long> userIds);
 
 }
 
