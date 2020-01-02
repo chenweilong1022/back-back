@@ -1,5 +1,6 @@
 package com.ozygod.model.zdlog.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -36,6 +37,7 @@ public class TblRecordChannelDailyEntity implements Serializable {
 	 * 日期
 	 */
 	@ApiModelProperty(required=false,value="日期")
+	@JSONField(format = "yyyy-MM-dd")
 	private Date currentDates;
 	/**
 	 * 玩家身上金币
@@ -111,6 +113,7 @@ public class TblRecordChannelDailyEntity implements Serializable {
 	 * 最后更新时间
 	 */
 	@ApiModelProperty(required=false,value="最后更新时间")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date lastUpdateTime;
 
 }

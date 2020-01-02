@@ -1,20 +1,19 @@
-package com.ozygod.model.zdlog.controller;
+package com.ozygod.platform.web;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.model.zdlog.dto.TblRecordChannelDailyListDto;
+import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
+import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
-import com.ozygod.model.zdlog.dto.TblRecordChannelDailyListDto;
-import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
-
+import java.util.Arrays;
 
 
 /**
@@ -35,6 +34,14 @@ public class TblRecordChannelDailyController {
      */
     @RequestMapping("/list")
     public ResponseBO list(@RequestBody TblRecordChannelDailyListDto tblRecordChannelDaily){
+
+        if (ObjectUtil.isNotNull(tblRecordChannelDaily.getCurrentDates())) {
+            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(tblRecordChannelDaily.getCurrentDates()));
+            tblRecordChannelDaily.setCurrentDates(endOfDay);
+        }else {
+            DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(DateUtil.date()));
+            tblRecordChannelDaily.setCurrentDates(endOfDay);
+        }
         return tblRecordChannelDailyService.queryPage(tblRecordChannelDaily);
     }
 

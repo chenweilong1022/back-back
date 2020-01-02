@@ -1,5 +1,6 @@
 package com.ozygod.model.zdlog.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +15,7 @@ import java.util.Date;
 
 /**
  * 渠道日报
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-31 11:11:19
@@ -66,6 +67,7 @@ public class TblRecordChannelDailyListDto extends BaseDto implements Serializabl
 	 * 创建时间
 	 */
 	@ApiModelProperty(required=false,value="创建时间")
+	@JSONField(format = "yyyy-MM-dd")
 	private Date createTime;
 	/**
 	 * 删除标志

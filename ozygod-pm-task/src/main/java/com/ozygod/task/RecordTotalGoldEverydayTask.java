@@ -14,8 +14,10 @@ import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
 import com.ozygod.model.zdgame.service.TblPlayerinfoService;
 import com.ozygod.model.zdlog.entity.TblGameGoldEntity;
+import com.ozygod.model.zdlog.entity.TblGameRecordEntity;
 import com.ozygod.model.zdlog.entity.TblRecordChannelDailyEntity;
 import com.ozygod.model.zdlog.service.TblGameGoldService;
+import com.ozygod.model.zdlog.service.TblGameRecordService;
 import com.ozygod.model.zdlog.service.TblRecordChannelDailyService;
 import com.ozygod.model.zdmanage.entity.TblWithdrawOrderEntity;
 import com.ozygod.model.zdmanage.service.TblWithdrawOrderService;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 每日总金币定时任务
+ * 渠道日报定时任务
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-20 11:41
@@ -50,6 +52,8 @@ public class RecordTotalGoldEverydayTask {
     private TblWithdrawOrderService tblWithdrawOrderService;
     @Autowired
     private TblGameGoldService tblGameGoldService;
+    @Autowired
+    private TblGameRecordService tblGameRecordService;
 
     /**
      * 每小时统计一次
@@ -150,6 +154,14 @@ public class RecordTotalGoldEverydayTask {
                  * 总税收
                  */
                 long totalRevenue = tblGameGoldService.totalRevenue(tblGameGoldEntities);
+                /**
+                 * 游戏记录
+                 */
+                int gameRecord = tblGameRecordService.count(new QueryWrapper<TblGameRecordEntity>().lambda()
+                        .ge(TblGameRecordEntity::getTime, beginOfDay)
+                        .le(TblGameRecordEntity::getTime, endOfDay)
+                        .in(TblGameRecordEntity::getUserid, userids)
+                );
 
 
                 TblRecordChannelDailyEntity tblRecordChannelDailyEntity = new TblRecordChannelDailyEntity();
@@ -159,7 +171,7 @@ public class RecordTotalGoldEverydayTask {
                 tblRecordChannelDailyEntity.setRegisterUsers(registerUsers);
                 tblRecordChannelDailyEntity.setLoginUsers(loginUsers);
                 tblRecordChannelDailyEntity.setTotalRevenue(totalRevenue);
-                tblRecordChannelDailyEntity.setGameRecord(0);
+                tblRecordChannelDailyEntity.setGameRecord(gameRecord);
                 tblRecordChannelDailyEntity.setLastUpdateTime(new Date());
 
                 tblRecordChannelDailyEntity.setCurrentDates(endOfDay);
