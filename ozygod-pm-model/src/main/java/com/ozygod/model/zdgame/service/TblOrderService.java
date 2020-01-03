@@ -34,6 +34,39 @@ public interface TblOrderService extends IService<TblOrderEntity> {
      * @return
      */
     int recharge(DateTime begin, DateTime end, List<Long> userIds);
+    /**
+     * 充值金额
+     * @return
+     */
+    int recharge(List<TblOrderEntity> tblOrderEntities);
+
+
+    /**
+     * 充值用户数量
+     * @return
+     */
+    int rechargeUserCount(DateTime begin, DateTime end, List<Long> userIds);
+    /**
+     * 充值用户数量
+     * @return
+     */
+    int rechargeUserCount(List<TblOrderEntity> tblOrderEntities);
+
+    /**
+     * 充值订单数量
+     * @return
+     */
+    int rechargeOrderCount(DateTime begin, DateTime end, List<Long> userIds);
+    /**
+     * 充值订单数量
+     * @return
+     */
+    int rechargeOrderCount(List<TblOrderEntity> tblOrderEntities);
+    /**
+     * 充值订单列表
+     * @return
+     */
+    List<TblOrderEntity> rechargeOrderList(DateTime begin, DateTime end, List<Long> userIds);
 
 }
 

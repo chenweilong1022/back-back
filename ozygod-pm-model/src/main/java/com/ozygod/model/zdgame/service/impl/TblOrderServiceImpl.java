@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ozygod.base.bo.ResponseBO;
@@ -45,21 +47,57 @@ public class TblOrderServiceImpl extends ServiceImpl<TblOrderDao, TblOrderEntity
 
     @Override
     public int recharge(DateTime begin, DateTime end, List<Long> userIds) {
+        List<TblOrderEntity> tblOrderEntities = rechargeOrderList(begin,end,userIds);
+        return recharge(tblOrderEntities);
+    }
+
+    @Override
+    public int recharge(List<TblOrderEntity> tblOrderEntities) {
         /**
          * 充值金额
+         */
+        int sum = 0;
+        if (CollUtil.isNotEmpty(tblOrderEntities)) {
+            sum = tblOrderEntities.stream().mapToInt(TblOrderEntity::getMoney).sum();
+        }
+        return sum;
+    }
+
+    @Override
+    public int rechargeUserCount(DateTime begin, DateTime end, List<Long> userIds) {
+        List<TblOrderEntity> tblOrderEntities = rechargeOrderList(begin,end,userIds);
+        return rechargeUserCount(tblOrderEntities);
+    }
+
+    @Override
+    public int rechargeUserCount(List<TblOrderEntity> tblOrderEntities) {
+        int count = CollUtil.isNotEmpty(tblOrderEntities) ? tblOrderEntities.stream().map(TblOrderEntity::getUserid).distinct().collect(Collectors.toList()).size() : 0;
+        return count;
+    }
+
+    @Override
+    public int rechargeOrderCount(DateTime begin, DateTime end, List<Long> userIds) {
+        List<TblOrderEntity> tblOrderEntities = rechargeOrderList(begin,end,userIds);
+        return rechargeOrderCount(tblOrderEntities);
+    }
+
+    @Override
+    public int rechargeOrderCount(List<TblOrderEntity> tblOrderEntities) {
+        int count = CollUtil.isNotEmpty(tblOrderEntities) ? tblOrderEntities.size() : 0;
+        return count;
+    }
+
+    @Override
+    public List<TblOrderEntity> rechargeOrderList(DateTime begin, DateTime end, List<Long> userIds) {
+        /**
+         * 根据条件查询订单
          */
         List<TblOrderEntity> list = this.list(new QueryWrapper<TblOrderEntity>().lambda()
                 .ge(ObjectUtil.isNotNull(begin),TblOrderEntity::getPayTime, begin)
                 .le(ObjectUtil.isNotNull(end),TblOrderEntity::getPayTime, end)
                 .in(CollUtil.isNotEmpty(userIds),TblOrderEntity::getUserid,userIds)
         );
-
-        int sum = 0;
-        if (CollUtil.isNotEmpty(list)) {
-            sum = list.stream().mapToInt(TblOrderEntity::getMoney).sum();
-        }
-
-        return sum;
+        return list;
     }
 
 
