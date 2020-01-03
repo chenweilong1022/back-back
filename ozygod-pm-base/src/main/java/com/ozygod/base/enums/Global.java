@@ -11,4 +11,6 @@ public interface Global {
     int REAL_USER_ID = 20000;
     String PROPORTION = "0.00%";
 
+    String FORMAT_PERCENTAGE = "#.##%";
+
 }
