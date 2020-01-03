@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
- * 
+ *
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2020-01-02 14:17:45
@@ -27,9 +27,9 @@ public class TblAgentRealtimeEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
-	@TableId(type = IdType.AUTO)
+//	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")
 	private Long userId;
 	/**

@@ -1,5 +1,8 @@
 package com.ozygod.model.zdlog.dto;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -14,7 +17,7 @@ import java.util.Date;
 
 /**
  * 每日渠道推广统计
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2020-01-02 13:54:15
@@ -162,5 +165,39 @@ public class TblRecordChannelGeneralizeListDto extends BaseDto implements Serial
 	 */
 	@ApiModelProperty(required=false,value="删除标志")
 	private Integer isDel;
+	/**
+	 * 按钮类型
+	 */
+	@ApiModelProperty(required=false,value="按钮类型")
+	private Integer recordchannelgeneralizebuttons;
+	/**
+	 * 渠道类型
+	 */
+	@ApiModelProperty(required=false,value="渠道类型")
+	private Integer accounchannelClassify;
+	/**
+	 * 开始时间
+	 */
+	@ApiModelProperty(required=false,value="开始时间")
+	private DateTime startTime;
+	/**
+	 * 结束时间
+	 */
+	@ApiModelProperty(required=false,value="结束时间")
+	private DateTime endTime;
 
+
+	public void setStartTime(String startTime) {
+		if (StrUtil.isNotBlank(startTime)) {
+			DateTime dateTime = DateUtil.parseDate(startTime);
+			this.startTime = dateTime;
+		}
+	}
+
+	public void setEndTime(String endTime) {
+		if (StrUtil.isNotBlank(endTime)) {
+			DateTime dateTime = DateUtil.parseDate(endTime);
+			this.endTime = dateTime;
+		}
+	}
 }
