@@ -2,8 +2,11 @@ package com.ozygod.base.enums;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.ozygod.base.utils.EnumUtil;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 渠道统计按钮枚举
@@ -38,6 +41,11 @@ public enum RecordChannelGeneralizeButtons implements BaseEnum {
         default String getPlayerOnlineStatisticsButtonsStr() {
             return EnumUtil.queryValueByKey(getPlayerOnlineStatisticsButtons(), RecordChannelGeneralizeButtons.values());
         }
+    }
+
+    public static RecordChannelGeneralizeButtons getByKey(Integer key) {
+        RecordChannelGeneralizeButtons baseEnum1 = Arrays.stream(RecordChannelGeneralizeButtons.values()).filter(baseEnum -> baseEnum.getKey().equals(key)).findAny().orElse(null);
+        return ObjectUtil.isNotNull(baseEnum1) ? baseEnum1 : ONE;
     }
 
     RecordChannelGeneralizeButtons(Integer key, String value,DateTime dateTime) {
