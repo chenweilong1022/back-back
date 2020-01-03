@@ -139,9 +139,9 @@ public class IndexController {
                         .gt(TblOrderEntity::getPayTime, beginOfDay)
                 );
                 if (totalCount == 0) {
-                    value = "0.00%";
+                    value = Global.PROPORTION;
                 }else {
-                    value = NumberUtil.decimalFormat("#.##%", NumberUtil.div(payCount, totalCount));
+                    value = NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE, NumberUtil.div(payCount, totalCount));
                 }
             }else if (key.equals(IndexCard.SEVEN.getKey())) {
                 /**
@@ -174,10 +174,10 @@ public class IndexController {
                 conversion = Integer.valueOf(totalCount - yesterdayOne.getTotalConversion());
             }else if (key.equals(IndexCard.EIGHT.getKey())) {
                 if (recharge == 0) {
-                    value = "0.00%";
+                    value = Global.PROPORTION;
                 }else {
 
-                    value = String.valueOf(NumberUtil.decimalFormat("#.##%", NumberUtil.div(conversion, recharge)));
+                    value = String.valueOf(NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE, NumberUtil.div(conversion, recharge)));
                 }
             }
 
