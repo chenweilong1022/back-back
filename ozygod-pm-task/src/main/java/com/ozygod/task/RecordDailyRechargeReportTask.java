@@ -124,7 +124,7 @@ public class RecordDailyRechargeReportTask {
         String proportion = Global.PROPORTION;
         if (effectiveOrder > 0) {
             double div = NumberUtil.div(effectiveOrder, totalOrder);
-            proportion = NumberUtil.decimalFormat("#.##%", div);
+            proportion = NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE, div);
         }
         /**
          * 新用户
@@ -214,7 +214,7 @@ public class RecordDailyRechargeReportTask {
         String morrowRetained = Global.PROPORTION;
         if (lastDayNewAccountEntitys.size() > 0) {
             double div1 = NumberUtil.div(todayUserRetained, lastDayNewAccountEntitys.size());
-            morrowRetained = NumberUtil.decimalFormat("#.##%",div1);
+            morrowRetained = NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE,div1);
         }
         /**
          * 充值留存率
@@ -222,7 +222,7 @@ public class RecordDailyRechargeReportTask {
         String rechargeRetained = Global.PROPORTION;
         if (lastDayRechargeUsers.size() > 0) {
             double div1 = NumberUtil.div(todayUserRechargeRetained, lastDayRechargeUsers.size());
-            rechargeRetained = NumberUtil.decimalFormat("#.##%",div1);
+            rechargeRetained = NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE,div1);
         }
         /**
          * 今日提现
@@ -240,8 +240,8 @@ public class RecordDailyRechargeReportTask {
          * 查询往日留存记录
          */
         List<TblRecordDailyRechargeReportEntity> weeksRetainedWeeksRetaineds = tblRecordDailyRechargeReportService.list(new QueryWrapper<TblRecordDailyRechargeReportEntity>().lambda()
-                .ge(TblRecordDailyRechargeReportEntity::getCurrentDate, beginOfDay)
-                .le(TblRecordDailyRechargeReportEntity::getCurrentDate, endOfDay)
+                .ge(TblRecordDailyRechargeReportEntity::getCurrentDate, dateTimes.get(0))
+                .le(TblRecordDailyRechargeReportEntity::getCurrentDate, dateTimes.get(dateTimes.size() - 1))
         );
         /**
          * 周留存
@@ -252,7 +252,7 @@ public class RecordDailyRechargeReportTask {
             int weekTodayUserRetained =  weeksRetainedWeeksRetaineds.stream().mapToInt(TblRecordDailyRechargeReportEntity::getTodayUserRetained).sum() + todayUserRetained;
             if (weekNewUserYesterday > 0) {
                 double div = NumberUtil.div(weekTodayUserRetained, weekNewUserYesterday);
-                weeksRetained = NumberUtil.decimalFormat("#.##%",div);
+                weeksRetained = NumberUtil.decimalFormat(Global.FORMAT_PERCENTAGE,div);
             }
         }
 
