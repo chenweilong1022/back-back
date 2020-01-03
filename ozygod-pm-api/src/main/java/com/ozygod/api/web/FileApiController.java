@@ -1,5 +1,7 @@
 package com.ozygod.api.web;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.ResponseCode;
 import com.ozygod.base.utils.Constant;
@@ -81,7 +83,7 @@ public class FileApiController implements Serializable {
      * @return
      */
     @RequestMapping(value = "/download/images/{fileName:.+}", method = RequestMethod.GET)
-    public ResponseBO downloadImage(@PathVariable String fileName, HttpServletResponse response) {
+    public void downloadImage(@PathVariable String fileName, HttpServletResponse response) {
         File file = new File(filesUrl + PREFIX_IMAGE + "/" + fileName);
         if (file.exists()) {
             response.setContentType("application/force-download");
@@ -98,7 +100,6 @@ public class FileApiController implements Serializable {
                     outputStream.write(buffer, 0, i);
                     i = bufferedInputStream.read(buffer);
                 }
-                return new ResponseBO("下载成功");
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
@@ -121,8 +122,6 @@ public class FileApiController implements Serializable {
                 }
             }
         }
-
-        return new ResponseBO("下载失败");
     }
 
     /**
