@@ -120,6 +120,11 @@ public class TblRecordChannelGeneralizeEntity implements Serializable {
 	@ApiModelProperty(required=false,value="新用户兑换人")
 	private Integer newUserConversionNumber;
 	/**
+	 * 新用户充值差
+	 */
+	@ApiModelProperty(required=false,value="新用户充值差")
+	private Integer newUserRechargePoor;
+	/**
 	 * 今日充值
 	 */
 	@ApiModelProperty(required=false,value="今日充值")
