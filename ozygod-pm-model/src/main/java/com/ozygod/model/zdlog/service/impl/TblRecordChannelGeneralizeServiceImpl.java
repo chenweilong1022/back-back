@@ -6,25 +6,24 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.AccounChannelClassify;
 import com.ozygod.base.enums.Global;
 import com.ozygod.base.enums.RecordChannelGeneralizeButtons;
 import com.ozygod.base.utils.OzygodDateUtil;
+import com.ozygod.model.zdlog.dao.TblRecordChannelGeneralizeDao;
+import com.ozygod.model.zdlog.dto.TblRecordChannelGeneralizeListDto;
+import com.ozygod.model.zdlog.entity.TblRecordChannelGeneralizeEntity;
+import com.ozygod.model.zdlog.service.TblRecordChannelGeneralizeService;
 import com.ozygod.model.zdlog.vo.TblRecordChannelGeneralizeTotalVo;
 import com.ozygod.model.zdlog.vo.TblRecordChannelGeneralizeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ozygod.base.bo.ResponseBO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-
-import com.ozygod.model.zdlog.dao.TblRecordChannelGeneralizeDao;
-import com.ozygod.model.zdlog.entity.TblRecordChannelGeneralizeEntity;
-import com.ozygod.model.zdlog.dto.TblRecordChannelGeneralizeListDto;
-import com.ozygod.model.zdlog.service.TblRecordChannelGeneralizeService;
+import java.util.stream.Collectors;
 
 
 @Service("tblRecordChannelGeneralizeService")
@@ -62,16 +61,20 @@ public class TblRecordChannelGeneralizeServiceImpl extends ServiceImpl<TblRecord
                 .eq(ObjectUtil.isNotNull(tblRecordChannelGeneralize.getAgentUserId()), TblRecordChannelGeneralizeEntity::getAgentUserId, tblRecordChannelGeneralize.getAgentUserId())
                 .ge(ObjectUtil.isNotNull(tblRecordChannelGeneralize.getStartTime()), TblRecordChannelGeneralizeEntity::getCurrentDates, tblRecordChannelGeneralize.getStartTime())
                 .le(ObjectUtil.isNotNull(tblRecordChannelGeneralize.getEndTime()), TblRecordChannelGeneralizeEntity::getCurrentDates, tblRecordChannelGeneralize.getEndTime())
+                .orderByDesc(TblRecordChannelGeneralizeEntity::getCurrentDates)
+                .orderByDesc(TblRecordChannelGeneralizeEntity::getNewUser)
                 .eq(StrUtil.isNotBlank(tblRecordChannelGeneralize.getChannel()), TblRecordChannelGeneralizeEntity::getChannel, tblRecordChannelGeneralize.getChannel());
 
-        /**
-         * 分页查询
-         */
-        IPage<TblRecordChannelGeneralizeEntity> page = baseMapper.selectPage(tblRecordChannelGeneralize.getPage(), eq);
         /**
          * 全部查询
          */
         List<TblRecordChannelGeneralizeEntity> tblRecordChannelGeneralizeEntities = baseMapper.selectList(eq);
+
+
+        Page page = tblRecordChannelGeneralize.getPage();
+        page.setTotal(tblRecordChannelGeneralizeEntities.size());
+        List<TblRecordChannelGeneralizeEntity> records = tblRecordChannelGeneralizeEntities.stream().skip((page.getCurrent() - 1) * page.getSize()).limit(page.getSize()).collect(Collectors.toList());
+
 
 
         /**
@@ -110,12 +113,14 @@ public class TblRecordChannelGeneralizeServiceImpl extends ServiceImpl<TblRecord
         tblRecordChannelGeneralizeTotalVo.setTodayRecharge(todayRecharge);
         tblRecordChannelGeneralizeTotalVo.setTodayConversion(todayConversion);
         tblRecordChannelGeneralizeTotalVo.setRechargePoor(rechargePoor);
+
+
         /**
          * 返回参数
          */
         TblRecordChannelGeneralizeVo tblRecordChannelGeneralizeVo = new TblRecordChannelGeneralizeVo();
         tblRecordChannelGeneralizeVo.setTblRecordChannelGeneralizeTotalVo(tblRecordChannelGeneralizeTotalVo);
-        tblRecordChannelGeneralizeVo.setTblRecordChannelGeneralizeEntities(page.getRecords());
+        tblRecordChannelGeneralizeVo.setTblRecordChannelGeneralizeEntities(records);
         ResponseBO page1 = ResponseBO.page(page);
         page1.setData(tblRecordChannelGeneralizeVo);
         return page1;
