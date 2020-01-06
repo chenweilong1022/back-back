@@ -211,6 +211,10 @@ public class TblRecordChannelGeneralizeTask {
              */
             int newUserConversionNumber = tblWithdrawOrderService.totalBackNumber(newUserConversionOrderEntities);
             /**
+             * 新用户充值差
+             */
+            int newUserRechargePoor = newUserRecharge - newUserConversion;
+            /**
              * 该代理所有用户今日充值列表
              */
             List<TblOrderEntity> todayRechargeOrderList = tblOrderService.rechargeOrderList(beginOfDay, endOfDay, userIdsAllByAgent);
@@ -274,6 +278,7 @@ public class TblRecordChannelGeneralizeTask {
 //            tblRecordChannelGeneralizeEntity.setNewUserEquipmentRatio();
             tblRecordChannelGeneralizeEntity.setNewUserConversion(newUserConversion);
             tblRecordChannelGeneralizeEntity.setNewUserConversionNumber(newUserConversionNumber);
+            tblRecordChannelGeneralizeEntity.setNewUserRechargePoor(newUserRechargePoor);
             tblRecordChannelGeneralizeEntity.setTodayRecharge(todayRecharge);
             tblRecordChannelGeneralizeEntity.setTodayRechargeNumber(todayRechargeNumber);
             tblRecordChannelGeneralizeEntity.setTodayConversion(todayConversion);
