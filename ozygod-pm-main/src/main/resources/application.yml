@@ -84,3 +84,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     call-setters-on-nulls: true
+aws:
+  accessKeyId: AKIAVWEF2U46G3NYJHZS
+  secretAccessKey: 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
+  bucket: datong
