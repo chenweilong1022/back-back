@@ -3,6 +3,8 @@ package com.ozygod.base.config;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import software.amazon.awssdk.regions.Region;
 
 /**
  * @author chenweilong
@@ -11,11 +13,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @Accessors(chain = true)
+@Component
 @ConfigurationProperties(prefix="aws")
 public class AwsConfig {
 
     private String accessKeyId;
 
     private String secretAccessKey;
+
+    private String bucket;
+
+    private Region region = Region.AP_NORTHEAST_2;
 
 }
