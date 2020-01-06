@@ -10,51 +10,129 @@ CREATE TABLE `tbl_record_account_online_playing` (
 
 
 
+注册数#tblRecordChannelGeneralizeTotalVo.newUser
+注册充值数#tblRecordChannelGeneralizeTotalVo.newUsersRechargeNumber
+注册充值比例#tblRecordChannelGeneralizeTotalVo.newUserRechargeRatio
+注册用户充值金额#tblRecordChannelGeneralizeTotalVo.newUserRecharge
+总充值#tblRecordChannelGeneralizeTotalVo.todayRecharge
+总兑换#tblRecordChannelGeneralizeTotalVo.todayConversion
+总客损金额#tblRecordChannelGeneralizeTotalVo.rechargePoor
 
-CREATE TABLE `tbl_record_daily_recharge_report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `current_date` varchar(50) DEFAULT NULL COMMENT '日期',
-  `new_user` varchar(50) DEFAULT NULL COMMENT '新用户',
-  `new_machine` varchar(100) DEFAULT NULL COMMENT '新机器',
-  `new_binding` varchar(500) DEFAULT NULL COMMENT '新绑定',
-  `total_registered` varchar(500) DEFAULT NULL COMMENT '总注册',
-  `total_machine` varchar(500) DEFAULT NULL COMMENT '总机器',
-  `login_user` varchar(500) DEFAULT NULL COMMENT '登录用户',
-  `old_user` varchar(500) DEFAULT NULL COMMENT '老用户',
-  `login_machine` varchar(500) DEFAULT NULL COMMENT '登录机器',
-  `old_login_machine` varchar(500) DEFAULT NULL COMMENT '老登录机器',
-  `total_order` varchar(500) DEFAULT NULL COMMENT '总订单',
-  `effective_order` varchar(500) DEFAULT NULL COMMENT '有效订单',
-  `proportion` varchar(500) DEFAULT NULL COMMENT '比例',
-  `new_user_recharge` varchar(500) DEFAULT NULL COMMENT '新用户充值',
-  `new_users_recharge_number` varchar(500) DEFAULT NULL COMMENT '新用户充值人数',
-  `old_users_recharge` varchar(500) DEFAULT NULL COMMENT '老用户充值',
-  `old_users_recharge_number` varchar(500) DEFAULT NULL COMMENT '老用户充值人数',
-  `total_recharge` varchar(500) DEFAULT NULL COMMENT '总充值',
-  `total_recharge_number` varchar(500) DEFAULT NULL COMMENT '总充值人数',
-  `total_back` varchar(500) DEFAULT NULL COMMENT '总返现',
-  `total_back_number` varchar(500) DEFAULT NULL COMMENT '总返现人数',
-  `morrow_retained` varchar(500) DEFAULT NULL COMMENT '次留',
-  `recharge_retained` varchar(500) DEFAULT NULL COMMENT '充值留存',
-  `weeks_retained` varchar(500) DEFAULT NULL COMMENT '周留存',
-  `arpo` varchar(500) DEFAULT NULL COMMENT 'arpo',
-  `arpu` varchar(500) DEFAULT NULL COMMENT 'arpu',
-  `arppu` varchar(500) DEFAULT NULL COMMENT 'arppu',
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='每日充值报表';
+
+CREATE TABLE `tbl_account` (
+  `userid` bigint(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户名',
+  `account` varchar(255) NOT NULL DEFAULT '' COMMENT '昵称',
+  `pwd` varchar(255) NOT NULL DEFAULT '' COMMENT '密码',
+  `channel` varchar(10) NOT NULL DEFAULT '' COMMENT '渠道',
+  `app_channel` varchar(8) NOT NULL DEFAULT '3501',
+  `lock` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '封号时间',
+  `login_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登陆时间',
+  `logout_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '登出时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `token` varchar(255) NOT NULL DEFAULT '' COMMENT 'token',
+  `token_invalid_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'token失效时间',
+  `platform` char(16) NOT NULL DEFAULT '' COMMENT '注册终端',
+  `vip_type` tinyint(2) NOT NULL DEFAULT '0',
+  `vip_invalid_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `auth` (`channel`,`account`)
+) ENGINE=MyISAM AUTO_INCREMENT=20030 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户账号表';
 
 
 
 ALTER TABLE tbl_record_total_gold_everyday add `profit` varchar(11) DEFAULT NULL COMMENT'营收';
 ALTER TABLE tbl_record_total_gold_everyday add `recharge` varchar(11) DEFAULT NULL COMMENT'充值';
-ALTER TABLE tbl_record_total_gold_everyday add `conversion` varchar(11) DEFAULT NULL COMMENT'兑换';
-ALTER TABLE tbl_record_total_gold_everyday add `register_users` varchar(11) DEFAULT NULL COMMENT'注册用户数';
-ALTER TABLE tbl_record_total_gold_everyday add `login_users` varchar(11) DEFAULT NULL COMMENT'登录用户数';
-ALTER TABLE tbl_record_total_gold_everyday add `total_revenue` varchar(11) DEFAULT NULL COMMENT'总税收';
-ALTER TABLE tbl_record_total_gold_everyday add `game_record` varchar(11) DEFAULT NULL COMMENT'游戏记录';
-ALTER TABLE tbl_record_total_gold_everyday add `last_update_time` varchar(11) DEFAULT NULL COMMENT'最后更新时间';
+
+id
+渠道
+日期
+推广id
+新用户
+新设备
+新用户游戏
+新设备游戏
+新用户游戏比
+新设备游戏比
+活跃用户
+活跃设备
+新用户充值
+新用户充值人数
+新用户充值比例
+新用户机器比例
+新用户兑换
+新用户兑换人
+今日充值
+今日充值人数
+今日兑换
+今日兑换人数
+今日充值兑换比例
+今日充值兑换人数比例
+充值差
+
+
+id
+channel
+current_dates
+agent_user_id
+new_user
+new_equipment
+new_user_game
+new_equipment_game
+new_user_game_ratio
+new_equipment_game_ratio
+active_users
+active_equipment
+new_user_recharge
+new_users_recharge_number
+new_user_recharge_ratio
+new_user_equipment_ratio
+new_user_conversion
+new_user_conversion_number
+today_recharge
+today_recharge_number
+today_conversion
+today_conversion_number
+today_recharge_conversion_ratio
+today_recharge_conversion_ratio_number
+recharge_poor
+
+ALTER TABLE tbl_record_channel_generalize add `new_user_recharge_poor` varchar(500) DEFAULT NULL COMMENT '新用户充值差';
+
+
+
+
+
+CREATE TABLE `tbl_record_channel_generalize` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `channel` varchar(50) DEFAULT NULL COMMENT '渠道',
+  `current_dates` varchar(50) DEFAULT NULL COMMENT '日期',
+  `agent_user_id` varchar(100) DEFAULT NULL COMMENT '推广id',
+  `new_user` varchar(500) DEFAULT NULL COMMENT '新用户',
+  `new_equipment` varchar(500) DEFAULT NULL COMMENT '新设备',
+  `new_user_game` varchar(500) DEFAULT NULL COMMENT '新用户游戏',
+  `new_equipment_game` varchar(500) DEFAULT NULL COMMENT '新设备游戏',
+  `new_user_game_ratio` varchar(500) DEFAULT NULL COMMENT '新用户游戏比',
+  `new_equipment_game_ratio` varchar(500) DEFAULT NULL COMMENT '新设备游戏比',
+  `active_users` varchar(500) DEFAULT NULL COMMENT '活跃用户',
+  `active_equipment` varchar(500) DEFAULT NULL COMMENT '活跃设备',
+  `new_user_recharge` varchar(500) DEFAULT NULL COMMENT '新用户充值',
+  `new_users_recharge_number` varchar(500) DEFAULT NULL COMMENT '新用户充值人数',
+  `new_user_recharge_ratio` varchar(500) DEFAULT NULL COMMENT '新用户充值比例',
+  `new_user_equipment_ratio` varchar(500) DEFAULT NULL COMMENT '新用户机器比例',
+  `new_user_conversion` varchar(500) DEFAULT NULL COMMENT '新用户兑换',
+  `new_user_conversion_number` varchar(500) DEFAULT NULL COMMENT '新用户兑换人',
+  `new_user_recharge_poor` varchar(500) DEFAULT NULL COMMENT '新用户充值差'
+  `today_recharge` varchar(500) DEFAULT NULL COMMENT '今日充值',
+  `today_recharge_number` varchar(500) DEFAULT NULL COMMENT '今日充值人数',
+  `today_conversion` varchar(500) DEFAULT NULL COMMENT '今日兑换',
+  `today_conversion_number` varchar(500) DEFAULT NULL COMMENT '今日兑换人数',
+  `today_recharge_conversion_ratio` varchar(500) DEFAULT NULL COMMENT '今日充值兑换比例',
+  `today_recharge_conversion_ratio_number` varchar(500) DEFAULT NULL COMMENT '今日充值兑换人数比例',
+  `recharge_poor` varchar(500) DEFAULT NULL COMMENT '充值差',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='每日渠道推广统计';
 
 
 

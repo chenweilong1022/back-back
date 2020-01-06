@@ -67,6 +67,13 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.10.42</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.ozygod</groupId>
 				<artifactId>ozygod-pm-main</artifactId>
 				<version>${ozygod.version}</version>
@@ -166,6 +173,10 @@
 
 	<!-- 指定项目中的公有依赖 -->
 	<dependencies>
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>s3</artifactId>
+			</dependency>
 		<dependency>
 			<groupId>com.warrenstrange</groupId>
 			<artifactId>googleauth</artifactId>
@@ -193,6 +204,7 @@
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>${mybatis-plus-boot-starter.version}</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>cn.hutool</groupId>
