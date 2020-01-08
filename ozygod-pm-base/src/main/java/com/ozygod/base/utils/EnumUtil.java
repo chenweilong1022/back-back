@@ -20,7 +20,7 @@ public class EnumUtil {
     }
 
     public static String describe(BaseEnum[] baseEnums) {
-        String describe = enumToVo(IndexCard.values()).stream().map(enumVo -> enumVo.getKey() + ":" + enumVo.getValue() + " ,").collect(Collectors.joining());
+        String describe = enumToVo(baseEnums).stream().map(enumVo -> enumVo.getKey() + ":" + enumVo.getValue() + " ,").collect(Collectors.joining());
         return describe;
     }
 

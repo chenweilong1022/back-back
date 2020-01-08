@@ -1,10 +1,15 @@
 package com.ozygod.base.utils;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.http.HttpUtil;
 import com.ozygod.base.redis.StringRedisDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 /**
  * @title:
@@ -34,7 +39,8 @@ public class WeChatUtil {
      */
     private static final String accessTokenKey = "accessToken";
 
-    private static final String weibourl = "http://maiyurl.cn/weibourl?url_long=%s";
+//    private static final String weibourl = "http://maiyurl.cn/weibourl?url_long=%s";
+    private static final String weibourl = "http://mrw.so/api.htm?url=%s&key=5e13f75e44bb35504c95a497@de6946de2e3f0b436670c84992f25788&expireDate=%s";
 
     /**
      * 19-12-09
@@ -44,15 +50,20 @@ public class WeChatUtil {
      * @return
      */
     public String getWeChatShortUrl(String longUrl) {
+
+        DateTime dateTime = DateUtil.offsetDay(new Date(), 7);
+        String date = DateUtil.format(dateTime, "yyyy-MM-dd");
+
+
         // 先检查longUrl是否已经有对应的shortUrl
         String shortUrl = stringRedisDao.readStr(longUrl);
         if (!CommonUtil.isEmptyStr(shortUrl)) {
             return shortUrl;
         }
 
-        String url = String.format(weibourl, longUrl);
+        String url = String.format(weibourl, longUrl,date);
 
-        shortUrl = HttpRequestUtil.sendGet(url);
+        shortUrl = HttpUtil.get(url);
 
         if (!CommonUtil.isEmptyStr(shortUrl)) {
             stringRedisDao.saveStr(longUrl, shortUrl, 3600 * 24);
