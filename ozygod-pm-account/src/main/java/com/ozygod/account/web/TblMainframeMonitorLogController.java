@@ -68,9 +68,9 @@ public class TblMainframeMonitorLogController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
-    public ResponseBO delete(@RequestBody Integer[] ids){
-			tblMainframeMonitorLogService.removeByIds(Arrays.asList(ids));
+    @RequestMapping("/delete/{id}")
+    public ResponseBO delete(@PathVariable("id") Integer id){
+			tblMainframeMonitorLogService.removeById(id);
 
         return ResponseBO.ok();
     }

@@ -54,6 +54,7 @@
 		<module>ozygod-pm-base</module>
 		<module>ozygod-pm-model</module>
 		<module>ozygod-pm-api</module>
+		<module>ozygod-pm-spread</module>
 		<module>ozygod-pm-account</module>
 		<module>ozygod-pm-robot</module>
 		<module>ozygod-pm-player</module>
@@ -128,11 +129,11 @@
 				<artifactId>ozygod-pm-platform</artifactId>
 				<version>${ozygod.version}</version>
 			</dependency>
-			<!--<dependency>-->
-				<!--<groupId>com.ozygod</groupId>-->
-				<!--<artifactId>ozygod-pm-spread</artifactId>-->
-				<!--<version>${ozygod.version}</version>-->
-			<!--</dependency>-->
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-spread</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>com.spring4all</groupId>

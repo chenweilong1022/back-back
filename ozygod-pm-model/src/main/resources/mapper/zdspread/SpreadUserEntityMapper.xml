@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ozygod.model.zdspread.dao.SpreadUserEntityMapper">
+  <resultMap id="BaseResultMap" type="com.ozygod.model.zdspread.entity.SpreadUserEntity">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="login_pwd" jdbcType="CHAR" property="loginPwd" />
+    <result column="show_name" jdbcType="VARCHAR" property="showName" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="ratio" jdbcType="INTEGER" property="ratio" />
+    <result column="qq" jdbcType="VARCHAR" property="qq" />
+    <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+    <result column="amount" jdbcType="DOUBLE" property="amount" />
+    <result column="gold" jdbcType="BIGINT" property="gold" />
+    <result column="diamond" jdbcType="INTEGER" property="diamond" />
+    <result column="gold_ratio" jdbcType="INTEGER" property="goldRatio" />
+    <result column="LOGIN_CODE" jdbcType="INTEGER" property="loginCode" />
+    <result column="CODE_TIME" jdbcType="TIMESTAMP" property="codeTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ozygod.model.zdspread.entity.SpreadUserEntity">
+    insert into tbl_spread_users (id, login_name, login_pwd,
+      show_name, parent_id, ratio,
+      qq, weixin, amount,
+      gold, diamond, gold_ratio,
+      LOGIN_CODE, CODE_TIME)
+    values (#{id,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR},
+      #{showName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER},
+      #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, #{amount,jdbcType=DOUBLE},
+      #{gold,jdbcType=BIGINT}, #{diamond,jdbcType=INTEGER}, #{goldRatio,jdbcType=INTEGER},
+      #{loginCode,jdbcType=INTEGER}, #{codeTime,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="listSpreadUserByQry" parameterType="com.ozygod.model.zdspread.dto.SpreadUserDto" resultType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+      SELECT
+        t1.*,
+        t2.underSpreadCount,
+        t3.playerCount
+      FROM
+        tbl_spread_users t1
+      LEFT JOIN ( SELECT t.parent_id, count( 1 ) underSpreadCount FROM tbl_spread_users t GROUP BY t.parent_id ) t2 ON t1.id = t2.parent_id
+      LEFT JOIN ( SELECT t.saler, count( 1 ) playerCount FROM zdgame.tbl_account t GROUP BY t.saler ) t3 ON t1.id = t3.saler
+     where 1=1
+     <if test="spreadUserId != null">
+       and t1.id = #{spreadUserId, jdbcType=INTEGER}
+     </if>
+     <if test="superId != null">
+       and t1.parent_id = #{superId, jdbcType=INTEGER}
+     </if>
+     <if test="ratio != null and ratio == 0">
+       and t1.ratio = #{ratio, jdbcType=INTEGER}
+     </if>
+    ORDER BY t1.id ASC
+     <if test="pageSize > 0">
+       limit #{start}, #{pageSize}
+     </if>
+  </select>
+  <select id="totalSpreadUserByQry" parameterType="com.ozygod.model.zdspread.dto.SpreadUserDto" resultType="int">
+    select COUNT(1)
+     from tbl_spread_users
+     where 1=1
+     <if test="spreadUserId != null">
+       and id = #{spreadUserId, jdbcType=INTEGER}
+     </if>
+     <if test="superId != null">
+       and parent_id = #{superId, jdbcType=INTEGER}
+     </if>
+      <if test="ratio != null and ratio == 0">
+        and ratio = #{ratio, jdbcType=INTEGER}
+      </if>
+  </select>
+  <select id="spreadUserlogin" parameterType="com.ozygod.model.zdspread.dto.SpreadUserDto" resultType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    select id
+     from tbl_spread_users
+     where login_name = #{loginName, jdbcType=VARCHAR}
+     and login_pwd = #{loginPwd,jdbcType=CHAR}
+     and ratio > 0
+     limit 1
+  </select>
+  <select id="getSpreadUserByQry" parameterType="com.ozygod.model.zdspread.dto.SpreadUserDto" resultType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    select t1.*,t2.playerCount
+    from tbl_spread_users t1
+		 left join (
+			select t.saler,count(1) playerCount from zdgame.tbl_account t group by t.saler
+		 ) t2 on t1.id = t2.saler
+     where t1.id = #{spreadUserId, jdbcType=INTEGER}
+     and t1.ratio > 0
+     limit 1
+  </select>
+
+  <update id="changePassword" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    update tbl_spread_users set login_pwd = #{newPassword,jdbcType=CHAR}
+    where id = #{id, jdbcType=INTEGER}
+     and login_pwd = #{oldPassword,jdbcType=CHAR}
+  </update>
+
+  <update id="resetPassword" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    update tbl_spread_users set login_pwd = #{newPassword,jdbcType=CHAR}
+    where id = #{id, jdbcType=INTEGER}
+  </update>
+
+  <update id="resetSpreadUserRatio" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    update tbl_spread_users set ratio = #{ratio,jdbcType=INTEGER}
+    where id = #{id, jdbcType=INTEGER}
+  </update>
+
+  <update id="updateSpreadUser" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    update tbl_spread_users set ratio = #{ratio,jdbcType=INTEGER}
+    where id = #{id, jdbcType=INTEGER}
+  </update>
+
+  <update id="changeSpreadUserDiamond" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+    update tbl_spread_users set diamond = #{diamond,jdbcType=INTEGER}
+    where id = #{id, jdbcType=INTEGER}
+  </update>
+
+  <select id="cancelSpreadUserById" parameterType="java.lang.Integer" resultType="int" statementType="CALLABLE">
+    call sp_cancel_spreader_by_id(#{spreadUserId, jdbcType=INTEGER})
+  </select>
+
+  <select id="addSpreadUserProc" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO" resultType="int">
+    call sp_spread_add_new(#{id,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR},
+      #{showName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER},
+      #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, #{goldRatio,jdbcType=INTEGER})
+  </select>
+
+  <insert id="addSpreadUser" parameterType="com.ozygod.model.zdspread.bo.SpreadUserBO">
+      INSERT INTO tbl_spread_users
+      (id,login_name,login_pwd,show_name,parent_id,ratio,qq,weixin,amount,gold_ratio)
+      VALUES
+       (#{id,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=CHAR},
+      #{showName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER},
+      #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, 0, #{goldRatio,jdbcType=INTEGER})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ozygod.model.zdspread.entity.SpreadUserEntity">
+    insert into tbl_spread_users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="loginPwd != null">
+        login_pwd,
+      </if>
+      <if test="showName != null">
+        show_name,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="ratio != null">
+        ratio,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="weixin != null">
+        weixin,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="gold != null">
+        gold,
+      </if>
+      <if test="diamond != null">
+        diamond,
+      </if>
+      <if test="goldRatio != null">
+        gold_ratio,
+      </if>
+      <if test="loginCode != null">
+        LOGIN_CODE,
+      </if>
+      <if test="codeTime != null">
+        CODE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        #{loginPwd,jdbcType=CHAR},
+      </if>
+      <if test="showName != null">
+        #{showName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        #{ratio,jdbcType=INTEGER},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null">
+        #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="gold != null">
+        #{gold,jdbcType=BIGINT},
+      </if>
+      <if test="diamond != null">
+        #{diamond,jdbcType=INTEGER},
+      </if>
+      <if test="goldRatio != null">
+        #{goldRatio,jdbcType=INTEGER},
+      </if>
+      <if test="loginCode != null">
+        #{loginCode,jdbcType=INTEGER},
+      </if>
+      <if test="codeTime != null">
+        #{codeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>
