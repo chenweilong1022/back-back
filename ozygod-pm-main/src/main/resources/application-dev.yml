@@ -10,8 +10,8 @@ project:
     port: ${PROJECT_REDIS_PORT:6379}
     password: ${PROJECT_REDIS_PASSWORD:}
   log:
-    path: ${PROJECT_LOG_PATH:/Users/chenweilong/Desktop/upload/logs/ozygod-pm}
-#    path: ${PROJECT_LOG_PATH:/home/web/logs/ozygod-pm}
+#    path: ${PROJECT_LOG_PATH:/Users/chenweilong/Desktop/upload/logs/ozygod-pm}
+    path: ${PROJECT_LOG_PATH:/home/web/logs/ozygod-pm}
 logging:
   config: classpath:logback-spring.xml
   path: ${project.log.path}

@@ -8,7 +8,7 @@ package com.ozygod.base.enums;
 public interface Global {
 
 
-    int REAL_USER_ID = 20000;
+    int REAL_USER_ID = 10000;
     String PROPORTION = "0.00%";
 
     String FORMAT_PERCENTAGE = "#.##%";

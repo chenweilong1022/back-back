@@ -1,9 +1,6 @@
 package com.ozygod.platform.service;
-import java.util.ArrayList;
-import java.util.Date;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
@@ -13,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ozygod.base.enums.AccountLoginType;
 import com.ozygod.base.enums.AccountRegisterChannel;
 import com.ozygod.base.enums.AppPayChannel;
+import com.ozygod.base.enums.Global;
 import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.vo.EnumVo;
 import com.ozygod.main.OzygodPmMainApplication;
@@ -29,8 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +61,7 @@ public class TblOrderTest {
 
 
         List<TblAccountEntity> list = tblAccountService.list(new QueryWrapper<TblAccountEntity>().lambda()
-                .gt(TblAccountEntity::getUserid, 20000)
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
                 .eq(TblAccountEntity::getAppChannel, AccountRegisterChannel.C3521.getValue())
         );
 
@@ -152,7 +151,7 @@ public class TblOrderTest {
                      * 获取当前渠道 当前登录方式的用户
                      */
                     List<TblAccountEntity> list = tblAccountService.list(new QueryWrapper<TblAccountEntity>().lambda()
-                            .gt(TblAccountEntity::getUserid, 20000)
+                            .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
                             .eq(TblAccountEntity::getAppChannel, accountRegisterChannel.getValue())
                             .eq(TblAccountEntity::getPlatform, accountLoginType.getValue())
                     );
