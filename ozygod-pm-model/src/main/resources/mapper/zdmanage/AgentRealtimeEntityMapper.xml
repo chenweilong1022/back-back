@@ -14,7 +14,7 @@
     <result column="under_count" jdbcType="INTEGER" property="underCount" />
   </resultMap>
   <sql id="Base_Column_List">
-    user_id, super_id, total_performance, agent_level, ratio, rebate, performance, direct_performance, 
+    user_id, super_id, total_performance, agent_level, ratio, rebate, performance, direct_performance,
     team_performance, under_count
   </sql>
 
@@ -24,7 +24,7 @@
     from tbl_agent_realtime t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.performance >= 0 or t1.direct_performance >= 0 or t1.team_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
@@ -49,7 +49,7 @@
     from tbl_agent_realtime t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.performance >= 0 or t1.direct_performance >= 0 or t1.team_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
@@ -65,7 +65,7 @@
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_agent_realtime
     where user_id = #{userId,jdbcType=BIGINT}
@@ -75,13 +75,13 @@
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
-    insert into tbl_agent_realtime (user_id, super_id, total_performance, 
-      agent_level, ratio, rebate, 
-      performance, direct_performance, team_performance, 
+    insert into tbl_agent_realtime (user_id, super_id, total_performance,
+      agent_level, ratio, rebate,
+      performance, direct_performance, team_performance,
       under_count)
-    values (#{userId,jdbcType=BIGINT}, #{superId,jdbcType=BIGINT}, #{totalPerformance,jdbcType=BIGINT}, 
-      #{agentLevel,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER}, #{rebate,jdbcType=BIGINT}, 
-      #{performance,jdbcType=BIGINT}, #{directPerformance,jdbcType=BIGINT}, #{teamPerformance,jdbcType=BIGINT}, 
+    values (#{userId,jdbcType=BIGINT}, #{superId,jdbcType=BIGINT}, #{totalPerformance,jdbcType=BIGINT},
+      #{agentLevel,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER}, #{rebate,jdbcType=BIGINT},
+      #{performance,jdbcType=BIGINT}, #{directPerformance,jdbcType=BIGINT}, #{teamPerformance,jdbcType=BIGINT},
       #{underCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.AgentRealtimeEntity">
