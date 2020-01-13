@@ -3,7 +3,6 @@ package com.ozygod.model.zdlog.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ozygod.base.dto.BaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +13,7 @@ import java.util.Date;
 
 /**
  * 用户每日登录记录
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2019-12-18 18:16:55
