@@ -1,9 +1,9 @@
 package com.ozygod.model.zdmanage.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ozygod.base.dto.BaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * 系统日志
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2020-01-14 14:35:49
@@ -27,7 +27,7 @@ public class TblSysLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")
@@ -86,6 +86,7 @@ public class TblSysLogEntity implements Serializable {
 	 * 创建时间
 	 */
 	@ApiModelProperty(required=false,value="创建时间")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	/**
 	 * 删除标志

@@ -1,20 +1,16 @@
-package com.ozygod.model.zdmanage.controller;
+package com.ozygod.account.web;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.model.zdmanage.dto.TblSysLogListDto;
+import com.ozygod.model.zdmanage.entity.TblSysLogEntity;
+import com.ozygod.model.zdmanage.service.TblSysLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ozygod.model.zdmanage.entity.TblSysLogEntity;
-import com.ozygod.model.zdmanage.dto.TblSysLogListDto;
-import com.ozygod.model.zdmanage.service.TblSysLogService;
-
+import java.util.Arrays;
 
 
 /**
