@@ -110,7 +110,7 @@ public class WebLogAspect {
                 tblSysLogEntity.setUserId(Integer.valueOf(accessToken.getUserid()));
                 tblSysLogEntity.setUsername(accessToken.getLoginname());
             }
-            tblSysLogEntity.setTime((System.currentTimeMillis() - START_TIME.get()) / 1000);
+            tblSysLogEntity.setTime((System.currentTimeMillis() - START_TIME.get()));
             tblSysLogEntity.setResult(String.valueOf(object));
 
             addSysLog(tblSysLogEntity);
