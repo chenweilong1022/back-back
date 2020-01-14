@@ -2,10 +2,13 @@ package com.ozygod.conf.configuration.dataSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ozygod.conf.configuration.MybatisSqlSessionFactoryBeanConfig;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,9 @@ public class ZdLogDataSourceConfig {
     static final String PACKAGES = "com.ozygod.model.zdlog.dao";
     private static final String MAPPER_LOCAL = "classpath:mapper/zdlog/*.xml";
 
+    @Autowired
+    private PaginationInterceptor page;
+
     @Bean(name = "zdlogDataSource")
     @ConfigurationProperties(prefix = ZDLOG_PREFIX)
     public DataSource druidDataSource(){
@@ -42,17 +48,7 @@ public class ZdLogDataSourceConfig {
 
     @Bean(name = "zdlogSqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(@Qualifier("zdlogDataSource") DataSource dataSource) throws Exception {
-        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(dataSource);
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(MAPPER_LOCAL));
-
-        MybatisConfiguration configuration = new MybatisConfiguration();
-        configuration.setMapUnderscoreToCamelCase(true);
-        configuration.setUseGeneratedKeys(true);
-        configuration.setLogPrefix("dao.");
-        configuration.setUseColumnLabel(true);
-        configuration.setCallSettersOnNulls(true);
-        sqlSessionFactoryBean.setConfiguration(configuration);
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = MybatisSqlSessionFactoryBeanConfig.getMybatisSqlSessionFactoryBean(dataSource, MAPPER_LOCAL, page);
 
         return sqlSessionFactoryBean.getObject();
     }
