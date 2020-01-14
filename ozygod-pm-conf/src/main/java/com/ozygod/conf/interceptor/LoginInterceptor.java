@@ -1,8 +1,10 @@
 package com.ozygod.conf.interceptor;
 
+import cn.hutool.core.date.DateUtil;
 import com.ozygod.base.auth.AccessToken;
 import com.ozygod.base.auth.AccessTokenUtil;
 import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.base.enums.Global;
 import com.ozygod.base.enums.ResponseCode;
 import com.ozygod.base.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @title:
@@ -21,10 +24,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
+
+
+    private static final ThreadLocal<AccessToken> ACCESS_LOG = new ThreadLocal<>();
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("X-Token");
-        log.debug("用户请求鉴权token = {}", token);
+        log.debug("用户请求鉴权token = {} currentTime = {}", token, DateUtil.formatDateTime(new Date()));
 
         if(StringUtils.isNotEmpty(token))   {
             String loginfrom = request.getHeader("loginFrom");
@@ -36,6 +43,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 } else {
                     AccessTokenUtil.resetAccessToken(accessToken, loginfrom);
                 }
+                request.setAttribute(Global.ACCESS_TOKEN_REQUEST_KEY,accessToken);
                 return true;
             }
         }
@@ -44,4 +52,5 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         response.getWriter().write(JsonUtil.toJSONString(bo, true));
         return false;
     }
+
 }

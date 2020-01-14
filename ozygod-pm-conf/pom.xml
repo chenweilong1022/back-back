@@ -21,6 +21,10 @@
 			<groupId>com.ozygod</groupId>
 			<artifactId>ozygod-pm-base</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.ozygod</groupId>
+			<artifactId>ozygod-pm-model</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
