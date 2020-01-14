@@ -13,4 +13,6 @@ public interface Global {
 
     String FORMAT_PERCENTAGE = "#.##%";
 
+    String ACCESS_TOKEN_REQUEST_KEY = "ACCESS_TOKEN_REQUEST_KEY";
+
 }
