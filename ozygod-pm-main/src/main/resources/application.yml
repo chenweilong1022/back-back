@@ -15,8 +15,8 @@ server:
 # Swagger配置
 # 通过链接[http://ip:port/swagger-ui.html]访问
 swagger:
-  title: 游戏平台管理API文档
-  description: 游戏平台管理API文档
+  title: 游戏平台管理API文档1
+  description: 游戏平台管理API文档1
   version: 1.0.0
   license: Apache License, Version 2.0
   license-url: https://www.apache.org/licenses/LICENSE-2.0.html
