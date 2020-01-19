@@ -42,7 +42,8 @@ public class TblAccountServiceImpl extends ServiceImpl<TblAccountDao, TblAccount
          * 在线数
          */
         int onlineNumber = this.count(new QueryWrapper<TblAccountEntity>().lambda()
-                .notIn(TblAccountEntity::getLoginTime, "1970-01-01 00:00:00")
+//                .notIn(TblAccountEntity::getLoginTime, "1970-01-01 00:00:00")
+                .isNotNull(TblAccountEntity::getLoginTime)
                 .last(" and logout_time < login_time")
                 .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
         );
