@@ -14,7 +14,10 @@ public enum GameGoldReason implements BaseEnum {
 
     ONE(1,"签到奖励"),
     TWO(2,"首充返现"),
-    THREE(3,"充值返现");
+    THREE(3,"充值返现"),
+    FOUR(4,"邀请有礼"),
+    FIVE(5,"代理奖上奖"),
+    SIX(6,"每日闯关奖");
 
     private Integer key;
     private String value;
