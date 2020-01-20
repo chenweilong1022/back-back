@@ -13,8 +13,6 @@ import com.ozygod.model.zdlog.dao.TblGameGoldDao;
 import com.ozygod.model.zdlog.dto.TblGameGoldListDto;
 import com.ozygod.model.zdlog.entity.TblGameGoldEntity;
 import com.ozygod.model.zdlog.service.TblGameGoldService;
-import com.ozygod.model.zdlog.vo.TblGameGoldEntityPageVo;
-import com.ozygod.model.zdlog.vo.TblGameGoldEntityTotalVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +30,9 @@ public class TblGameGoldServiceImpl extends ServiceImpl<TblGameGoldDao, TblGameG
 
         List<TblGameGoldEntity> tblGameGoldEntities = baseMapper.selectList(new QueryWrapper<TblGameGoldEntity>().lambda()
                 .eq(StrUtil.isNotBlank(value), TblGameGoldEntity::getReason, value)
+                .ge(TblGameGoldEntity::getRecordTime,tblGameGold.getStartTime())
+                .le(TblGameGoldEntity::getRecordTime,tblGameGold.getEndTime())
         );
-
 
         /**
          * 分页
@@ -42,29 +41,17 @@ public class TblGameGoldServiceImpl extends ServiceImpl<TblGameGoldDao, TblGameG
         page.setTotal(tblGameGoldEntities.size());
         List<TblGameGoldEntity> records = tblGameGoldEntities.stream().skip((page.getCurrent() - 1) * page.getSize()).limit(page.getSize()).collect(Collectors.toList());
 
-
         long changeGold = 0L;
 
         if (CollUtil.isNotEmpty(records)) {
-            changeGold = records.stream().mapToLong(TblGameGoldEntity::getChangeGold).sum();
+            changeGold = tblGameGoldEntities.stream().mapToLong(TblGameGoldEntity::getChangeGold).sum();
         }
 
+        TblGameGoldEntity tblGameGoldEntity = new TblGameGoldEntity();
+        tblGameGoldEntity.setChangeGold(changeGold);
 
-        /**
-         * 合计金币
-         */
-        TblGameGoldEntityTotalVo tblGameGoldEntityTotalVo = new TblGameGoldEntityTotalVo();
-        tblGameGoldEntityTotalVo.setChangeGold(changeGold);
-
-        /**
-         * 返回vo
-         */
-        TblGameGoldEntityPageVo tblGameGoldEntityPageVo = new TblGameGoldEntityPageVo();
-        tblGameGoldEntityPageVo.setTblGameGoldEntities(records);
-        tblGameGoldEntityPageVo.setTblGameGoldEntityTotalVo(tblGameGoldEntityTotalVo);
-
-
-        return ResponseBO.page(page).setData(tblGameGoldEntityPageVo);
+        records.add(tblGameGoldEntity);
+        return ResponseBO.page(page).setData(records);
     }
 
 

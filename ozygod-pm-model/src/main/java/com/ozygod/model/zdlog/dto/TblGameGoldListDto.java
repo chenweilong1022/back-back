@@ -93,4 +93,10 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	@ApiModelProperty(required=false,value="")
 	private Integer id;
 
+	private Date CurrentDates;
+
+	private Date startTime;
+
+	private Date endTime;
+
 }

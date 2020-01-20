@@ -1,5 +1,8 @@
 package com.ozygod.activity.web;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.model.zdlog.dto.TblGameGoldListDto;
 import com.ozygod.model.zdlog.entity.TblGameGoldEntity;
@@ -31,7 +34,21 @@ public class TblGameGoldController {
      */
     @RequestMapping("/list")
     public ResponseBO list(@RequestBody TblGameGoldListDto tblGameGold){
+        if (ObjectUtil.isNotNull(tblGameGold.getCurrentDates())) {
+            DateTime date = DateUtil.endOfDay(tblGameGold.getCurrentDates());
+            setTime(tblGameGold, date);
+        }else {
+            DateTime date = DateUtil.endOfDay(DateUtil.date());
+            setTime(tblGameGold, date);
+        }
         return tblGameGoldService.queryPage(tblGameGold);
+    }
+
+    private void setTime(@RequestBody TblGameGoldListDto tblGameGold, DateTime date) {
+        DateTime endOfDay = DateUtil.parseDateTime(DateUtil.formatDateTime(date));
+        DateTime beginOfDay = DateUtil.beginOfDay(endOfDay);
+        tblGameGold.setStartTime(beginOfDay);
+        tblGameGold.setEndTime(endOfDay);
     }
 
 
