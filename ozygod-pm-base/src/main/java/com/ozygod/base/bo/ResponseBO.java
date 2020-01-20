@@ -93,4 +93,9 @@ public class ResponseBO implements Serializable {
         bo.setPageSize((int) page.getSize());
         return bo;
     }
+
+    public ResponseBO setData(Object data) {
+        this.data = data;
+        return this;
+    }
 }

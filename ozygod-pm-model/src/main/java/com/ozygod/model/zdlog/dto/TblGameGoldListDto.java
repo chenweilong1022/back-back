@@ -14,7 +14,7 @@ import java.util.Date;
 
 /**
  * 金币日志
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
  * @date 2020-01-20 11:06:15
@@ -27,28 +27,32 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
-	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")
 	private Long userid;
+    /**
+     *
+     */
+    @ApiModelProperty(required=false,value="")
+	private Integer gameGoldReason;
 	/**
 	 * 0.game; 1.flee?
 	 */
 	@ApiModelProperty(required=false,value="0.game; 1.flee?")
 	private String reason;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer roomid;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer tableid;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer seatid;
@@ -63,7 +67,7 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	@ApiModelProperty(required=false,value="金币变化值")
 	private Long changeGold;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Long taxGold;
@@ -78,12 +82,12 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	@ApiModelProperty(required=false,value="备注")
 	private String note;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Date recordTime;
 	/**
-	 * 
+	 *
 	 */
 	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")

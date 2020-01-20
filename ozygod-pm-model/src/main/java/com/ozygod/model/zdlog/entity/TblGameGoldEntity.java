@@ -29,7 +29,6 @@ public class TblGameGoldEntity implements Serializable {
 	/**
 	 * 
 	 */
-	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")
 	private Long userid;
 	/**
