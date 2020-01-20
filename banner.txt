@@ -42,6 +42,49 @@ CREATE TABLE `tbl_account` (
 
 
 
+log主机
+
+id
+主机url
+
+
+
+CREATE TABLE `tbl_manage_log` (
+  `recordid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `typeid` varchar(50) DEFAULT NULL COMMENT '主机url',
+  `managerid` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `manage_time` int(11) DEFAULT '0' COMMENT '删除标志',
+  `manage_desc` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`recordid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='日志表';
+
+CREATE TABLE `tbl_manage_log` (
+  `recordid` int(11) NOT NULL AUTO_INCREMENT,
+  `typeid` int(11) NOT NULL,
+  `managerid` int(11) NOT NULL,
+  `manage_time` datetime NOT NULL,
+  `manage_desc` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`recordid`) USING BTREE,
+  KEY `idx_log_type` (`typeid`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3167 DEFAULT CHARSET=utf8;
+
+
+
+
+CREATE TABLE `tbl_monitor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `log_file` varchar(50) DEFAULT NULL COMMENT '日志路径',
+  `monitor_keyword` varchar(50) DEFAULT NULL COMMENT '监控关键字',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='监听器表';
+
+
+
+
+
+
 
 ALTER TABLE tbl_record_total_gold_everyday add `profit` varchar(11) DEFAULT NULL COMMENT'营收';
 ALTER TABLE tbl_record_total_gold_everyday add `recharge` varchar(11) DEFAULT NULL COMMENT'充值';
