@@ -3,6 +3,7 @@ package com.ozygod.conf.configuration;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.ozygod.base.filter.MoneyFilter;
 import com.ozygod.conf.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,11 @@ public class AuthConfigurer extends WebMvcConfigurationSupport {
     @Bean
     public LoginInterceptor loginInterceptor() {
         return new LoginInterceptor();
+    }
+
+    @Bean
+    public MoneyFilter moneyFilter() {
+        return new MoneyFilter();
     }
 
     /**
@@ -65,6 +71,7 @@ public class AuthConfigurer extends WebMvcConfigurationSupport {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+        fastJsonConfig.setSerializeFilters(moneyFilter());
         fastConverter.setFastJsonConfig(fastJsonConfig);
         fastConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON_UTF8));
         converters.add(fastConverter);
