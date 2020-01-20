@@ -17,7 +17,7 @@ import java.util.Date;
  * 
  * @author chenweilong
  * @email 1433471850@qq.com
- * @date 2019-12-31 13:48:42
+ * @date 2020-01-20 11:06:15
  */
 @Data
 @TableName("tbl_game_gold")
@@ -36,7 +36,7 @@ public class TblGameGoldEntity implements Serializable {
 	 * 0.game; 1.flee?
 	 */
 	@ApiModelProperty(required=false,value="0.game; 1.flee?")
-	private Integer reason;
+	private String reason;
 	/**
 	 * 
 	 */
@@ -82,5 +82,11 @@ public class TblGameGoldEntity implements Serializable {
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Date recordTime;
+	/**
+	 * 
+	 */
+	@TableId(type = IdType.AUTO)
+	@ApiModelProperty(required=false,value="")
+	private Integer id;
 
 }

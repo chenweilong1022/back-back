@@ -16,6 +16,7 @@
         <result property="endGold" column="end_gold"/>
         <result property="note" column="note"/>
         <result property="recordTime" column="record_time"/>
+        <result property="id" column="id"/>
     </resultMap>
 
 

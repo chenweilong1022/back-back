@@ -1,9 +1,8 @@
-package com.ozygod.model.zdlog.dto;
+package com.ozygod.model.zdlog.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ozygod.base.dto.BaseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,20 +13,20 @@ import java.util.Date;
 
 /**
  * 金币日志
- * 
+ *
  * @author chenweilong
  * @email 1433471850@qq.com
- * @date 2020-01-20 11:06:15
+ * @date 2019-12-31 13:48:42
  */
 @Data
 @TableName("tbl_game_gold")
 @ApiModel("金币日志")
 @Accessors(chain = true)
-public class TblGameGoldListDto extends BaseDto implements Serializable {
+public class TblGameGoldEntityTotalVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	@TableId(type = IdType.AUTO)
 	@ApiModelProperty(required=false,value="")
@@ -36,19 +35,19 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	 * 0.game; 1.flee?
 	 */
 	@ApiModelProperty(required=false,value="0.game; 1.flee?")
-	private String reason;
+	private Integer reason;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer roomid;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer tableid;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Integer seatid;
@@ -63,7 +62,7 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	@ApiModelProperty(required=false,value="金币变化值")
 	private Long changeGold;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Long taxGold;
@@ -78,15 +77,9 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	@ApiModelProperty(required=false,value="备注")
 	private String note;
 	/**
-	 * 
+	 *
 	 */
 	@ApiModelProperty(required=false,value="")
 	private Date recordTime;
-	/**
-	 * 
-	 */
-	@TableId(type = IdType.AUTO)
-	@ApiModelProperty(required=false,value="")
-	private Integer id;
 
 }

@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author chenweilong
  * @email 1433471850@qq.com
- * @date 2019-12-31 13:48:42
+ * @date 2020-01-20 11:06:15
  */
 @Mapper
 public interface TblGameGoldDao extends BaseMapper<TblGameGoldEntity> {
