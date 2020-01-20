@@ -40,6 +40,9 @@ CREATE TABLE `tbl_account` (
 
 
 
+
+
+
 ALTER TABLE tbl_record_total_gold_everyday add `profit` varchar(11) DEFAULT NULL COMMENT'营收';
 ALTER TABLE tbl_record_total_gold_everyday add `recharge` varchar(11) DEFAULT NULL COMMENT'充值';
 

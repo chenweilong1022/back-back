@@ -39,6 +39,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ozygod</groupId>
+			<artifactId>ozygod-pm-activity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ozygod</groupId>
 			<artifactId>ozygod-pm-platform</artifactId>
 		</dependency>
 		<dependency>

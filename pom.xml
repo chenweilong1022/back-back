@@ -62,6 +62,7 @@
 		<module>ozygod-pm-platform</module>
 		<module>ozygod-pm-task</module>
 		<!--<module>ozygod-pm-spread</module>-->
+		<module>ozygod-pm-activity</module>
 	</modules>
 
 	<!-- 指定项目中的公有模块 -->
@@ -102,6 +103,11 @@
 			<dependency>
 				<groupId>com.ozygod</groupId>
 				<artifactId>ozygod-pm-task</artifactId>
+				<version>${ozygod.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ozygod</groupId>
+				<artifactId>ozygod-pm-activity</artifactId>
 				<version>${ozygod.version}</version>
 			</dependency>
 			<dependency>
