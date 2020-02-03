@@ -156,6 +156,9 @@ public class RobotController {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE, headers = Constant.API_VERSION_V2)
     public ResponseBO deleteRobot(@RequestBody RobotConfigBO bo) {
         int result = robotManageService.deleteRobot(bo);
+        if (result ==  25) {
+            return new ResponseBO(ResponseCode.I001.getCode(), "机器人正在游戏，重置失败");
+        }
         if (result > 0) {
             return new ResponseBO(ResponseCode.I001.getCode(), "删除失败");
         }
