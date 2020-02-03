@@ -194,6 +194,7 @@ public class RobotManageServiceImpl implements IRobotManageService {
      */
     @Override
     public int addRobot(RobotConfigBO bo) {
+        log.info(gameUrl + "/add_robot?roomid=" + bo.getRoomId() + "&tableid=" + bo.getTableId());
         String result = HttpRequestUtil.sendGet(gameUrl + "/add_robot?roomid=" + bo.getRoomId() + "&tableid=" + bo.getTableId());
         log.info("result:" + result);
         if (CommonUtil.isInteger(result)) {
