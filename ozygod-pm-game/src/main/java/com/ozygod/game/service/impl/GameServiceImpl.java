@@ -1,6 +1,10 @@
 package com.ozygod.game.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.game.service.IGameService;
+import com.ozygod.model.zdconfig.entity.TblGameRoomEntity;
+import com.ozygod.model.zdconfig.service.TblGameRoomService;
 import com.ozygod.model.zdgame.bo.GameBO;
 import com.ozygod.model.zdgame.bo.GameRoomBO;
 import com.ozygod.model.zdgame.dao.GameEntityMapper;
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @title:
@@ -25,6 +30,9 @@ public class GameServiceImpl implements IGameService {
     private GameEntityMapper gameEntityMapper;
     @Autowired
     private GameRoomEntityMapper gameRoomEntityMapper;
+    @Autowired
+    private TblGameRoomService tblGameRoomService;
+
     /**
      * 查询全部游戏
      *
@@ -53,6 +61,21 @@ public class GameServiceImpl implements IGameService {
      */
     @Override
     public List<GameRoomBO> listGameRoomByQry(GameDto dto) {
-        return gameRoomEntityMapper.listGameRoomByQry(dto);
+
+        List<TblGameRoomEntity> list = tblGameRoomService.list(new QueryWrapper<TblGameRoomEntity>().lambda()
+                .eq(ObjectUtil.isNotNull(dto.getGameId()),TblGameRoomEntity::getGameid,dto.getGameId())
+        );
+
+        List<GameRoomBO> gameRoomBOS = list.stream().map(tblGameRoomEntity -> {
+            GameRoomBO gameRoomBO = new GameRoomBO();
+            gameRoomBO.setRoomid(tblGameRoomEntity.getRoomid());
+            gameRoomBO.setGameid(tblGameRoomEntity.getGameid());
+            gameRoomBO.setRoomName(tblGameRoomEntity.getRoomName());
+            gameRoomBO.setIsClub(tblGameRoomEntity.getIsClub());
+            gameRoomBO.setRoomPwd(tblGameRoomEntity.getRoomPwd());
+            return gameRoomBO;
+        }).collect(Collectors.toList());
+
+        return gameRoomBOS;
     }
 }
