@@ -1,5 +1,7 @@
 package com.ozygod.robot.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.ozygod.base.utils.CommonUtil;
@@ -8,6 +10,9 @@ import com.ozygod.model.common.bo.RobotBO;
 import com.ozygod.model.common.bo.RobotConfigBO;
 import com.ozygod.model.common.dto.ChangeGameMoneyDto;
 import com.ozygod.model.common.dto.RobotDto;
+import com.ozygod.model.zdconfig.enums.GameConfig;
+import com.ozygod.model.zdconfig.vo.game.BaseGameConfigVo;
+import com.ozygod.model.zdconfig.vo.room.RoomConfigVo;
 import com.ozygod.model.zdgame.dao.PoolEntityMapper;
 import com.ozygod.model.zdmanage.bo.RobotMenuBO;
 import com.ozygod.robot.service.IRobotManageService;
@@ -223,6 +228,7 @@ public class RobotManageServiceImpl implements IRobotManageService {
         return Integer.parseInt(result);
     }
 
+
     /**
      * 获取机器人配置
      *
@@ -230,16 +236,26 @@ public class RobotManageServiceImpl implements IRobotManageService {
      * @return
      */
     @Override
-    public RobotConfigBO getRobotConfigByQry(RobotDto dto) {
-        String result = HttpRequestUtil.sendGet(gameUrl + "/get_robot_config?roomid=" + dto.getRoomId());
-        log.info("result:" + result);
-        if (!CommonUtil.isEmptyStr(result) && !"FAILED".equals(result)) {
-            RobotConfigBO configBO = new RobotConfigBO();
-            configBO.setRoomId(dto.getRoomId());
-            configBO.setConfig(result);
-            return configBO;
+    public RoomConfigVo getRobotConfigByQry(RobotDto dto) {
+
+        Integer roomId = dto.getRoomId();
+        String result = HttpRequestUtil.sendGet(gameUrl + "/get_robot_config?roomid=" + roomId);
+        Integer gameId = roomId / 100;
+
+        GameConfig gameConfig = GameConfig.getByKey(gameId);
+
+        RoomConfigVo roomConfigVo = new RoomConfigVo();
+        roomConfigVo.setRoomId(roomId);
+        roomConfigVo.setGameId(gameId);
+        roomConfigVo.setGameName(gameConfig.getValue());
+        roomConfigVo.setCardName(gameConfig.getCardName());
+
+        if (StrUtil.isNotBlank(result) && JSONUtil.isJson(result)) {
+            BaseGameConfigVo baseGameConfigVo = JSONUtil.toBean(result, gameConfig.getBaseGameConfigVo().getClass());
+            roomConfigVo.setBaseGameConfigVo(baseGameConfigVo);
+            return roomConfigVo;
         }
-        return null;
+        return roomConfigVo;
     }
 
     /**

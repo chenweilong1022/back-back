@@ -4,10 +4,10 @@ import com.ozygod.model.common.bo.RobotBO;
 import com.ozygod.model.common.bo.RobotConfigBO;
 import com.ozygod.model.common.dto.ChangeGameMoneyDto;
 import com.ozygod.model.common.dto.RobotDto;
+import com.ozygod.model.zdconfig.vo.room.RoomConfigVo;
 import com.ozygod.model.zdmanage.bo.RobotMenuBO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @title:
@@ -96,7 +96,7 @@ public interface IRobotManageService {
      * @param dto
      * @return
      */
-    RobotConfigBO getRobotConfigByQry(RobotDto dto);
+    RoomConfigVo getRobotConfigByQry(RobotDto dto);
 
     /**
      * 设置机器人配置
