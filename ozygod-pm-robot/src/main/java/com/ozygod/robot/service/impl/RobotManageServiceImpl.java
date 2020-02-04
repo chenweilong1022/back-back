@@ -184,7 +184,8 @@ public class RobotManageServiceImpl implements IRobotManageService {
     public Object getRobotsByQry(RobotDto dto) {
         String result = HttpRequestUtil.sendGet(gameUrl + "/get_robots?gameid=" + Math.floor(dto.getRoomId() / 100));
         log.info("result:" + result);
-        if (!CommonUtil.isEmptyStr(result) && !"FAILED".equals(result)) {
+
+        if (StrUtil.isNotBlank(result) && JSONUtil.isJson(result)) {
             Map<String, Object> resultMap = JSON.parseObject(result, new TypeReference<Map<String, Object>>(){});
             return resultMap.get(String.valueOf(dto.getRoomId()));
         }
