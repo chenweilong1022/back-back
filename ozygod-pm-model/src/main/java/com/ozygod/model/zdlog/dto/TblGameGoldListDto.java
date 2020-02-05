@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 金币日志
@@ -98,5 +99,9 @@ public class TblGameGoldListDto extends BaseDto implements Serializable {
 	private Date startTime;
 
 	private Date endTime;
+
+	private List<Long> userIds;
+
+	private List<String> reasons;
 
 }
