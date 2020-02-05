@@ -2,6 +2,7 @@ package com.ozygod.model.zdlog.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -57,13 +58,21 @@ public class TblGameGoldServiceImpl extends ServiceImpl<TblGameGoldDao, TblGameG
 
     @Override
     public List<TblGameGoldEntity> tblGameGoldEntities(DateTime begin, DateTime end, List<Long> userIds) {
+        List<TblGameGoldEntity> tblGameGoldEntities = this.tblGameGoldEntities(new TblGameGoldListDto().setStartTime(begin).setEndTime(end).setUserIds(userIds));
+        return tblGameGoldEntities;
+    }
+
+    @Override
+    public List<TblGameGoldEntity> tblGameGoldEntities(TblGameGoldListDto tblGameGoldListDto) {
         List<TblGameGoldEntity> tblGameGoldEntities = this.list(new QueryWrapper<TblGameGoldEntity>().lambda()
-                .ge(TblGameGoldEntity::getRecordTime, begin)
-                .le(TblGameGoldEntity::getRecordTime, end)
-                .in(TblGameGoldEntity::getUserid, userIds)
+                .ge(ObjectUtil.isNotNull(tblGameGoldListDto.getStartTime()),TblGameGoldEntity::getRecordTime, tblGameGoldListDto.getStartTime())
+                .le(ObjectUtil.isNotNull(tblGameGoldListDto.getEndTime()),TblGameGoldEntity::getRecordTime, tblGameGoldListDto.getEndTime())
+                .in(CollUtil.isNotEmpty(tblGameGoldListDto.getUserIds()),TblGameGoldEntity::getUserid, tblGameGoldListDto.getUserIds())
+                .in(CollUtil.isNotEmpty(tblGameGoldListDto.getReasons()),TblGameGoldEntity::getReason, tblGameGoldListDto.getReasons())
         );
         return tblGameGoldEntities;
     }
+
 
     @Override
     public long totalRevenue(List<TblGameGoldEntity> tblGameGoldEntities) {
@@ -72,6 +81,21 @@ public class TblGameGoldServiceImpl extends ServiceImpl<TblGameGoldDao, TblGameG
             totalRevenue = tblGameGoldEntities.stream().mapToLong(TblGameGoldEntity::getTaxGold).sum();
         }
         return totalRevenue;
+    }
+
+    @Override
+    public long winningLosing(
+            DateTime begin,
+            DateTime end,
+            List<Long> userIds,
+            List<String> reasons
+    ) {
+        long changeGoldum = 0;
+        List<TblGameGoldEntity> tblGameGoldEntities = this.tblGameGoldEntities(new TblGameGoldListDto().setStartTime(begin).setEndTime(end).setUserIds(userIds).setReasons(reasons));
+        if (CollUtil.isNotEmpty(tblGameGoldEntities)) {
+            changeGoldum = tblGameGoldEntities.stream().mapToLong(TblGameGoldEntity::getChangeGold).sum();
+        }
+        return changeGoldum;
     }
 }
 

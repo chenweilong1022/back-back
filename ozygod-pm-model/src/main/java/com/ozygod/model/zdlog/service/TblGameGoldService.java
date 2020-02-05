@@ -21,6 +21,14 @@ public interface TblGameGoldService extends IService<TblGameGoldEntity> {
 
     List<TblGameGoldEntity> tblGameGoldEntities(DateTime begin,DateTime end,List<Long> userIds);
 
+    List<TblGameGoldEntity> tblGameGoldEntities(TblGameGoldListDto tblGameGoldListDto);
+
     long totalRevenue(List<TblGameGoldEntity> tblGameGoldEntities);
+
+    /**
+     * 输赢
+     * @return
+     */
+    long winningLosing(DateTime begin, DateTime end, List<Long> userIds, List<String> reasons);
 }
 
