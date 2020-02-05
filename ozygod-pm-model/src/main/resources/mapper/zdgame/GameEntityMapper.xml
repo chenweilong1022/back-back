@@ -19,17 +19,17 @@
     select t1.gameid,
            t1.game_name,
            ifnull(t2.onlineCount, 0) onlineCount
-    from tbl_game t1
+    from zdconfig.tbl_game t1
            left join (
       select count(t.userid) onlineCount, tt.gameid
-      from tbl_player_location t
-             left join tbl_game_room tt on t.room = tt.roomid
+      from zdgame.tbl_player_location t
+             left join zdgame.tbl_game_room tt on t.room = tt.roomid
       group by tt.gameid
     ) t2 on t1.gameid = t2.gameid
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_game
     where gameid = #{gameid,jdbcType=INTEGER}
