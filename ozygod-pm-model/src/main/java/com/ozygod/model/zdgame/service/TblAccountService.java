@@ -25,6 +25,12 @@ public interface TblAccountService extends IService<TblAccountEntity> {
      * @return
      */
     int onlineNumber();
+
+    /**
+     * 在线用户id
+     * @return
+     */
+    List<Long> onlineUserIds();
     /**
      * 登录数
      * @return

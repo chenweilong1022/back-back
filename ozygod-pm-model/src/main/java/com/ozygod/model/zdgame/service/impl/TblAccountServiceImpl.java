@@ -7,9 +7,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ozygod.base.enums.Global;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ozygod.base.bo.ResponseBO;
@@ -48,6 +51,26 @@ public class TblAccountServiceImpl extends ServiceImpl<TblAccountDao, TblAccount
                 .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
         );
         return onlineNumber;
+    }
+
+
+    @Override
+    public List<Long> onlineUserIds() {
+        List<TblAccountEntity> tblAccountEntities = this.list(new QueryWrapper<TblAccountEntity>().lambda()
+                .isNotNull(TblAccountEntity::getLoginTime)
+                .last(" and logout_time < login_time")
+                .gt(TblAccountEntity::getUserid, Global.REAL_USER_ID)
+        );
+
+        List<Long> list = new ArrayList<>();
+
+        if (CollUtil.isNotEmpty(tblAccountEntities)) {
+            list = tblAccountEntities.stream().map(TblAccountEntity::getUserid).collect(Collectors.toList());
+        }
+
+
+
+        return list;
     }
 
     @Override
