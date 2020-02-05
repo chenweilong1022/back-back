@@ -293,6 +293,45 @@
     </if>
   </select>
 
+    <select id="listOnlinePlayerQryPage" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+      SELECT
+          t1.userid,
+          t3.show_id,
+          t3.nickname,
+          t2.ip,
+          t1.room,
+          tt.room_name,
+          t1.table_ tableId,
+          t1.val luckyRatio,
+          t3.gold,
+          t3.bank_gold
+      FROM
+          tbl_player_location t1
+          LEFT JOIN tbl_game_room tt ON t1.room = tt.roomid
+          LEFT JOIN tbl_account t2 ON t1.userid = t2.userid
+          LEFT JOIN tbl_playerinfo t3 ON t1.userid = t3.userid
+      WHERE
+      t1.userid > ${realUserId}
+        <if test="ew.playerId != null">
+            AND t1.userid = #{ew.playerId,jdbcType=BIGINT}
+        </if>
+        <if test="ew.showId != null">
+            AND t3.show_id = #{ew.showId,jdbcType=BIGINT}
+        </if>
+        <if test="ew.gameId != null and ew.gameId != 0">
+            and tt.gameid = #{ew.gameId, jdbcType=INTEGER}
+        </if>
+        <if test="ew.gameIds != null and ew.gameIds.size() > 0">
+            and tt.gameid in
+            <foreach collection="ew.gameIds" item="gameId" open="(" separator="," close=")">
+                #{ew.gameId, jdbcType=INTEGER}
+            </foreach>
+        </if>
+        ORDER BY t3.show_id DESC
+    </select>
+
+
+
   <select id="totalOnlinePlayerByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
     select COUNT(1)
     from tbl_player_location t1
@@ -316,7 +355,7 @@
     </if>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tbl_account
     where userid = #{userid,jdbcType=BIGINT}
   </delete>
