@@ -16,11 +16,11 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, userid, goods_id, channel, order_id, money, state, create_time, invalid_time, 
+    id, userid, goods_id, channel, order_id, money, state, create_time, invalid_time,
     pay_time, complete_time, type
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_order
     where id = #{id,jdbcType=BIGINT}
@@ -39,6 +39,12 @@
       LEFT JOIN tbl_playerinfo AS C ON A.userid = C.userid
     WHERE
       1 = 1
+    <if test="onlinePlayerIds != null and onlinePlayerIds.size() > 0">
+      and A.USERID in
+      <foreach collection="onlinePlayerIds" item="onlinePlayerId" open="(" separator="," close=")">
+        #{onlinePlayerId, jdbcType=INTEGER}
+      </foreach>
+    </if>
     <if test="playerId != null">
       AND A.USERID = #{playerId,jdbcType=INTEGER}
     </if>
@@ -59,6 +65,45 @@
     <if test="pageSize > 0">
       LIMIT #{start},#{pageSize}
     </if>
+  </select>
+
+  <select id="listPlayerOrderByQryPage" parameterType="com.ozygod.model.zdgame.dto.PlayerOrderDto" resultType="com.ozygod.model.zdgame.bo.PlayerOrderBO">
+    SELECT
+    A.*,
+    B.goods_name,
+    B.goods_val,
+    B.goods_type,
+    C.nickname,
+    C.show_id
+    FROM
+    tbl_order AS A
+    LEFT JOIN tbl_goods AS B ON A.goods_id = B.goods_id
+    LEFT JOIN tbl_playerinfo AS C ON A.userid = C.userid
+    WHERE
+    1 = 1
+    <if test="ew.onlinePlayerIds != null and ew.onlinePlayerIds.size() > 0">
+      and A.USERID in
+      <foreach collection="ew.onlinePlayerIds" item="onlinePlayerId" open="(" separator="," close=")">
+        #{onlinePlayerId, jdbcType=INTEGER}
+      </foreach>
+    </if>
+    <if test="ew.playerId != null">
+      AND A.USERID = #{ew.playerId,jdbcType=INTEGER}
+    </if>
+    <if test="ew.state != null">
+      AND A.state = #{ew.state,jdbcType=INTEGER}
+    </if>
+    <if test="ew.orderNo != null and orderNo != ''">
+      AND A.order_id = #{ew.orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="ew.showId != null">
+      AND C.show_id = #{ew.showId,jdbcType=BIGINT}
+    </if>
+    <if test="ew.nickName != null">
+      AND C.NICKNAME like concat('%',#{ew.nickName,jdbcType=VARCHAR},'%')
+    </if>
+    ORDER BY
+    A.ID DESC
   </select>
 
   <select id="totalCountPlayerOrderByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerOrderDto" resultType="int">
@@ -106,14 +151,14 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdgame.entity.OrderEntity">
-    insert into tbl_order (id, userid, goods_id, 
-      channel, order_id, money, 
-      state, create_time, invalid_time, 
+    insert into tbl_order (id, userid, goods_id,
+      channel, order_id, money,
+      state, create_time, invalid_time,
       pay_time, complete_time, type
       )
-    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{goodsId,jdbcType=CHAR}, 
-      #{channel,jdbcType=CHAR}, #{orderId,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{invalidTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{goodsId,jdbcType=CHAR},
+      #{channel,jdbcType=CHAR}, #{orderId,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER},
+      #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{invalidTime,jdbcType=TIMESTAMP},
       #{payTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, #{type,jdbcType=VARCHAR}
       )
   </insert>
