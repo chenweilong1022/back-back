@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @title:
@@ -32,4 +33,6 @@ public class PlayerOrderDto extends BaseDto {
     private Long showId;
     @ApiModelProperty("订单状态")
     private Integer state;
+    @ApiModelProperty("在线玩家id")
+    private List<Long> onlinePlayerIds;
 }
