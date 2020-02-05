@@ -1,10 +1,13 @@
 package com.ozygod.model.zdlog.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.ozygod.model.common.bo.FinancialStatementBO;
 import com.ozygod.model.zdlog.bo.RemitGoldRecordBO;
 import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity;
 import com.ozygod.model.zdmanage.bo.ManagerBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -27,6 +30,13 @@ public interface ManagerRemitGoldRecordEntityMapper {
      * @return
      */
     List<RemitGoldRecordBO> listRemitGoldRecordByQry(PlayerLogDto dto);
+
+    /**
+     * 查询划账日志列表page
+     * @param dto
+     * @return
+     */
+    List<RemitGoldRecordBO> listRemitGoldRecordByQryPage(IPage page,@Param(Constants.WRAPPER) PlayerLogDto dto);
 
     /**
      * 查询划账日志列表总数
