@@ -1,8 +1,11 @@
 package com.ozygod.model.zdgame.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.ozygod.model.zdgame.bo.PlayerAccountBO;
 import com.ozygod.model.zdgame.dto.PlayerAccountDto;
 import com.ozygod.model.zdgame.entity.AccountEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -49,6 +52,13 @@ public interface AccountEntityMapper {
      * @return
      */
     List<PlayerAccountBO> listOnlinePlayerQry(PlayerAccountDto dto);
+    /**
+     * 查询在线玩家分页
+     * @param page
+     * @param dto
+     * @return
+     */
+    List<PlayerAccountBO> listOnlinePlayerQryPage(IPage page, @Param(Constants.WRAPPER)PlayerAccountDto dto,@Param("realUserId") Integer realUserId);
 
     /**
      * 查询在线玩家列表总数
