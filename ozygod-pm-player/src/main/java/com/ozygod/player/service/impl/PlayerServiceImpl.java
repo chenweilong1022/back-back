@@ -1,12 +1,16 @@
 package com.ozygod.player.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ozygod.base.bo.ResponseBO;
-import com.ozygod.base.utils.CommonUtil;
-import com.ozygod.base.utils.Constant;
-import com.ozygod.base.utils.HttpRequestUtil;
-import com.ozygod.base.utils.IPUtils;
+import com.ozygod.base.enums.Global;
+import com.ozygod.base.utils.*;
 import com.ozygod.model.common.bo.EmailBO;
 import com.ozygod.model.zdconfig.bo.SysConfigsBO;
 import com.ozygod.model.zdconfig.dao.SysConfigsEntityMapper;
@@ -17,6 +21,8 @@ import com.ozygod.model.zdgame.dto.PlayerOrderDto;
 import com.ozygod.model.zdgame.dto.RemitDto;
 import com.ozygod.model.zdgame.entity.AccountEntity;
 import com.ozygod.model.zdgame.entity.PlayerInfoEntity;
+import com.ozygod.model.zdgame.service.TblAccountService;
+import com.ozygod.model.zdgame.service.TblOrderService;
 import com.ozygod.model.zdlog.bo.GameWinningDetailBO;
 import com.ozygod.model.zdlog.bo.RemitDiamondRecordBO;
 import com.ozygod.model.zdlog.bo.RemitGoldRecordBO;
@@ -24,11 +30,13 @@ import com.ozygod.model.zdlog.dao.*;
 import com.ozygod.model.zdlog.dto.BankGoldDto;
 import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdlog.entity.FreezeUserEntity;
+import com.ozygod.model.zdlog.service.TblGameGoldService;
 import com.ozygod.model.zdmanage.bo.WithdrawOrderBO;
 import com.ozygod.model.zdmanage.dao.ManageLogEntityMapper;
 import com.ozygod.model.zdmanage.dao.WithdrawOrderEntityMapper;
 import com.ozygod.model.zdmanage.dto.BusinessDto;
 import com.ozygod.model.zdmanage.entity.WithdrawOrderEntity;
+import com.ozygod.model.zdmanage.service.TblWithdrawOrderService;
 import com.ozygod.player.service.IPlayerService;
 import com.ozygod.player.utils.PlayerConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +47,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import javax.xml.ws.Response;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -103,6 +112,14 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Autowired
     private SysConfigsEntityMapper sysConfigsEntityMapper;
+    @Autowired
+    private TblGameGoldService tblGameGoldService;
+    @Autowired
+    private TblOrderService tblOrderService;
+    @Autowired
+    private TblWithdrawOrderService tblWithdrawOrderService;
+    @Autowired
+    private TblAccountService tblAccountService;
 
     @Value("${game_url}")
     private String gameUrl;
@@ -373,14 +390,46 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public List<PlayerAccountBO> listOnlinePlayerQry(PlayerAccountDto dto) {
-        List<PlayerAccountBO> resultList = accountEntityMapper.listOnlinePlayerQry(dto);
-        for (PlayerAccountBO bo :
-                resultList) {
-            // 取IP前三段
-            String firstIP = bo.getIp().substring(0, bo.getIp().lastIndexOf("."));
-            bo.setIpAttr(ipUtils.getIPAddrCN(firstIP));
+        /**
+         * 今日日期起止
+         */
+        DateTime beginOfDay = OzygodDateUtil.beginOfDay(DateUtil.date());
+        DateTime endOfDay = OzygodDateUtil.endOfDay(DateUtil.date());
+
+        Page page = dto.getPage();
+        List<PlayerAccountBO> resultList = accountEntityMapper.listOnlinePlayerQryPage(page, dto, Global.REAL_USER_ID);
+        for (PlayerAccountBO bo : resultList) {
+            if (StrUtil.isNotBlank(bo.getIp())) {
+                // 取IP前三段
+                String firstIP = bo.getIp().substring(0, bo.getIp().lastIndexOf("."));
+                bo.setIpAttr(ipUtils.getIPAddrCN(firstIP));
+            }
             // 充值标识
             bo.setRechargeFlag(this.validateUserRechargeState(bo.getShowId()));
+            /**
+             * 今日输赢
+             */
+            bo.setTodayWinningGold(tblGameGoldService.winningLosing(beginOfDay,endOfDay, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
+            /**
+             * 总输赢
+             */
+            bo.setTotalWinningGold(tblGameGoldService.winningLosing(null,null, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
+            /**
+             * 今日充值金额
+             */
+            bo.setTodayRechargeGold(tblOrderService.recharge(beginOfDay, endOfDay, CollUtil.newArrayList(bo.getUserid())));
+            /**
+             * 总充值金额
+             */
+            bo.setTotalRechargeGold(tblOrderService.recharge(null, null, CollUtil.newArrayList(bo.getUserid())));
+            /**
+             * 今日提现
+             */
+            bo.setTodayWithdrawGold(tblWithdrawOrderService.totalBack(beginOfDay, endOfDay, CollUtil.newArrayList(bo.getUserid())));
+            /**
+             * 今日提现
+             */
+            bo.setTotalWithdrawGold(tblWithdrawOrderService.totalBack(null, null, CollUtil.newArrayList(bo.getUserid())));
         }
         return resultList;
     }
@@ -461,12 +510,18 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public ResponseBO listPlayerOrderByQry(PlayerOrderDto dto) {
-        ResponseBO responseBO = new ResponseBO();
-        responseBO.setData(orderEntityMapper.listPlayerOrderByQry(dto));
-        responseBO.setTotalCount(orderEntityMapper.totalCountPlayerOrderByQry(dto));
-        responseBO.setPageNo(dto.getPageNo());
-        responseBO.setPageSize(dto.getPageSize());
-        return responseBO;
+        Page page = dto.getPage();
+        List<PlayerOrderBO> playerOrderBOS = orderEntityMapper.listPlayerOrderByQryPage(page, dto);
+        return ResponseBO.page(page).setData(playerOrderBOS);
+    }
+
+    @Override
+    public ResponseBO listPlayerOnlineOrderByQry(PlayerOrderDto dto) {
+        Page page = dto.getPage();
+        List<Long> userIds = tblAccountService.onlineUserIds();
+        dto.setOnlinePlayerIds(userIds);
+        List<PlayerOrderBO> playerOrderBOS = orderEntityMapper.listPlayerOrderByQryPage(page, dto);
+        return ResponseBO.page(page).setData(playerOrderBOS);
     }
 
     /**
@@ -759,6 +814,29 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     /**
+     * 查询划账日志列表
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+    public ResponseBO listRemitGoldRecordByQryPage(PlayerLogDto dto) {
+        Page page = dto.getPage();
+        List<RemitGoldRecordBO> remitGoldRecordBOS = remitGoldRecordEntityMapper.listRemitGoldRecordByQryPage(page, dto);
+        return ResponseBO.page(page).setData(remitGoldRecordBOS);
+    }
+
+    @Override
+    public ResponseBO listRemitGoldRecordOnlineByQryPage(PlayerLogDto dto) {
+        Page page = dto.getPage();
+        List<Long> longs = tblAccountService.onlineUserIds();
+        dto.setOnlineUserIds(longs);
+        List<RemitGoldRecordBO> remitGoldRecordBOS = remitGoldRecordEntityMapper.listRemitGoldRecordByQryPage(page, dto);
+        return ResponseBO.page(page).setData(remitGoldRecordBOS);
+    }
+
+
+    /**
      * 查询划账日志列表总数
      *
      * @param dto
@@ -777,6 +855,10 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public long getTotalRemitGoldByQry(PlayerLogDto dto) {
+        if (dto.isOnline()) {
+            List<Long> longs = tblAccountService.onlineUserIds();
+            dto.setOnlineUserIds(longs);
+        }
         return remitGoldRecordEntityMapper.getTotalRemitGoldByQry(dto);
     }
 

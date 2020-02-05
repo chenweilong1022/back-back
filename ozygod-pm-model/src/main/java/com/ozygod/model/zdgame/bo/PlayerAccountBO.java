@@ -1,5 +1,7 @@
 package com.ozygod.model.zdgame.bo;
 
+import com.ozygod.base.annotations.MoneyField;
+import com.ozygod.base.enums.MoneyFormatType;
 import com.ozygod.model.zdgame.entity.AccountEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -77,4 +79,16 @@ public class PlayerAccountBO extends AccountEntity {
     private Integer rechargeFlag;
     @ApiModelProperty("代理昵称")
     private String agentNickname;
+    @ApiModelProperty("今日充值")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private long todayRechargeGold;
+    @ApiModelProperty("总充值")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private long totalRechargeGold;
+    @ApiModelProperty("今日提现")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private long todayWithdrawGold;
+    @ApiModelProperty("总提现")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private long totalWithdrawGold;
 }

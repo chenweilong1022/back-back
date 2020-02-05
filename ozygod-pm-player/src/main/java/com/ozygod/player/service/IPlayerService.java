@@ -140,6 +140,13 @@ public interface IPlayerService {
     ResponseBO listPlayerOrderByQry(PlayerOrderDto dto);
 
     /**
+     * 查询在线玩家订单列表
+     * @param dto
+     * @return
+     */
+    ResponseBO listPlayerOnlineOrderByQry(PlayerOrderDto dto);
+
+    /**
      * 更新玩家订单
      * @param bo
      * @return
@@ -280,7 +287,18 @@ public interface IPlayerService {
      * @return
      */
     List<RemitGoldRecordBO> listRemitGoldRecordByQry(PlayerLogDto dto);
-
+    /**
+     * 查询划账日志列表page
+     * @param dto
+     * @return
+     */
+    ResponseBO listRemitGoldRecordByQryPage(PlayerLogDto dto);
+    /**
+     * 查询划账日志列表page
+     * @param dto
+     * @return
+     */
+    ResponseBO listRemitGoldRecordOnlineByQryPage(PlayerLogDto dto);
     /**
      * 查询划账日志列表总数(金币)
      * @param dto

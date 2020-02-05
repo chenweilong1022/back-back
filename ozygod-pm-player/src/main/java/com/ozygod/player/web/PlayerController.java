@@ -198,6 +198,16 @@ public class PlayerController {
     }
 
     /**
+     * 查询在线玩家充值订单列表
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/order/online/query", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
+    public ResponseBO listPlayeOnlinerOrderByQry(@RequestBody PlayerOrderDto dto) {
+        return playerService.listPlayerOnlineOrderByQry(dto);
+    }
+
+    /**
      * 查询玩家充值订单列表
      * @param bo
      * @return
@@ -458,12 +468,17 @@ public class PlayerController {
      */
     @RequestMapping(value = "/remitGold/record", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
     public ResponseBO listRemitGoldRecordByQry(@RequestBody PlayerLogDto dto) {
-        ResponseBO responseBO = new ResponseBO();
-        responseBO.setData(playerService.listRemitGoldRecordByQry(dto));
-        responseBO.setTotalCount(playerService.totalRemitGoldRecordByQry(dto));
-        responseBO.setPageNo(dto.getPageNo());
-        responseBO.setPageSize(dto.getPageSize());
-        return responseBO;
+        return playerService.listRemitGoldRecordByQryPage(dto);
+    }
+
+    /**
+     * 查询在线玩家划账日志列表
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/remitGold/online/record", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
+    public ResponseBO listRemitGoldRecordOnlineByQryPage(@RequestBody PlayerLogDto dto) {
+        return playerService.listRemitGoldRecordOnlineByQryPage(dto);
     }
 
     /**
