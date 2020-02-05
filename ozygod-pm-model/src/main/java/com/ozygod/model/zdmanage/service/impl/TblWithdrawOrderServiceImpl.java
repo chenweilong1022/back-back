@@ -61,6 +61,11 @@ public class TblWithdrawOrderServiceImpl extends ServiceImpl<TblWithdrawOrderDao
     }
 
     @Override
+    public int totalBack(DateTime begin, DateTime end, List<Long> userIds) {
+        return totalBack(haveWithdrawal(begin,end,userIds));
+    }
+
+    @Override
     public int totalBackNumber(List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys) {
         /**
          * 总体现人数

@@ -22,7 +22,7 @@ public interface TblWithdrawOrderService extends IService<TblWithdrawOrderEntity
 
 
     /**
-     * 根据时间查询中间成功提现的
+     * 根据时间查询中间成功提现的列表
      * @param begin
      * @param end
      * @return
@@ -35,11 +35,20 @@ public interface TblWithdrawOrderService extends IService<TblWithdrawOrderEntity
      */
     int totalBack(List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys);
     /**
+     * 根据时间用户id计算总提现
+     * @param begin
+     * @param end
+     * @param userIds
+     * @return
+     */
+    int totalBack(DateTime begin,DateTime end,List<Long> userIds);
+    /**
      * 根据list计算总提现人数
      * @param tblWithdrawOrderEntitys
      * @return
      */
     int totalBackNumber(List<TblWithdrawOrderEntity> tblWithdrawOrderEntitys);
+
 
 }
 
