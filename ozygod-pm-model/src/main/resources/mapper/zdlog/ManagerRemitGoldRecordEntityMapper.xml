@@ -14,11 +14,11 @@
     <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, manager_id, user_id, manager_name, user_account, begin_gold, gold, end_gold, 
+    id, manager_id, user_id, manager_name, user_account, begin_gold, gold, end_gold,
     ip, record_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_manager_remit
     where id = #{id,jdbcType=BIGINT}
@@ -56,6 +56,41 @@
     </if>
   </select>
 
+  <select id="listRemitGoldRecordByQryPage" resultType="com.ozygod.model.zdlog.bo.RemitGoldRecordBO">
+    select
+    t1.record_time, t1.manager_id, t1.user_id, t1.begin_gold, t1.gold, t1.end_gold, t2.login_name managerAccount,
+    t3.nickname, t3.show_id
+    from tbl_manager_remit t1
+    left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where 1=1
+    <if test="ew.onlineUserIds != null and ew.onlineUserIds.size() > 0">
+      and t1.user_id in
+      <foreach collection="ew.onlineUserIds" item="onlinePlayerId" open="(" separator="," close=")">
+        #{onlinePlayerId, jdbcType=INTEGER}
+      </foreach>
+    </if>
+    <if test="ew.playerId != null">
+      AND t1.user_id = #{ew.playerId, jdbcType=INTEGER}
+    </if>
+    <if test="ew.managerId != null">
+      AND t1.manager_id = #{ew.managerId, jdbcType=INTEGER}
+    </if>
+    <if test="ew.showId != null">
+      AND t3.show_id = #{ew.showId, jdbcType=BIGINT}
+    </if>
+    <if test="ew.managerAccount != null">
+      AND t2.login_name like concat('%',#{ew.managerAccount, jdbcType=VARCHAR},'%')
+    </if>
+    <if test="ew.startTime != null">
+      AND t1.record_time &gt;= #{ew.startTime, jdbcType=TIMESTAMP}
+    </if>
+    <if test="ew.endTime != null">
+      AND t1.record_time &lt;= #{ew.endTime, jdbcType=TIMESTAMP}
+    </if>
+    order by t1.record_time desc
+  </select>
+
   <select id="totalRemitGoldRecordByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Integer">
     select
      COUNT(1)
@@ -90,6 +125,12 @@
     left join zdmanage.tbl_manager t2 on t1.manager_id = t2.manageid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
     where 1=1
+    <if test="onlineUserIds != null and onlineUserIds.size() > 0">
+      and t1.user_id in
+      <foreach collection="onlineUserIds" item="onlinePlayerId" open="(" separator="," close=")">
+        #{onlinePlayerId, jdbcType=INTEGER}
+      </foreach>
+    </if>
     <if test="playerId != null">
       AND t1.user_id = #{playerId, jdbcType=INTEGER}
     </if>
@@ -156,17 +197,17 @@
     </if>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tbl_manager_remit
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.ManagerRemitGoldRecordEntity">
-    insert into tbl_manager_remit (id, manager_id, user_id, 
-      manager_name, user_account, begin_gold, 
+    insert into tbl_manager_remit (id, manager_id, user_id,
+      manager_name, user_account, begin_gold,
       gold, end_gold, ip, record_time
       )
-    values (#{id,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{managerName,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{beginGold,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+      #{managerName,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{beginGold,jdbcType=BIGINT},
       #{gold,jdbcType=BIGINT}, #{endGold,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP}
       )
   </insert>
