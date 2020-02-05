@@ -37,4 +37,8 @@ public class PlayerLogDto extends BaseDto {
     private Long showId;
     @ApiModelProperty("房间id")
     private Integer roomId;
+    @ApiModelProperty("在线用户id")
+    private List<Long> onlineUserIds;
+    @ApiModelProperty("是否在线")
+    private boolean online = false;
 }
