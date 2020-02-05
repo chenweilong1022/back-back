@@ -355,6 +355,8 @@ public class PlayerServiceImpl implements IPlayerService {
         paramMap.put("to", bo.getReceivers());
         paramMap.put("title", bo.getTitle());
         paramMap.put("msg", bo.getContent());
+        log.info("url = {}",agentUrl + "/Mail/sendMail");
+        log.info("json = {}",JSON.toJSONString(paramMap));
         String result = HttpRequestUtil.sendPostJson(agentUrl + "/Mail/sendMail", JSON.toJSONString(paramMap));
         log.info("result: " + result);
         if (!CommonUtil.isEmptyStr(result) && result.indexOf("success") > 0) {
@@ -713,6 +715,8 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public int remitGold(RemitDto dto) {
+        log.info(gameUrl + "/add_gold?reason=99&user_id=" + dto.getPlayerId()
+                + "&manager_id=" + dto.getManagerId() + "&gold=" + dto.getRemitGold() * 100);
         String result = HttpRequestUtil.sendGet(gameUrl + "/add_gold?reason=99&user_id=" + dto.getPlayerId()
                 + "&manager_id=" + dto.getManagerId() + "&gold=" + dto.getRemitGold() * 100);
         log.info("result: " + result);
@@ -730,6 +734,8 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public int remitDiamond(RemitDto dto) {
+        log.info(gameUrl + "/add_diamond?user_id=" + dto.getPlayerId()
+                + "&manager_id=" + dto.getManagerId() + "&diamond=" + dto.getRemitDiamond());
         String result = HttpRequestUtil.sendGet(gameUrl + "/add_diamond?user_id=" + dto.getPlayerId()
                 + "&manager_id=" + dto.getManagerId() + "&diamond=" + dto.getRemitDiamond());
         log.info("result: " + result);

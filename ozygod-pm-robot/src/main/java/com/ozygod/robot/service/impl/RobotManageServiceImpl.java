@@ -268,6 +268,7 @@ public class RobotManageServiceImpl implements IRobotManageService {
     @Override
     public int updateRobotConfig(RobotConfigBO bo) {
         try {
+            log.info(gameUrl + "/set_robot_config?roomid=" + bo.getRoomId() + "&config=" + URLEncoder.encode(bo.getConfig()));
             String result = HttpRequestUtil.sendGet(gameUrl + "/set_robot_config?roomid=" + bo.getRoomId() + "&config=" + URLEncoder.encode(bo.getConfig(), "utf-8"));
             log.info("result:" + result);
         } catch (Exception e) {
