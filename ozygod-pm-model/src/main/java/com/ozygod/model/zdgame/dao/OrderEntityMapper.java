@@ -1,8 +1,11 @@
 package com.ozygod.model.zdgame.dao;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.ozygod.model.zdgame.bo.PlayerOrderBO;
 import com.ozygod.model.zdgame.dto.PlayerOrderDto;
 import com.ozygod.model.zdgame.entity.OrderEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,6 +28,13 @@ public interface OrderEntityMapper {
      * @return
      */
     List<PlayerOrderBO> listPlayerOrderByQry(PlayerOrderDto dto);
+
+    /**
+     * 查询玩家订单列表
+     * @param dto
+     * @return
+     */
+    List<PlayerOrderBO> listPlayerOrderByQryPage(IPage page, @Param(Constants.WRAPPER)PlayerOrderDto dto);
 
     /**
      * 查询玩家订单总数
