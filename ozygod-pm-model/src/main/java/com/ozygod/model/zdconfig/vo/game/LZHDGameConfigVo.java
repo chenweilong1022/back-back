@@ -2,6 +2,7 @@ package com.ozygod.model.zdconfig.vo.game;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class LZHDGameConfigVo extends BaseGameConfigVo {
 //     * num : {"min":2,"max":4}
      */
     private MinMaxVo bet;
-    private int stragy;
+    private BigDecimal stragy;
     private WinVo win;
     private ZoneVo zone;
     private MinMaxVo join_delay;

@@ -2,6 +2,8 @@ package com.ozygod.model.zdconfig.vo.game;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author chenweilong
  * @email 1433471850@qq.com
@@ -15,7 +17,7 @@ public class WinVo {
      * equal : 10
      */
 
-    private int xianWin;
-    private int zhuangWin;
-    private int equal;
+    private BigDecimal xianWin;
+    private BigDecimal zhuangWin;
+    private BigDecimal equal;
 }

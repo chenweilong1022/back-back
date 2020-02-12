@@ -2,6 +2,8 @@ package com.ozygod.model.zdconfig.vo.game;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author chenweilong
  * @email 1433471850@qq.com
@@ -14,6 +16,6 @@ public class MinMaxVo {
      * min : 1
      * max : 1
      */
-    private int min;
-    private int max;
+    private BigDecimal min;
+    private BigDecimal max;
 }

@@ -2,6 +2,8 @@ package com.ozygod.model.zdconfig.vo.game;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author chenweilong
  * @email 1433471850@qq.com
@@ -14,6 +16,6 @@ public class ZoneVo {
      * xianDui : 10
      */
 
-    private int zhuangDui;
-    private int xianDui;
+    private BigDecimal zhuangDui;
+    private BigDecimal xianDui;
 }

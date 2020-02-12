@@ -1,8 +1,11 @@
 package com.ozygod.robot.web;
 
+import cn.hutool.json.JSONUtil;
 import com.ozygod.model.common.bo.RobotConfigBO;
 import com.ozygod.model.common.dto.ChangeGameMoneyDto;
 import com.ozygod.model.common.dto.RobotDto;
+import com.ozygod.model.zdconfig.enums.GameConfig;
+import com.ozygod.model.zdconfig.vo.game.BaseGameConfigVo;
 import com.ozygod.robot.service.IRobotManageService;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.ResponseCode;
@@ -200,6 +203,15 @@ public class RobotController {
     @RequestMapping(value = "/{roomId}/config", method = RequestMethod.PUT, headers = Constant.API_VERSION_V2)
     public ResponseBO updateRobotConfig(@PathVariable Integer roomId, @RequestBody RobotConfigBO bo) {
         bo.setRoomId(roomId);
+        Integer gameId = roomId / 100;
+        log.info(bo.getConfig());
+        GameConfig gameConfig = GameConfig.getByKey(gameId);
+        /**
+         * 解决integer 转换成str问题
+         */
+        BaseGameConfigVo baseGameConfigVo = JSONUtil.toBean(bo.getConfig(), gameConfig.getBaseGameConfigVo().getClass());
+        bo.setConfig(JSONUtil.toJsonStr(baseGameConfigVo));
+
         int result = robotManageService.updateRobotConfig(bo);
         if (result ==  0) {
             return new ResponseBO(ResponseCode.U001.getCode(), "修改失败");

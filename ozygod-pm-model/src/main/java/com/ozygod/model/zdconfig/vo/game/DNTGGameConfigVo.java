@@ -3,6 +3,7 @@ package com.ozygod.model.zdconfig.vo.game;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,12 +30,12 @@ public class DNTGGameConfigVo extends BaseGameConfigVo {
      */
     private MinMaxVo num;
     private MinMaxVo max_gold;
-    private int fixBet;
+    private BigDecimal fixBet;
     private MinMaxVo join_delay;
-    private int baseScore;
+    private BigDecimal baseScore;
     private MinMaxVo time;
     private String logic;
-    private int stragy;
+    private BigDecimal stragy;
     private List<MinMaxVo> gold;
 
 

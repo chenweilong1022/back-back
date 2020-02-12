@@ -2,6 +2,7 @@ package com.ozygod.model.zdconfig.vo.game;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -25,14 +26,14 @@ public class SHBYGameConfigVo extends BaseGameConfigVo {
      * logic : dtdw_shcs
      * fixBet : 100
      */
-    private int baseScore;
+    private BigDecimal baseScore;
     private MinMaxVo num;
     private MinMaxVo max_gold;
     private MinMaxVo join_delay;
     private MinMaxVo time;
-    private int stragy;
+    private BigDecimal stragy;
     private String logic;
-    private int fixBet;
+    private BigDecimal fixBet;
     private List<MinMaxVo> gold;
 
 }
