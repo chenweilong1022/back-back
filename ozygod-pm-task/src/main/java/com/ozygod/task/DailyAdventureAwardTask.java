@@ -57,8 +57,7 @@ public class DailyAdventureAwardTask {
     /**
      * 每小时统计一次
      */
-    @Scheduled(cron = "0 */1 * * * ?")
-//    @Transactional(rollbackFor = Exception.class)
+    @Scheduled(cron = "0 59 0-23 * * ?")
     public void configureTasks() {
         //判断是否开启 没开启活动不送奖励
         TblActiveConfigEntity tblActiveConfigEntity = tblActiveConfigService.getById(GameGoldReason.SIX.getKey());
