@@ -240,6 +240,7 @@ public class RobotManageServiceImpl implements IRobotManageService {
     public RoomConfigVo getRobotConfigByQry(RobotDto dto) {
 
         Integer roomId = dto.getRoomId();
+        log.info(gameUrl + "/get_robot_config?roomid=" + roomId);
         String result = HttpRequestUtil.sendGet(gameUrl + "/get_robot_config?roomid=" + roomId);
         Integer gameId = roomId / 100;
 
