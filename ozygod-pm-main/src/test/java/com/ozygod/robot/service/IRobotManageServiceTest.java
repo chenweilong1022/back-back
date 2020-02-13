@@ -45,8 +45,13 @@ public class IRobotManageServiceTest {
         for (TblGameRoomEntity tblGameRoomEntity : list) {
             Map map = new HashMap();
             map.put("roomid",tblGameRoomEntity.getRoomid());
-            String s = HttpUtil.get(gameUrl + "/get_robot_config", map);
-            log.info("roomName = {},config = {}",tblGameRoomEntity.getRoomName(),s);
+            try {
+                String s = HttpUtil.get(gameUrl + "/get_robot_config", map,3000);
+                log.info("roomName = {},config = {}",tblGameRoomEntity.getRoomName(),s);
+            }catch (Exception e ) {
+                log.info("roomName = {},config = {}",tblGameRoomEntity.getRoomName(),"");
+                continue;
+            }
 
         }
 
