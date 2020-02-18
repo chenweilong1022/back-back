@@ -47,7 +47,7 @@ agent_url: http://127.0.0.1:6002
 ipdb: /home/web/ipipfree.ipdb
 
 # 文件存放路径
-files_url: /home/web/files/
+files_url: ${FILES_URL:/home/web/files/}
 
 appId: wx6cef6e4f32ab6e62
 appSecret: 70b64c2889ed54053e8e9f67fc50f562
