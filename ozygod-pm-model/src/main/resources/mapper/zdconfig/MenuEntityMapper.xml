@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ozygod.model.zdmanage.dao.MenuEntityMapper">
+<mapper namespace="com.ozygod.model.zdconfig.dao.MenuEntityMapper">
   <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.MenuEntity">
     <id column="menuid" jdbcType="INTEGER" property="menuid" />
     <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
@@ -13,7 +13,7 @@
     menuid, menu_name, menu_location, parentid, sort_num, menu_url
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_menu
     where menuid = #{menuid,jdbcType=INTEGER}
@@ -44,10 +44,10 @@
     where menuid = #{menuid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
-    insert into tbl_menu (menuid, menu_name, menu_location, 
+    insert into tbl_menu (menuid, menu_name, menu_location,
       parentid, sort_num, menu_url
       )
-    values (#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuLocation,jdbcType=VARCHAR}, 
+    values (#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuLocation,jdbcType=VARCHAR},
       #{parentid,jdbcType=INTEGER}, #{sortNum,jdbcType=INTEGER}, #{menuUrl,jdbcType=VARCHAR}
       )
   </insert>
