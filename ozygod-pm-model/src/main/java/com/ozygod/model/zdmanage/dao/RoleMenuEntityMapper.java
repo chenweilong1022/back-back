@@ -1,4 +1,4 @@
-package com.ozygod.model.zdconfig.dao;
+package com.ozygod.model.zdmanage.dao;
 
 import com.ozygod.model.zdmanage.entity.RoleMenuEntity;
 

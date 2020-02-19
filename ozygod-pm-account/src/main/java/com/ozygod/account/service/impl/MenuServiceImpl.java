@@ -1,8 +1,8 @@
 package com.ozygod.account.service.impl;
 
 import com.ozygod.account.service.IMenuService;
-import com.ozygod.model.zdconfig.dao.MenuEntityMapper;
 import com.ozygod.model.zdmanage.bo.MenuBO;
+import com.ozygod.model.zdmanage.dao.MenuEntityMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

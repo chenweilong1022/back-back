@@ -1,9 +1,9 @@
-package com.ozygod.model.zdconfig.dao;
+package com.ozygod.model.zdmanage.dao;
 
-import com.ozygod.model.zdmanage.bo.ManagerBO;
 import com.ozygod.model.zdmanage.dto.LoginDto;
 import com.ozygod.model.zdmanage.dto.ManagerDto;
 import com.ozygod.model.zdmanage.entity.ManagerEntity;
+import com.ozygod.model.zdmanage.bo.ManagerBO;
 
 import java.util.List;
 

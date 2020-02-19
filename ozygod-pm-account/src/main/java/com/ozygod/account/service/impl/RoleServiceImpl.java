@@ -1,8 +1,8 @@
 package com.ozygod.account.service.impl;
 
 import com.ozygod.account.service.IRoleService;
-import com.ozygod.model.zdconfig.dao.RoleEntityMapper;
 import com.ozygod.model.zdmanage.bo.RoleBO;
+import com.ozygod.model.zdmanage.dao.RoleEntityMapper;
 import com.ozygod.model.zdmanage.dto.ManagerDto;
 import com.ozygod.model.zdmanage.entity.RoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
