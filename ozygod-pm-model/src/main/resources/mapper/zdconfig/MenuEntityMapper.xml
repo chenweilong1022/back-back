@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ozygod.model.zdmanage.dao.MenuEntityMapper">
+<mapper namespace="com.ozygod.model.zdconfig.dao.MenuEntityMapper">
   <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.MenuEntity">
     <id column="menuid" jdbcType="INTEGER" property="menuid" />
     <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
@@ -13,13 +13,13 @@
     menuid, menu_name, menu_location, parentid, sort_num, menu_url
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_menu
     where menuid = #{menuid,jdbcType=INTEGER}
   </select>
   <select id="listMenuByRoleId" parameterType="java.lang.Integer" resultType="com.ozygod.model.zdmanage.bo.MenuBO" statementType="CALLABLE">
-    call sp_get_menus_by_roleid(#{roleId,jdbcType=INTEGER})
+    call zdmanage.sp_get_menus_by_roleid(#{roleId,jdbcType=INTEGER})
   </select>
 
 
@@ -30,11 +30,11 @@
   </select>
 
   <select id="saveRoleMenu" parameterType="com.ozygod.model.zdmanage.bo.MenuBO" resultType="java.lang.Integer" statementType="CALLABLE">
-    call sp_add_update_role_menu(#{roleId,jdbcType=INTEGER}, #{menuIds,jdbcType=VARCHAR}, #{whoId,jdbcType=INTEGER})
+    call zdmanage.sp_add_update_role_menu(#{roleId,jdbcType=INTEGER}, #{menuIds,jdbcType=VARCHAR}, #{whoId,jdbcType=INTEGER})
   </select>
 
   <select id="saveMenu" parameterType="com.ozygod.model.zdmanage.bo.MenuBO" resultType="java.lang.Integer" statementType="CALLABLE">
-    call sp_add_update_menu_new(#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR},#{parentid,jdbcType=INTEGER},
+    call zdmanage.sp_add_update_menu_new(#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuUrl,jdbcType=VARCHAR},#{parentid,jdbcType=INTEGER},
     #{sortNum,jdbcType=INTEGER},#{whoId,jdbcType=INTEGER})
   </select>
 
@@ -44,10 +44,10 @@
     where menuid = #{menuid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.MenuEntity">
-    insert into tbl_menu (menuid, menu_name, menu_location, 
+    insert into tbl_menu (menuid, menu_name, menu_location,
       parentid, sort_num, menu_url
       )
-    values (#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuLocation,jdbcType=VARCHAR}, 
+    values (#{menuid,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{menuLocation,jdbcType=VARCHAR},
       #{parentid,jdbcType=INTEGER}, #{sortNum,jdbcType=INTEGER}, #{menuUrl,jdbcType=VARCHAR}
       )
   </insert>

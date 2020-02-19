@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ozygod.model.zdmanage.dao.RoleMenuEntityMapper">
+<mapper namespace="com.ozygod.model.zdconfig.dao.RoleMenuEntityMapper">
   <resultMap id="BaseResultMap" type="com.ozygod.model.zdmanage.entity.RoleMenuEntity">
     <id column="roleid" jdbcType="INTEGER" property="roleid" />
     <result column="menu_ids" jdbcType="VARCHAR" property="menuIds" />
@@ -9,7 +9,7 @@
     roleid, menu_ids
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_role_menu
     where roleid = #{roleid,jdbcType=INTEGER}

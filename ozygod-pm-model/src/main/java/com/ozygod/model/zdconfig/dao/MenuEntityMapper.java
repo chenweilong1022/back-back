@@ -1,4 +1,4 @@
-package com.ozygod.model.zdmanage.dao;
+package com.ozygod.model.zdconfig.dao;
 
 import com.ozygod.model.zdmanage.bo.MenuBO;
 import com.ozygod.model.zdmanage.entity.MenuEntity;
