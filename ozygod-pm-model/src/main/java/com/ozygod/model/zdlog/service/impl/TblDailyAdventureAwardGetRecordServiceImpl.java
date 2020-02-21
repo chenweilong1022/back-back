@@ -1,17 +1,18 @@
 package com.ozygod.model.zdlog.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ozygod.base.bo.ResponseBO;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-
 import com.ozygod.model.zdlog.dao.TblDailyAdventureAwardGetRecordDao;
-import com.ozygod.model.zdlog.entity.TblDailyAdventureAwardGetRecordEntity;
 import com.ozygod.model.zdlog.dto.TblDailyAdventureAwardGetRecordListDto;
+import com.ozygod.model.zdlog.entity.TblDailyAdventureAwardGetRecordEntity;
 import com.ozygod.model.zdlog.service.TblDailyAdventureAwardGetRecordService;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 
 @Service("tblDailyAdventureAwardGetRecordService")
@@ -26,5 +27,12 @@ public class TblDailyAdventureAwardGetRecordServiceImpl extends ServiceImpl<TblD
                 .like(ObjectUtil.isNotNull(tblDailyAdventureAwardGetRecord.getUserid()),TblDailyAdventureAwardGetRecordEntity::getUserid,tblDailyAdventureAwardGetRecord.getUserid())
         );
         return ResponseBO.page(page);
+    }
+
+
+    @Override
+    @Async
+    public boolean saveBatch(Collection<TblDailyAdventureAwardGetRecordEntity> entityList) {
+        return super.saveBatch(entityList);
     }
 }

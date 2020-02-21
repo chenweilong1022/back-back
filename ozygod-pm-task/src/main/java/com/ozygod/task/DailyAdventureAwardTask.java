@@ -2,12 +2,16 @@ package com.ozygod.task;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.enums.DailyAdventureAwardConfig;
 import com.ozygod.base.enums.GameGoldReason;
 import com.ozygod.base.redis.IntegerRedisDao;
+import com.ozygod.base.redis.ListRedisDao;
 import com.ozygod.model.zdconfig.entity.TblActiveConfigEntity;
 import com.ozygod.model.zdconfig.service.TblActiveConfigService;
 import com.ozygod.model.zdgame.service.TblAccountService;
@@ -41,6 +45,8 @@ public class DailyAdventureAwardTask {
     @Autowired
     private IntegerRedisDao integerRedisDao;
     @Autowired
+    private ListRedisDao listRedisDao;
+    @Autowired
     private TblAccountService tblAccountService;
     @Autowired
     private TblDailyAdventureAwardGetRecordService tblDailyAdventureAwardGetRecordService;
@@ -61,24 +67,27 @@ public class DailyAdventureAwardTask {
     /**
      * 每小时统计一次
      */
-    @Scheduled(cron = "0 59 0-23 * * ?")
+    @Scheduled(cron = "0 1-58 0-23 * * ?")
     public void configureTasks() {
         //判断是否开启 没开启活动不送奖励
         TblActiveConfigEntity tblActiveConfigEntity = tblActiveConfigService.getById(GameGoldReason.SIX.getKey());
         if (!tblActiveConfigEntity.enabled()) {
             return;
         }
-
-
+        /**
+         * 当前所有用户
+         */
         List<String> keys = integerRedisDao.readAllKeys("totalBet:*");
         log.info(JSONUtil.toJsonStr(keys));
-
         if (CollUtil.isEmpty(keys)) {
             return;
         }
 
-        List<TblDailyAdventureAwardGetRecordEntity> tblDailyAdventureAwardGetRecordEntities = new ArrayList<>();
+        ArrayList<TblDailyAdventureAwardGetRecordEntity> tblDailyAdventureAwardGetRecordEntitiesAll = new ArrayList<>();
+
         for (String key : keys) {
+            //当前用户记录
+//            ArrayList<TblDailyAdventureAwardGetRecordEntity> tblDailyAdventureAwardGetRecordEntities = new ArrayList<>();
 
             String[] strings = key.split(":");
             if (strings.length != 2) {
@@ -88,16 +97,24 @@ public class DailyAdventureAwardTask {
             long userId = Long.valueOf(strings[1]);
             //当前投注
             Integer currentBetting = integerRedisDao.readFromJSONStr(key);
+
+            /**
+             * 当前领取的全部记录
+             */
+
+            String readStr = listRedisDao.readStr("totalBetRewardRecord:" + userId);
+
+            ArrayList<TblDailyAdventureAwardGetRecordEntity> redisTblDailyAdventureAwardGetRecordEntitys = new ArrayList<>();
+
+            if (StrUtil.isNotBlank(readStr)) {
+                redisTblDailyAdventureAwardGetRecordEntitys = JSONUtil.parseArray(readStr).toList(TblDailyAdventureAwardGetRecordEntity.class);
+            }
+
+            redisTblDailyAdventureAwardGetRecordEntitys.forEach(System.out::println);
             /**
              * 已经领取的关卡
              */
-            List<TblDailyAdventureAwardGetRecordEntity> list = tblDailyAdventureAwardGetRecordService.list(new QueryWrapper<TblDailyAdventureAwardGetRecordEntity>().lambda()
-                    .eq(TblDailyAdventureAwardGetRecordEntity::getUserid, userId)
-            );
-            /**
-             * 已经领取的关卡
-             */
-            List<Integer> alreadyKeys = list.stream().map(TblDailyAdventureAwardGetRecordEntity::getCheckpoint).collect(Collectors.toList());
+            List<Integer> alreadyKeys = redisTblDailyAdventureAwardGetRecordEntitys.stream().map(TblDailyAdventureAwardGetRecordEntity::getCheckpoint).collect(Collectors.toList());
             /**
              * 可以领取的关卡
              */
@@ -128,12 +145,17 @@ public class DailyAdventureAwardTask {
                 HttpUtil.post(agentUrl + "/sendBonusMail", toJsonStr,5000);
 
                 tblDailyAdventureAwardGetRecordEntity.setNote(toJsonStr);
-                tblDailyAdventureAwardGetRecordEntities.add(tblDailyAdventureAwardGetRecordEntity);
+                redisTblDailyAdventureAwardGetRecordEntitys.add(tblDailyAdventureAwardGetRecordEntity);
+                tblDailyAdventureAwardGetRecordEntitiesAll.add(tblDailyAdventureAwardGetRecordEntity);
             }
 
-            tblDailyAdventureAwardGetRecordService.saveBatch(tblDailyAdventureAwardGetRecordEntities);
+            /**
+             * 获取到今日12点的秒数
+             */
+            long second = (DateUtil.endOfDay(new Date()).getTime() / 1000) - DateUtil.currentSeconds();
+            listRedisDao.saveAsJSONStr("totalBetRewardRecord:" + userId,redisTblDailyAdventureAwardGetRecordEntitys,second);
         }
-
+        tblDailyAdventureAwardGetRecordService.saveBatch(tblDailyAdventureAwardGetRecordEntitiesAll);
     }
 
 }
