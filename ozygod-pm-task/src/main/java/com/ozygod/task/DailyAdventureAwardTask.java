@@ -45,7 +45,11 @@ public class DailyAdventureAwardTask {
     @Autowired
     private TblDailyAdventureAwardGetRecordService tblDailyAdventureAwardGetRecordService;
 
-    private final static String format =  "当前总投注:%s,领取的关卡%s,领取时间%s,领取用户id%s,领取金额%s";
+    private final static String format =  "闯关活动";
+
+    private final static String msg =  "恭喜你，在闯关活动中，通过%s，获得彩金：%s元。";
+
+
 
     @Autowired
     private TblActiveConfigService tblActiveConfigService;
@@ -114,13 +118,11 @@ public class DailyAdventureAwardTask {
                 tblDailyAdventureAwardGetRecordEntity.setReward(dailyAdventureAwardConfig.getReward().multiply(BigDecimal.valueOf(100)).intValue());
                 tblDailyAdventureAwardGetRecordEntity.setCurrentBetting(currentBetting);
 
-                String reason = String.format(format, currentBetting,dailyAdventureAwardConfig.getValue(), DateUtil.formatDateTime(new Date()),userId,tblDailyAdventureAwardGetRecordEntity.getReward());
-
                 SendBonusMailDto sendBonusMailDto = new SendBonusMailDto();
                 sendBonusMailDto.setUserid(userId);
                 sendBonusMailDto.setBonus(tblDailyAdventureAwardGetRecordEntity.getReward());
-                sendBonusMailDto.setMsg(dailyAdventureAwardConfig.getValue());
-                sendBonusMailDto.setReason(reason);
+                sendBonusMailDto.setMsg(String.format(msg,dailyAdventureAwardConfig.getValue(),dailyAdventureAwardConfig.getReward().toString()));
+                sendBonusMailDto.setReason(format);
                 String toJsonStr = JSONUtil.toJsonStr(sendBonusMailDto);
 //                发送奖励邮件
                 HttpUtil.post(agentUrl + "/sendBonusMail", toJsonStr,5000);
