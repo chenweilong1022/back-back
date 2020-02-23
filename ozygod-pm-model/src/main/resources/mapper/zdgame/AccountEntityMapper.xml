@@ -307,7 +307,7 @@
           t3.bank_gold
       FROM
           tbl_player_location t1
-          LEFT JOIN tbl_game_room tt ON t1.room = tt.roomid
+          LEFT JOIN zdconfig.tbl_game_room tt ON t1.room = tt.roomid
           LEFT JOIN tbl_account t2 ON t1.userid = t2.userid
           LEFT JOIN tbl_playerinfo t3 ON t1.userid = t3.userid
       WHERE
