@@ -327,7 +327,7 @@
                 #{ew.gameId, jdbcType=INTEGER}
             </foreach>
         </if>
-        ORDER BY t3.show_id DESC
+        ORDER BY t1.into_time asc
     </select>
 
 

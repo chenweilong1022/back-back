@@ -23,7 +23,7 @@
            left join (
       select count(t.userid) onlineCount, tt.gameid
       from zdgame.tbl_player_location t
-             left join zdgame.tbl_game_room tt on t.room = tt.roomid
+             left join zdconfig.tbl_game_room tt on t.room = tt.roomid
       group by tt.gameid
     ) t2 on t1.gameid = t2.gameid
   </select>
