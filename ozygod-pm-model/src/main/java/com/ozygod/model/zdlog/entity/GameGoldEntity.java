@@ -7,7 +7,7 @@ import java.util.Date;
 public class GameGoldEntity {
     private Long userid;
 
-    private Integer reason;
+    private String reason;
 
     private Integer roomid;
 
@@ -36,11 +36,11 @@ public class GameGoldEntity {
         this.userid = userid;
     }
 
-    public Integer getReason() {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason(Integer reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 

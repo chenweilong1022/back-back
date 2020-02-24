@@ -50,7 +50,7 @@
            LIMIT #{start}, #{pageSize}
          </if>
          ) AS A
-    LEFT JOIN zdgame.tbl_game_room B ON B.roomId = A.roomId
+    LEFT JOIN zdconfig.tbl_game_room B ON B.roomId = A.roomId
     LEFT JOIN zdgame.tbl_playerinfo AS D ON A.USERID = D.USERID
     ORDER BY
     A.record_time DESC
@@ -356,13 +356,13 @@
   </select>
 
   <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.GameGoldEntity">
-    insert into tbl_game_gold (userid, reason, roomid, 
-      tableid, seatid, begin_gold, 
-      change_gold, tax_gold, end_gold, 
+    insert into tbl_game_gold (userid, reason, roomid,
+      tableid, seatid, begin_gold,
+      change_gold, tax_gold, end_gold,
       note, record_time)
-    values (#{userid,jdbcType=BIGINT}, #{reason,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER}, 
-      #{tableid,jdbcType=INTEGER}, #{seatid,jdbcType=INTEGER}, #{beginGold,jdbcType=BIGINT}, 
-      #{changeGold,jdbcType=BIGINT}, #{taxGold,jdbcType=BIGINT}, #{endGold,jdbcType=BIGINT}, 
+    values (#{userid,jdbcType=BIGINT}, #{reason,jdbcType=INTEGER}, #{roomid,jdbcType=INTEGER},
+      #{tableid,jdbcType=INTEGER}, #{seatid,jdbcType=INTEGER}, #{beginGold,jdbcType=BIGINT},
+      #{changeGold,jdbcType=BIGINT}, #{taxGold,jdbcType=BIGINT}, #{endGold,jdbcType=BIGINT},
       #{note,jdbcType=VARCHAR}, #{recordTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ozygod.model.zdlog.entity.GameGoldEntity">
