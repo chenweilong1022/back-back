@@ -1,12 +1,16 @@
 package com.ozygod.base.utils;
 
+import cn.hutool.core.io.file.FileReader;
+import com.ozygod.base.config.IpdbCityConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.ipip.ipdb.City;
 import net.ipip.ipdb.CityInfo;
 import net.ipip.ipdb.IPFormatException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 /**
@@ -23,6 +27,9 @@ public class IPUtils {
     @Value("${ipdb}")
     public String ipdb;
 
+    @Autowired
+    private City city;
+
     /**
      * 获取IP归属地信息
      * @param ip
@@ -30,8 +37,6 @@ public class IPUtils {
      */
     public String getIPAddrCN(String ip) {
         try {
-            City city = new City(ipdb);
-
             CityInfo cityInfo = city.findInfo(ip, "CN");
             if (cityInfo == null) {
                 return "未知";

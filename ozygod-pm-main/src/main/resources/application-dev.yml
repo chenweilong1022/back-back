@@ -213,3 +213,5 @@ robot_url: http://${ROBOT_URL_8692:127.0.0.1}:8692
 game_url: http://${GAME_URL_8691:127.0.0.1}:8691
 # 代理api地址
 agent_url: http://${AGENT_URL_6002:127.0.0.1}:6002
+# ipv4地址库
+ipdb: ipdb/ipipfree.ipdb
