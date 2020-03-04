@@ -76,7 +76,7 @@ public class TblSysLogEntity implements Serializable {
 	 * 返回参数
 	 */
 	@ApiModelProperty(required=false,value="返回参数")
-	private String result;
+	private byte[] result;
 	/**
 	 * IP地址
 	 */

@@ -2,37 +2,22 @@ package com.ozygod.conf.aspect;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import com.ozygod.base.auth.AccessToken;
+import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.Global;
-import com.ozygod.base.utils.HttpRequestUtil;
-import com.ozygod.base.utils.IPUtils;
 import com.ozygod.base.utils.WebUtil;
 import com.ozygod.model.zdmanage.entity.TblSysLogEntity;
 import com.ozygod.model.zdmanage.service.TblSysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletMapping;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
 
 /**
  * @title: 请求和返回内容拦截日志记录
@@ -99,24 +84,51 @@ public class WebLogAspect {
         tblSysLogEntity.setIp(clientIP);
     }
 
-    @AfterReturning(returning = "object", pointcut = "webLog()")
-    public void doAfterReturning(Object object) throws Throwable {
+    /**
+     * 出现异常
+     * @param e
+     */
+    @AfterThrowing(value = "webLog()",throwing = "e")
+    public void afterThrowing(Exception e) {
         try {
-            TblSysLogEntity tblSysLogEntity = TBLSYS_LOG_ENTITY.get();
-            HttpServletRequest request = WebUtil.getHttpServletRequest();
-            AccessToken accessToken = (AccessToken) request.getAttribute(Global.ACCESS_TOKEN_REQUEST_KEY);
+            TblSysLogEntity tblSysLogEntity = setTblSysLogEntity(JSONUtil.toJsonStr(ResponseBO.error(e.getMessage())));
+            addSysLog(tblSysLogEntity);
+        }finally {
+            clear();
+        }
+    }
 
-            if (ObjectUtil.isNotNull(accessToken)) {
-                tblSysLogEntity.setUserId(Integer.valueOf(accessToken.getUserid()));
-                tblSysLogEntity.setUsername(accessToken.getLoginname());
-            }
-            tblSysLogEntity.setTime((System.currentTimeMillis() - START_TIME.get()));
-            tblSysLogEntity.setResult(String.valueOf(object));
+
+    /**
+     * 正常返回
+     * @param object
+     */
+    @AfterReturning(returning = "object", pointcut = "webLog()")
+    public void doAfterReturning(Object object){
+        try {
+            TblSysLogEntity tblSysLogEntity = setTblSysLogEntity(String.valueOf(object));
 
             addSysLog(tblSysLogEntity);
         }finally {
             clear();
         }
+    }
+
+    private TblSysLogEntity setTblSysLogEntity(String result) {
+        TblSysLogEntity tblSysLogEntity = TBLSYS_LOG_ENTITY.get();
+        if (ObjectUtil.isNull(tblSysLogEntity)) {
+            return null;
+        }
+        HttpServletRequest request = WebUtil.getHttpServletRequest();
+        AccessToken accessToken = (AccessToken) request.getAttribute(Global.ACCESS_TOKEN_REQUEST_KEY);
+
+        if (ObjectUtil.isNotNull(accessToken)) {
+            tblSysLogEntity.setUserId(Integer.valueOf(accessToken.getUserid()));
+            tblSysLogEntity.setUsername(accessToken.getLoginname());
+        }
+        tblSysLogEntity.setTime((System.currentTimeMillis() - START_TIME.get()));
+        tblSysLogEntity.setResult(result.getBytes());
+        return tblSysLogEntity;
     }
 
     private static void clear() {
