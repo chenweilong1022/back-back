@@ -1,6 +1,7 @@
 package com.ozygod.conf.aspect;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONUtil;
 import com.ozygod.base.auth.AccessToken;
@@ -139,6 +140,9 @@ public class WebLogAspect {
 
     @Async // 异步入库
     public void addSysLog(TblSysLogEntity tblSysLogEntity) {
+        if (StrUtil.containsAny(tblSysLogEntity.getOperation(),"zdmanage/tblsyslog/list")) {
+            return;
+        }
         tblSysLogService.save(tblSysLogEntity);
     }
 }
