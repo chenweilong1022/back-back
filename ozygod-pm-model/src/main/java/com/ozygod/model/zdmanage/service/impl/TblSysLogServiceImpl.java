@@ -23,6 +23,8 @@ public class TblSysLogServiceImpl extends ServiceImpl<TblSysLogDao, TblSysLogEnt
                 new QueryWrapper<TblSysLogEntity>().lambda()
                 .orderByDesc(TblSysLogEntity::getCreateTime)
                 .like(StrUtil.isNotBlank(tblSysLog.getHostUrl()),TblSysLogEntity::getHostUrl,tblSysLog.getHostUrl())
+                .like(StrUtil.isNotBlank(tblSysLog.getOperation()),TblSysLogEntity::getOperation,tblSysLog.getOperation())
+
         );
         return ResponseBO.page(page);
     }
