@@ -25,4 +25,5 @@
 /nbdist/
 /.nb-gradle/
 /ozygod-pm-generator
-/scripts/
+/scripts/back-front/
+/scripts/back-back/
