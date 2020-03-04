@@ -212,3 +212,81 @@ docker run -id --name back \
          -v /Users/chenweilong/Desktop/upload/image:/home/web/files \
           -p 8080:8080 3a149c9e76ef
 
+
+DailyAdventureAward
+
+每日闯关记录领取表
+
+id
+用户id
+关卡
+有效投注
+奖励
+当前投注
+备注
+
+
+id
+userid
+checkpoint
+Effective_betting
+reward
+current_betting
+note
+
+
+
+
+CREATE TABLE `tbl_Active_Config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `active_config_id` bigint(20) DEFAULT NULL COMMENT '活动id',
+  `active` int(11) DEFAULT NULL COMMENT '活动',
+  `enabled` int(11) DEFAULT NULL COMMENT '是否开启',
+  `note` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `is_del` int(11) DEFAULT '0' COMMENT '删除标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1118 DEFAULT CHARSET=utf8 COMMENT='活动配置表';
+
+
+-- robot_min_gold = 10000000,  --机器人携带最小金币
+	-- robot_give_lower = 50000000,--机器人携带最大金币
+
+	-- _robotconf.robot_max_gold = 500000000  --离开金币上限
+
+
+	-- _robotconf.min_ask_bets_delay = 1.5 * 100 --下注延时下限
+	-- _robotconf.max_ask_bets_delay = 2.5 * 100 --下注延时上限
+
+	-- _robotconf.min_on_banker_cnt = 5  --申请上庄数量下限
+	-- _robotconf.max_on_banker_cnt = 15 --申请上庄数量上限 （当申请上庄列表低于下限 机器人申请上庄 高于上限的时候 申请下庄 ）
+	-- _robotconf.off_banker_gold = 50000000 --下庄金币（高于这个值申请下庄）
+	-- _robotconf.max_banker_win_gold = 100000000  --庄家是机器人时候 赢的钱超过这个值离开游戏
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

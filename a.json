@@ -1,0 +1,334 @@
+百家乐,config = {"bet":{"min":1000, "max":20000}, "stragy":1, "win":{"xianWin":45, "zhuangWin":45, "equal":10}, "zone":{"zhuangDui":10, "xianDui":10}, "join_delay":{"min":1, "max":10}, "minIdleSeat":{"min":3, "max":6}, "time":{"min":0, "max":60}, "gold":[{"min":10000, "max":10000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"lh", "num":{"min":2, "max":4}}
+龙争虎斗,config = {"bet":{"min":1000, "max":20000}, "stragy":1, "win":{"xianWin":45, "zhuangWin":45, "equal":10}, "zone":{"zhuangDui":10, "xianDui":10}, "join_delay":{"min":1, "max":10}, "minIdleSeat":{"min":3, "max":6}, "time":{"min":0, "max":60}, "gold":[{"min":10000, "max":10000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"lh", "num":{"min":2, "max":4}}
+经典接龙,config = {"num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"jdjl", "join_delay":{"min":1, "max":10}, "stragy":1}
+经典扫雷,config = {"stragy":1, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"jdsl", "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+经典牛牛,config = {"gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "stragy":1, "time":{"min":0, "max":60}, "max_gold":{"min":600000, "max":600000}, "logic":"jdnn", "fixBet":100, "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+大闹天宫初级场,config = {"num":{"min":3, "max":3}, "max_gold":{"min":600000, "max":600000}, "fixBet":100, "join_delay":{"min":1, "max":10}, "baseScore":10, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "logic":"dtdw_dntg", "stragy":1}
+大闹天宫中级场,config = FAILED
+大闹天宫高级场,config = FAILED
+深海捕鱼初级场,config = {"baseScore":10, "num":{"min":1, "max":1}, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "stragy":1, "logic":"dtdw_shcs", "fixBet":100}
+深海捕鱼中级场,config = FAILED
+深海捕鱼高级场,config = FAILED
+//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置//获取配置
+百家乐,config = {"win":{"xianWin":45, "equal":10, "zhuangWin":45}, "num":{"max":4, "min":2}, "stragy":1, "logic":"lh", "zone":{"zhuangDui":10, "xianDui":10}, "time":{"max":60, "min":0}, "gold":[{"max":10000, "min":"10000"}, {"max":100000, "min":"20000"}, {"max":100000, "min":"20000"}], "bet":{"max":20000, "min":1000}, "minIdleSeat":{"max":6, "min":"3"}, "join_delay":{"max":10, "min":1}, "max_gold":{"max":600000, "min":600000}}
+龙争虎斗,config = {"num":{"max":4, "min":"1"}, "win":{"xianWin":"41", "zhuangWin":45, "equal":10}, "minIdleSeat":{"max":6, "min":3}, "bet":{"max":20000, "min":"1001"}, "zone":{"zhuangDui":10, "xianDui":10}, "time":{"max":60, "min":0}, "join_delay":{"max":10, "min":1}, "logic":"lh", "stragy":1, "gold":[{"max":10000, "min":10000}, {"max":100000, "min":20000}, {"max":100000, "min":20000}], "max_gold":{"max":600000, "min":600000}}
+经典接龙,config = {"max_gold":{"min":600000, "max":600000}, "num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "stragy":1, "join_delay":{"min":1, "max":10}, "logic":"jdjl"}
+经典扫雷,config = {"stragy":1, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "num":{"min":13, "max":13}, "logic":"jdsl", "join_delay":{"min":1, "max":10}, "max_gold":{"min":600000, "max":600000}}
+经典牛牛,config = {"join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"jdnn", "fixBet":100, "stragy":1}
+大闹天宫初级场,config = {"num":{"min":"3", "max":3}, "join_delay":{"min":1, "max":10}, "baseScore":10, "fixBet":100, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "time":{"min":0, "max":60}, "stragy":1, "logic":"dtdw_dntg", "max_gold":{"min":600000, "max":600000}}
+大闹天宫中级场,config = FAILED
+大闹天宫高级场,config = FAILED
+深海捕鱼初级场,config = {"num":{"min":1, "max":1}, "stragy":1, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "baseScore":10, "logic":"dtdw_shcs", "fixBet":100}
+深海捕鱼中级场,config = FAILED
+深海捕鱼高级场,config = FAILED
+//获取配置
+//百家乐,config = {"bet":{"min":1005, "max":20001}, "num":{"min":5, "max":14}, "win":{"xianWin":41, "zhuangWin":45, "equal":10}, "zone":{"zhuangDui":10, "xianDui":10}, "join_delay":{"min":3, "max":10}, "minIdleSeat":{"min":3, "max":6}, "time":{"min":0, "max":60}, "gold":[{"min":10000, "max":10000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"bjl", "stragy":1}
+//龙争虎斗,config = {"bet":{"max":20000, "min":1001}, "num":{"max":14, "min":4}, "win":{"xianWin":"41", "zhuangWin":45, "equal":10}, "max_gold":{"max":600000, "min":600000}, "join_delay":{"max":10, "min":1}, "minIdleSeat":{"max":6, "min":3}, "time":{"max":60, "min":0}, "gold":[{"max":10000, "min":10000}, {"max":100000, "min":20000}, {"max":100000, "min":20000}], "stragy":1, "logic":"lh", "zone":{"zhuangDui":10, "xianDui":10}}
+//百人牛牛,config = {"bet":{"min":1000, "max":20000}, "robot_give_upper":100000000, "join_delay":{"min":1, "max":10}, "max_banker_win_gold":100000000, "time":{"min":0, "max":60}, "gold":{"min":10000000, "max":500000000}, "logic":"nn100", "robot_min_gold":10000000, "off_banker_gold":50000000, "max_ask_bets_delay":250, "max_gold":{"min":600000, "max":600000}, "robot_take_lower":300000000, "stragy":1, "min_banker_req_delay":100, "num":{"min":2, "max":4}, "max_on_banker_cnt":15, "max_banker_req_delay":200, "min_on_banker_cnt":5, "min_ask_bets_delay":150, "robot_give_lower":50000000, "robot_max_gold":500000000, "act_human_cnt":0, "robot_take_upper":400000000}
+通比牛牛初级场,config = FAILED
+通比牛牛中级场,config =
+通比牛牛高级场,config =
+抢庄牛牛初级场,config = {"bet":{"min":1000, "max":20000}, "robot_give_upper":100000000, "join_delay":{"min":1, "max":10}, "max_banker_win_gold":100000000, "time":{"min":0, "max":60}, "gold":{"min":10000000, "max":500000000}, "logic":"qznn", "robot_min_gold":10000000, "off_banker_gold":50000000, "max_ask_bets_delay":250, "max_gold":{"min":600000, "max":600000}, "robot_take_lower":300000000, "stragy":1, "min_banker_req_delay":100, "num":{"min":2, "max":4}, "max_on_banker_cnt":15, "max_banker_req_delay":200, "min_on_banker_cnt":5, "min_ask_bets_delay":150, "robot_give_lower":50000000, "robot_max_gold":500000000, "act_human_cnt":0, "robot_take_upper":400000000}
+抢庄牛牛中级场,config =
+抢庄牛牛高级场,config =
+//经典接龙初级场,config = {"num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"jdjl", "join_delay":{"min":1, "max":10}, "stragy":1}
+//经典接龙中级场,config = {"num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":{"min":100, "max":1100}, "max_gold":{"min":6000, "max":60000}, "logic":"jdjl", "join_delay":{"min":1, "max":10}, "stragy":1}
+//经典接龙高级场,config = {"num":{"min":13, "max":13}, "time":{"min":0, "max":60}, "gold":{"min":1000, "max":11000}, "max_gold":{"min":60000, "max":600000}, "logic":"jdjl", "join_delay":{"min":1, "max":10}, "stragy":1}
+//经典扫雷初级场,config = {"stragy":1, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "max_gold":{"min":600000, "max":600000}, "logic":"jdsl", "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+//经典扫雷中级场,config = {"stragy":1, "time":{"min":0, "max":60}, "gold":{"min":1100, "max":11000}, "max_gold":{"min":6000, "max":60000}, "logic":"jdsl", "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+//经典扫雷高级场,config = {"stragy":1, "time":{"min":0, "max":60}, "gold":{"min":11000, "max":110000}, "max_gold":{"min":60000, "max":600000}, "logic":"jdsl", "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+//经典牛牛初级场,config = {"gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "stragy":1, "time":{"min":0, "max":60}, "max_gold":{"min":600000, "max":600000}, "logic":"jdnn", "fixBet":100, "join_delay":{"min":1, "max":10}, "num":{"min":13, "max":13}}
+//大闹天宫初级场,config = {"stragy":1, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "baseScore":10, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "num":{"min":3, "max":3}, "logic":"dtdw_dntg", "fixBet":100}
+//大闹天宫中级场,config = {"stragy":1, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "time":{"min":0, "max":60}, "gold":[{"min":11000, "max":110000}, {"min":200000, "max":1000000}, {"min":200000, "max":1000000}], "baseScore":100, "num":{"min":3, "max":3}, "logic":"dtdw_dntg", "fixBet":100}
+//大闹天宫高级场,config = {"stragy":1, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "time":{"min":0, "max":60}, "gold":[{"min":11000, "max":110000}, {"min":200000, "max":1000000}, {"min":200000, "max":1000000}], "num":{"min":3, "max":3}, "logic":"dtdw_dntg", "fixBet":100, "baseScore":100}
+//深海捕鱼初级场,config = {"num":{"min":3, "max":3}, "fixBet":100, "join_delay":{"min":1, "max":10}, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "baseScore":10, "stragy":1, "logic":"dtdw_shcs", "max_gold":{"min":600000, "max":600000}}
+//深海捕鱼中级场,config = {"num":{"min":3, "max":3}, "max_gold":{"min":600000, "max":600000}, "fixBet":100, "join_delay":{"min":1, "max":10}, "baseScore":10, "time":{"min":0, "max":60}, "gold":[{"min":1100, "max":11000}, {"min":20000, "max":100000}, {"min":20000, "max":100000}], "logic":"dtdw_shcs", "stragy":1}
+//深海捕鱼高级场,config = {"num":{"min":3, "max":3}, "max_gold":{"min":600000, "max":600000}, "join_delay":{"min":1, "max":10}, "fixBet":100, "gold":[{"min":11000, "max":110000}, {"min":200000, "max":1000000}, {"min":200000, "max":1000000}], "time":{"min":0, "max":60}, "stragy":1, "logic":"dtdw_shcs", "baseScore":100}
+
+
+深海捕鱼:
+{
+"baseScore": 10,
+"num": {
+"min": 1,
+"max": 1
+},
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 1100,
+"max": 11000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"stragy": 1,
+"logic": "dtdw_shcs",
+"fixBet": 100
+}
+大闹天宫初级场 :
+{
+"num": {
+"min": 3,
+"max": 3
+},
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"fixBet": 100,
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"baseScore": 10,
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 1100,
+"max": 11000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"logic": "dtdw_dntg",
+"stragy": 1
+}
+经典牛牛:
+{
+"gold": [
+{
+"min": 1100,
+"max": 11000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"stragy": 1,
+"time": {
+"min": 0,
+"max": 60
+},
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"logic": "jdnn",
+"fixBet": 100,
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"num": {
+"min": 13,
+"max": 13
+}
+}
+
+经典扫雷
+{
+"stragy": 1,
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 1100,
+"max": 11000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"logic": "jdsl",
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"num": {
+"min": 13,
+"max": 13
+}
+}
+经典接龙
+{
+"num": {
+"min": 13,
+"max": 13
+},
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 1100,
+"max": 11000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"logic": "jdjl",
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"stragy": 1
+}
+龙争虎斗:
+
+{
+"bet": {
+"min": 1000,
+"max": 20000
+},
+"stragy": 1,
+"win": {
+"xianWin": 45,
+"zhuangWin": 45,
+"equal": 10
+},
+"zone": {
+"zhuangDui": 10,
+"xianDui": 10
+},
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"minIdleSeat": {
+"min": 3,
+"max": 6
+},
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 10000,
+"max": 10000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"logic": "lh",
+"num": {
+"min": 2,
+"max": 4
+}
+}
+百家乐
+{
+"bet": {
+"min": 1000,
+"max": 20000
+},
+"stragy": 1,
+"win": {
+"xianWin": 45,
+"zhuangWin": 45,
+"equal": 10
+},
+"zone": {
+"zhuangDui": 10,
+"xianDui": 10
+},
+"join_delay": {
+"min": 1,
+"max": 10
+},
+"minIdleSeat": {
+"min": 3,
+"max": 6
+},
+"time": {
+"min": 0,
+"max": 60
+},
+"gold": [
+{
+"min": 10000,
+"max": 10000
+},
+{
+"min": 20000,
+"max": 100000
+},
+{
+"min": 20000,
+"max": 100000
+}
+],
+"max_gold": {
+"min": 600000,
+"max": 600000
+},
+"logic": "lh",
+"num": {
+"min": 2,
+"max": 4
+}
+}

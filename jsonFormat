@@ -1,0 +1,418 @@
+{
+	path: 'robots',
+	redirect: 'noredirect',
+	component: Layout,
+	name: 'robots',
+	alwaysShow: true,
+	meta: {
+		title: '平台机器人管理',
+		path: 'robots',
+		auth: true,
+		icon: 'nested'
+	},
+	children: [
+		{
+			path: 'config',
+			component: () => import('@/views/robotManager/config'),
+			name: 'config',
+			alwaysShow: false,
+			meta: {
+				title: '机器人配置',
+				path: ''config'',
+				auth: true
+			}
+		},
+		{
+			path: 'baijiale',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'baijiale',
+			alwaysShow: true,
+			meta: {
+				title: '百家乐',
+				path: 'baijiale',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'baijiale',
+					component: () => import('@/views/robotManager/robots'),
+					name: '12701',
+					alwaysShow: false,
+					meta: {
+						title: '百家乐',
+						path: 'baijiale',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'longhu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'longhu',
+			alwaysShow: true,
+			meta: {
+				title: '龙虎',
+				path: 'longhu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'longzhenghudou',
+					component: () => import('@/views/robotManager/robots'),
+					name: '12801',
+					alwaysShow: false,
+					meta: {
+						title: '龙争虎斗',
+						path: 'longzhenghudou',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'bairenniuniu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'bairenniuniu',
+			alwaysShow: true,
+			meta: {
+				title: '百人牛牛',
+				path: 'bairenniuniu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'bairenniuniu',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13101',
+					alwaysShow: false,
+					meta: {
+						title: '百人牛牛',
+						path: 'bairenniuniu',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'tongbiniuniu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'tongbiniuniu',
+			alwaysShow: true,
+			meta: {
+				title: '通比牛牛',
+				path: 'tongbiniuniu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'tongbiniuniuchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13201',
+					alwaysShow: false,
+					meta: {
+						title: '通比牛牛初级场',
+						path: 'tongbiniuniuchujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'tongbiniuniuzhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13202',
+					alwaysShow: false,
+					meta: {
+						title: '通比牛牛中级场',
+						path: 'tongbiniuniuzhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'tongbiniuniugaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13203',
+					alwaysShow: false,
+					meta: {
+						title: '通比牛牛高级场',
+						path: 'tongbiniuniugaojichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'qiangzhuangniuniu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'qiangzhuangniuniu',
+			alwaysShow: true,
+			meta: {
+				title: '抢庄牛牛',
+				path: 'qiangzhuangniuniu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'qiangzhuangniuniuchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13301',
+					alwaysShow: false,
+					meta: {
+						title: '抢庄牛牛初级场',
+						path: 'qiangzhuangniuniuchujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'qiangzhuangniuniuzhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13302',
+					alwaysShow: false,
+					meta: {
+						title: '抢庄牛牛中级场',
+						path: 'qiangzhuangniuniuzhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'qiangzhuangniuniugaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '13303',
+					alwaysShow: false,
+					meta: {
+						title: '抢庄牛牛高级场',
+						path: 'qiangzhuangniuniugaojichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'jingdianjielong',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'jingdianjielong',
+			alwaysShow: true,
+			meta: {
+				title: '经典接龙',
+				path: 'jingdianjielong',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'jingdianjielongchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14201',
+					alwaysShow: false,
+					meta: {
+						title: '经典接龙初级场',
+						path: 'jingdianjielongchujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'jingdianjielongzhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14202',
+					alwaysShow: false,
+					meta: {
+						title: '经典接龙中级场',
+						path: 'jingdianjielongzhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'jingdianjielonggaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14203',
+					alwaysShow: false,
+					meta: {
+						title: '经典接龙高级场',
+						path: 'jingdianjielonggaojichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'jingdiansaolei',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'jingdiansaolei',
+			alwaysShow: true,
+			meta: {
+				title: '经典扫雷',
+				path: 'jingdiansaolei',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'jingdiansaoleichujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14301',
+					alwaysShow: false,
+					meta: {
+						title: '经典扫雷初级场',
+						path: 'jingdiansaoleichujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'jingdiansaoleizhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14302',
+					alwaysShow: false,
+					meta: {
+						title: '经典扫雷中级场',
+						path: 'jingdiansaoleizhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'jingdiansaoleigaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14303',
+					alwaysShow: false,
+					meta: {
+						title: '经典扫雷高级场',
+						path: 'jingdiansaoleigaojichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'jingdianniuniu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'jingdianniuniu',
+			alwaysShow: true,
+			meta: {
+				title: '经典牛牛',
+				path: 'jingdianniuniu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'jingdianniuniuchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14401',
+					alwaysShow: false,
+					meta: {
+						title: '经典牛牛初级场',
+						path: 'jingdianniuniuchujichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'danaotiangong',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'danaotiangong',
+			alwaysShow: true,
+			meta: {
+				title: '大闹天宫',
+				path: 'danaotiangong',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'danaotiangongchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14501',
+					alwaysShow: false,
+					meta: {
+						title: '大闹天宫初级场',
+						path: 'danaotiangongchujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'danaotiangongzhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14502',
+					alwaysShow: false,
+					meta: {
+						title: '大闹天宫中级场',
+						path: 'danaotiangongzhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'danaotiangonggaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14503',
+					alwaysShow: false,
+					meta: {
+						title: '大闹天宫高级场',
+						path: 'danaotiangonggaojichang',
+						auth: true
+					}
+				}
+			]
+		},
+		{
+			path: 'shenhaiboyu',
+			redirect: 'noredirect',
+			component: () => import('@/views/robotManager/robots'),
+			name: 'shenhaiboyu',
+			alwaysShow: true,
+			meta: {
+				title: '深海捕鱼',
+				path: 'shenhaiboyu',
+				auth: true,
+				icon: 'nested'
+			},
+			children: [
+				{
+					path: 'shenhaiboyuchujichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14801',
+					alwaysShow: false,
+					meta: {
+						title: '深海捕鱼初级场',
+						path: 'shenhaiboyuchujichang',
+						auth: true
+					}
+				},
+				{
+					path: 'shenhaiboyuzhongjichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14802',
+					alwaysShow: false,
+					meta: {
+						title: '深海捕鱼中级场',
+						path: 'shenhaiboyuzhongjichang',
+						auth: true
+					}
+				},
+				{
+					path: 'shenhaiboyugaojichang',
+					component: () => import('@/views/robotManager/robots'),
+					name: '14803',
+					alwaysShow: false,
+					meta: {
+						title: '深海捕鱼高级场',
+						path: 'shenhaiboyugaojichang',
+						auth: true
+					}
+				}
+			]
+		}
+	]
+}
