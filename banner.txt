@@ -272,16 +272,10 @@ CREATE TABLE `tbl_Active_Config` (
 
 
 
-
-
-
-
-
-
-
-
-
-
+配置zdmanage/tblsyslog/list不拦截日志路由
+增加日志列表筛选条件operation路由
+修改日志-返回参数字段 longtext为blob,
+解决出现异常日志不保存bug---增加异常日志拦截,
 
 
 

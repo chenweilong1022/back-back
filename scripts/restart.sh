@@ -13,4 +13,6 @@ sshpass -p Jz123456 ssh root@39.108.50.148 "rm -rf /home/back/dist/"
 sshpass -p Jz123456 scp ./back-back/ozygod-pm-main/target/ozygod-pm-main-1.0.0.jar root@39.108.50.148:/home/back/
 sshpass -p Jz123456 scp -r ./back-front/dist root@39.108.50.148:/home/back/
 sshpass -p Jz123456 ssh root@39.108.50.148 < kill.sh
-
+rm -rf ${HOMEWORK}
+rm -rf ${FRONT}
+exit

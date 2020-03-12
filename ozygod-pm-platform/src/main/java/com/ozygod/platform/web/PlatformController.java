@@ -3,12 +3,12 @@ package com.ozygod.platform.web;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.ResponseCode;
 import com.ozygod.base.utils.Constant;
+import com.ozygod.model.common.dto.PlatformDto;
 import com.ozygod.model.zdconfig.bo.ShareImageBO;
 import com.ozygod.model.zdconfig.bo.SysConfigsBO;
 import com.ozygod.model.zdconfig.bo.SysDomainBO;
 import com.ozygod.model.zdconfig.dto.ConfigDto;
 import com.ozygod.model.zdgame.bo.NoticeBO;
-import com.ozygod.model.common.dto.PlatformDto;
 import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdmanage.bo.VipChannelBO;
 import com.ozygod.platform.service.IPlatformService;
@@ -200,8 +200,12 @@ public class PlatformController {
      * @return
      */
     @RequestMapping(value = "/notices/{noticeId}", method = RequestMethod.DELETE, headers = Constant.API_VERSION_V1)
-    public ResponseBO deleteNotice(@PathVariable Integer noticeId) {
-        int result = platformService.deleteNotice(noticeId);
+    public ResponseBO deleteNotice(@PathVariable Integer noticeId,@RequestBody NoticeBO bo) {
+        //删除公告之前先下架公告
+        int result;
+        platformService.unpublishNotice(noticeId, bo.getManagerId());
+
+        result = platformService.deleteNotice(noticeId);
         if (result == 0) {
             return new ResponseBO(ResponseCode.U001.getCode(), "删除失败");
         }
