@@ -67,7 +67,6 @@ public class TblRobotControlController {
     ) {
 
 
-
         TblRobotControlAuthDto tblRobotControlAuthDto = new TblRobotControlAuthDto();
         tblRobotControlAuthDto.setKey(key);
         tblRobotControlAuthDto.setToken(token);
@@ -97,10 +96,13 @@ public class TblRobotControlController {
         }
 
 
-
         String clientIP = ServletUtil.getClientIP(request, "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP");
 
         Assert.isTrue(!one.getIp().contains(clientIP),"当前ip不能登录");
+
+        if ("login".equals(method)) {
+            return JSONUtil.parseObj(ResponseBO.ok());
+        }
 
         String s = HttpUtil.get(gameUrl + File.separator + method,map,3000);
         Assert.isTrue(!JSONUtil.isJson(s),s);
