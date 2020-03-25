@@ -100,7 +100,9 @@ public class TblRobotControlController {
 
         Assert.isTrue(!one.getIp().contains(clientIP),"当前ip不能登录");
 
+        log.info("method = {}",method);
         if ("login".equals(method)) {
+            log.info("login方法不发送请求直接返回 = {}",method);
             return JSONUtil.parseObj(ResponseBO.ok());
         }
 
