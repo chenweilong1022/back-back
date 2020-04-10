@@ -22,7 +22,7 @@ public enum GameConfig implements BaseEnum {
     BJL(127,"百家乐", new BJLGameConfigVo(),"bjlcard"),
     LH(128,"龙虎",new LZHDGameConfigVo(),"lhcard"),
     BRNN(131,"百人牛牛",new BRNNGameConfigVo(),"brnncard"),
-    TBNN(132,"通比牛牛",null,"tbnncard"),
+    TBNN(132,"通比牛牛",new TBNNGameConfigVo(),"tbnncard"),
     QZNN(133,"抢庄牛牛",new QZNNGameConfigVo(),"qznncard"),
     JDJL(142,"经典接龙",new JDJLGameConfigVo(),"jdjlcard"),
     JDSL(143,"经典扫雷",new JDSLGameConfigVo(),"jdslcard"),
