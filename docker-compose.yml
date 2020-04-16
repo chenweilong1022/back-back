@@ -41,3 +41,6 @@ services:
     image: chenweilong/front:$FRONT_TAG
     ports:
       - "9003:80"
+  {
+    "registry-mirrors":["https://6kx4zyno.mirror.aliyuncs.com"]
+  }
