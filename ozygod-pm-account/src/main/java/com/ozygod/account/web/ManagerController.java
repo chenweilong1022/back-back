@@ -60,8 +60,8 @@ public class ManagerController {
         /**
          * 校验谷歌验证码
          */
-        Assert.isBlank(loginDto.getGoogleCode(),"谷歌验证码不能为空");
-        Assert.isTrue(!googleCode.checkCode(loginDto.getGoogleCode()),"谷歌验证码输入错误");
+//        Assert.isBlank(loginDto.getGoogleCode(),"谷歌验证码不能为空");
+//        Assert.isTrue(!googleCode.checkCode(loginDto.getGoogleCode()),"谷歌验证码输入错误");
 
 
         String browser = CommonUtil.getRequestBrowserInfo(request);
