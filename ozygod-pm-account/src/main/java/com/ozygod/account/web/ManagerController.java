@@ -10,6 +10,7 @@ import com.ozygod.base.utils.Constant;
 import com.ozygod.base.utils.GoogleCode;
 import com.ozygod.base.utils.MD5Util;
 import com.ozygod.base.validator.Assert;
+import com.ozygod.model.zdconfig.CheckConfig;
 import com.ozygod.model.zdmanage.bo.ManagerBO;
 import com.ozygod.model.zdmanage.dto.LoginDto;
 import com.ozygod.model.zdmanage.dto.ManagerDto;
@@ -44,6 +45,9 @@ public class ManagerController {
     @Autowired
     private GoogleCode googleCode;
 
+    @Autowired
+    private CheckConfig checkConfig;
+
     /**
      * 管理员登录
      * @param loginDto
@@ -57,11 +61,15 @@ public class ManagerController {
         if (CommonUtil.isEmptyStr(loginDto.getPassword())) {
             return new ResponseBO(ResponseCode.P001.getCode(), "密码不能为空");
         }
+
+
         /**
          * 校验谷歌验证码
          */
-//        Assert.isBlank(loginDto.getGoogleCode(),"谷歌验证码不能为空");
-//        Assert.isTrue(!googleCode.checkCode(loginDto.getGoogleCode()),"谷歌验证码输入错误");
+        if (checkConfig.getGooglecode()) {
+            Assert.isBlank(loginDto.getGoogleCode(),"谷歌验证码不能为空");
+            Assert.isTrue(!googleCode.checkCode(loginDto.getGoogleCode()),"谷歌验证码输入错误");
+        }
 
 
         String browser = CommonUtil.getRequestBrowserInfo(request);

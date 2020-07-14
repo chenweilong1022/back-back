@@ -3,6 +3,7 @@ package com.ozygod.account.web;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.model.zdconfig.CheckConfig;
 import com.ozygod.model.zdconfig.entity.TblIpWhiteListEntity;
 import com.ozygod.model.zdconfig.service.TblIpWhiteListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,26 @@ import java.util.stream.Collectors;
  * @date 2019-12-14 21:50:40
  */
 @RestController
-@RequestMapping("zdconfig/tblipwhitelist")
+@RequestMapping("zdconfig")
 public class TblIpWhiteListController {
     @Autowired
     private TblIpWhiteListService tblIpWhiteListService;
 
+    @Autowired
+    private CheckConfig checkConfig;
+
+
     /**
      * 页面访问之前先鉴权
      */
-    @RequestMapping("/authenticate")
+    @RequestMapping("tblipwhitelist/authenticate")
     public ResponseBO info(HttpServletRequest request){
 
         List<TblIpWhiteListEntity> list = tblIpWhiteListService.list(null);
+        //如果不校验直接返回
+        if (!checkConfig.getWhitelist()) {
+            return ResponseBO.data(true);
+        }
 
         if (CollectionUtil.isEmpty(list)) {
             return ResponseBO.data(false);
@@ -48,5 +57,14 @@ public class TblIpWhiteListController {
 
         return ResponseBO.data(ips.contains(clientIP));
     }
+
+    /**
+     * 是否开启谷歌验证码
+     */
+    @RequestMapping("check/googlecode")
+    public ResponseBO Googlecode(){
+        return ResponseBO.data(checkConfig.getGooglecode());
+    }
+
 
 }

@@ -47,6 +47,7 @@ public class AuthConfigurer extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/managers/login")
                 //鉴白ip白名单
                 .excludePathPatterns("/zdconfig/tblipwhitelist/authenticate")
+                .excludePathPatterns("/zdconfig/check/googlecode")
                 // 排除推广员登录
                 .excludePathPatterns("/spread/users/login")
                 // 排除swagger资源拦截

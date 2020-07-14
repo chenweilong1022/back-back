@@ -16,6 +16,9 @@ logging:
   config: classpath:logback-spring.xml
   path: ${project.log.path}
 
+check:
+  whitelist: ${PROJECT_CHECK_WHITELIST:false}
+  googlecode: ${PROJECT_CHECK_GOOGLECODE:false}
 
 # Spring相关配置
 spring:
