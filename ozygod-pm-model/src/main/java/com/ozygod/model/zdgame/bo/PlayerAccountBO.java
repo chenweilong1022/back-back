@@ -3,6 +3,7 @@ package com.ozygod.model.zdgame.bo;
 import com.ozygod.base.annotations.MoneyField;
 import com.ozygod.base.enums.MoneyFormatType;
 import com.ozygod.model.zdgame.entity.AccountEntity;
+import com.ozygod.model.zdlog.bo.GameWinningDetailBO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -91,4 +92,6 @@ public class PlayerAccountBO extends AccountEntity {
     @ApiModelProperty("总提现")
     @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
     private long totalWithdrawGold;
+    @ApiModelProperty("游戏输赢")
+    private GameWinningDetailBO gameWinningDetailBO;
 }

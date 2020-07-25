@@ -1,6 +1,7 @@
 package com.ozygod.model.common.bo;
 
 import com.ozygod.base.bo.BaseBO;
+import com.ozygod.model.common.dto.WinRateControlDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,4 +24,7 @@ public class RobotConfigBO extends BaseBO {
     private Integer tableId;
     @ApiModelProperty("配置内容")
     private String config;
+    @ApiModelProperty("胜率控制")
+    private WinRateControlDTO winRateControlDTO;
+
 }

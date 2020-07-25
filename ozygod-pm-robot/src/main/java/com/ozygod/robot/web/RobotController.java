@@ -1,9 +1,15 @@
 package com.ozygod.robot.web;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.ozygod.model.common.bo.RobotConfigBO;
 import com.ozygod.model.common.dto.ChangeGameMoneyDto;
 import com.ozygod.model.common.dto.RobotDto;
+import com.ozygod.model.common.dto.WinRateControlDTO;
 import com.ozygod.model.zdconfig.enums.GameConfig;
 import com.ozygod.model.zdconfig.vo.game.BaseGameConfigVo;
 import com.ozygod.robot.service.IRobotManageService;
@@ -14,7 +20,10 @@ import com.ozygod.model.common.bo.RobotBO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @title:
@@ -31,6 +40,8 @@ public class RobotController {
 
     @Autowired
     private IRobotManageService robotManageService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 获取机器人状态列表
@@ -191,7 +202,13 @@ public class RobotController {
     public ResponseBO getRobotConfigByQry(@PathVariable Integer roomId) {
         RobotDto robotDto = new RobotDto();
         robotDto.setRoomId(roomId);
-        return new ResponseBO(robotManageService.getRobotConfigByQry(robotDto));
+        String winRateControlJson = redisTemplate.opsForValue().get("winRateControl:" + roomId);
+        WinRateControlDTO winRateControlDTO = new WinRateControlDTO();
+        if (StrUtil.isNotBlank(winRateControlJson) && JSONUtil.isJson(winRateControlJson)) {
+            winRateControlDTO = JSONUtil.toBean(winRateControlJson, WinRateControlDTO.class);
+        }
+
+        return new ResponseBO(robotManageService.getRobotConfigByQry(robotDto).setWinRateControlDTO(winRateControlDTO));
     }
 
     /**
@@ -205,6 +222,16 @@ public class RobotController {
         bo.setRoomId(roomId);
         Integer gameId = roomId / 100;
         log.info(bo.getConfig());
+
+        WinRateControlDTO winRateControlDTO = bo.getWinRateControlDTO();
+
+        if (ObjectUtil.isNotNull(winRateControlDTO)) {
+            redisTemplate.opsForValue().set("winRateControl:" + roomId, JSONUtil.toJsonStr(winRateControlDTO));
+            DateTime dateTime = DateUtil.offsetMinute(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
+            long ex = dateTime.getTime() - System.currentTimeMillis();
+            redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
+        }
+
         GameConfig gameConfig = GameConfig.getByKey(gameId);
         /**
          * 解决integer 转换成str问题
