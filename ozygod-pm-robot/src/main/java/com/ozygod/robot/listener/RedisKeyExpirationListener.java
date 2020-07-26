@@ -58,14 +58,12 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
                     String resJson = HttpUtil.get(url);
                     log.info(url);
                     log.info(resJson);
-
-                    DateTime dateTime = DateUtil.offsetMinute(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
-                    long ex = dateTime.getTime() - System.currentTimeMillis();
-                    redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
-
-
-
                 }
+
+                DateTime dateTime = DateUtil.offsetMinute(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
+                long ex = dateTime.getTime() - System.currentTimeMillis();
+                redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
+
             }
         }
     }
