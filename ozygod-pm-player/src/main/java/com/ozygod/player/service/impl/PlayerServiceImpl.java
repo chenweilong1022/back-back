@@ -279,6 +279,19 @@ public class PlayerServiceImpl implements IPlayerService {
             // 取IP前三段
             String firstIP = bo.getIp().substring(0, bo.getIp().lastIndexOf("."));
             bo.setIpAttr(ipUtils.getIPAddrCN(firstIP));
+
+
+            PlayerLogDto playerLogDto = new PlayerLogDto();
+            playerLogDto.setPlayerId(bo.getUserid());
+            playerLogDto.setStartTime(DateUtil.beginOfDay(DateUtil.date()));
+            playerLogDto.setEndTime(DateUtil.endOfDay(DateUtil.date()));
+            List<GameWinningDetailBO> gameWinningDetailBOS = this.listUserGameDetailByQry(playerLogDto);
+            if (CollUtil.isEmpty(gameWinningDetailBOS)) {
+                continue;
+            }
+            GameWinningDetailBO gameWinningDetailBO = gameWinningDetailBOS.get(0);
+            bo.setGameWinningDetailBO(gameWinningDetailBO);
+
         }
         return resultList;
     }

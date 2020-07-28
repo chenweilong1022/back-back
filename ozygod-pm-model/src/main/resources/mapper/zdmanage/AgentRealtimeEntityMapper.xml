@@ -24,7 +24,7 @@
     from tbl_agent_realtime t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance >= 0 or t1.direct_performance >= 0 or t1.team_performance >= 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
@@ -37,7 +37,7 @@
     <if test="account != null and account != ''">
       and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
     </if>
-    order by t1.rebate desc
+    order by t1.under_count desc
     <if test="pageSize > 0">
       limit #{start}, #{pageSize}
     </if>
@@ -49,7 +49,7 @@
     from tbl_agent_realtime t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance >= 0 or t1.direct_performance >= 0 or t1.team_performance >= 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>

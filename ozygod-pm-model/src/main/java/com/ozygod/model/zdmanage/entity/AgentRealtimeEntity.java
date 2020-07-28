@@ -1,103 +1,88 @@
 package com.ozygod.model.zdmanage.entity;
 
-public class AgentRealtimeEntity {
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+
+/**
+ * 实时代理记录表
+ *
+ * @author chenweilong
+ * @email 1433471850@qq.com
+ * @date 2020-07-25 21:37:51
+ */
+@Data
+@TableName("tbl_agent_realtime")
+@ApiModel("实时代理记录表")
+@Accessors(chain = true)
+public class AgentRealtimeEntity implements Serializable {
+
+
+    /**
+     * 用户id
+     */
+    @TableId(type = IdType.AUTO)
+    @ApiModelProperty(required=false,value="用户id")
     private Long userId;
-
+    /**
+     * 上级id
+     */
+    @ApiModelProperty(required=false,value="上级id")
     private Long superId;
-
-    private Long totalPerformance;
-
-    private Integer agentLevel;
-
-    private Integer ratio;
-
-    private Long rebate;
-
-    private Long performance;
-
-    private Long directPerformance;
-
-    private Long teamPerformance;
-
+    /**
+     * 直属下线人数
+     */
+    @ApiModelProperty(required=false,value="直属下线人数")
     private Integer underCount;
+    /**
+     * 一代流水
+     */
+    @ApiModelProperty(required=false,value="一代流水")
+    private Long firstPerformance;
+    /**
+     * 一代业绩
+     */
+    @ApiModelProperty(required=false,value="一代业绩")
+    private Long firstBonus;
+    /**
+     * 二代流水
+     */
+    @ApiModelProperty(required=false,value="二代流水")
+    private Long secondPerformance;
+    /**
+     * 二代业绩
+     */
+    @ApiModelProperty(required=false,value="二代业绩")
+    private Long secondBonus;
+    /**
+     * 三代流水
+     */
+    @ApiModelProperty(required=false,value="三代流水")
+    private Long thirdPerformance;
+    /**
+     * 三代业绩
+     */
+    @ApiModelProperty(required=false,value="三代业绩")
+    private Long thirdBonus;
+    /**
+     * 无限代流水
+     */
+    @ApiModelProperty(required=false,value="无限代流水")
+    private Long unlimitPerformance;
+    /**
+     * 无限代业绩
+     */
+    @ApiModelProperty(required=false,value="无限代业绩")
+    private Long unlimitBonus;
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
-    public Long getSuperId() {
-        return superId;
-    }
 
-    public void setSuperId(Long superId) {
-        this.superId = superId;
-    }
 
-    public Long getTotalPerformance() {
-        return totalPerformance;
-    }
-
-    public void setTotalPerformance(Long totalPerformance) {
-        this.totalPerformance = totalPerformance;
-    }
-
-    public Integer getAgentLevel() {
-        return agentLevel;
-    }
-
-    public void setAgentLevel(Integer agentLevel) {
-        this.agentLevel = agentLevel;
-    }
-
-    public Integer getRatio() {
-        return ratio;
-    }
-
-    public void setRatio(Integer ratio) {
-        this.ratio = ratio;
-    }
-
-    public Long getRebate() {
-        return rebate;
-    }
-
-    public void setRebate(Long rebate) {
-        this.rebate = rebate;
-    }
-
-    public Long getPerformance() {
-        return performance;
-    }
-
-    public void setPerformance(Long performance) {
-        this.performance = performance;
-    }
-
-    public Long getDirectPerformance() {
-        return directPerformance;
-    }
-
-    public void setDirectPerformance(Long directPerformance) {
-        this.directPerformance = directPerformance;
-    }
-
-    public Long getTeamPerformance() {
-        return teamPerformance;
-    }
-
-    public void setTeamPerformance(Long teamPerformance) {
-        this.teamPerformance = teamPerformance;
-    }
-
-    public Integer getUnderCount() {
-        return underCount;
-    }
-
-    public void setUnderCount(Integer underCount) {
-        this.underCount = underCount;
-    }
 }
