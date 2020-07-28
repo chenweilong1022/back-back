@@ -26,8 +26,8 @@ services:
       GAME_URL_8691: 172.17.0.1
       AGENT_URL_6002: 172.17.0.1
       PROJECT_LOG_PATH: /home/web/logs/ozygod-pm
-      PROJECT_CHECK_WHITELIST: false
-      PROJECT_CHECK_GOOGLECODE: false
+      PROJECT_CHECK_WHITELIST: 'false'
+      PROJECT_CHECK_GOOGLECODE: 'false'
     volumes:
       - /home/web/logs/ozygod-pm:/home/web/logs/ozygod-pm
       - /home/web/files:/home/web/files
