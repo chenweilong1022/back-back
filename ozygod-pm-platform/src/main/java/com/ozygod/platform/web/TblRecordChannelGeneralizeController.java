@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.base.enums.RecordChannelGeneralizeButtons;
-import com.ozygod.base.utils.EnumUtil;
 import com.ozygod.base.utils.OzygodDateUtil;
 import com.ozygod.base.vo.EnumVo;
 import com.ozygod.model.zdlog.dto.TblRecordChannelGeneralizeListDto;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
