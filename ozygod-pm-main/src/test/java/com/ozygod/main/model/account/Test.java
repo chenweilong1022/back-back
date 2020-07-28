@@ -12,12 +12,12 @@ import java.util.StringJoiner;
  */
 public class Test {
 
-    public static void main(String[] args) {
-
-        create_tbl_account();
-
-
-    }
+//    public static void main(String[] args) {
+//
+//        create_tbl_account();
+//
+//
+//    }
 
 
     /**

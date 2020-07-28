@@ -22,46 +22,46 @@ import java.util.Random;
 public class S3Test {
 
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
+////
+//        Region region = Region.AP_NORTHEAST_1;
+////        S3Client s3 = S3Client.builder().region(region).build();
+////
+////
+////
+////        // Put Object
+////        PutObjectResponse putObjectResponse = s3.putObject(PutObjectRequest.builder().bucket("bucket1578104563321").key("图片123")
+////                        .build(),
+////                RequestBody.fromFile(FileUtil.file("/Users/chenweilong/Downloads/images_1578044378980.png"))
+////                );
 //
-        Region region = Region.AP_NORTHEAST_1;
-//        S3Client s3 = S3Client.builder().region(region).build();
+//
+//        AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(
+//                "AKIAVWEF2U46CHYMSIE7",
+//                "hI4hBkWGh9rBALzGbdMxn72XxSmBuv9FAOY9cixD");
 //
 //
+//        S3Client s32 = S3Client.builder()
+//                .credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials))
+//                .region(region)
+//                .build();
 //
 //        // Put Object
-//        PutObjectResponse putObjectResponse = s3.putObject(PutObjectRequest.builder().bucket("bucket1578104563321").key("图片123")
+//        PutObjectResponse putObjectResponse = s32.putObject(PutObjectRequest.builder().bucket("bucket1578104563321").key("图片12334")
 //                        .build(),
 //                RequestBody.fromFile(FileUtil.file("/Users/chenweilong/Downloads/images_1578044378980.png"))
 //                );
-
-
-        AwsBasicCredentials awsBasicCredentials = AwsBasicCredentials.create(
-                "AKIAVWEF2U46CHYMSIE7",
-                "hI4hBkWGh9rBALzGbdMxn72XxSmBuv9FAOY9cixD");
-
-
-        S3Client s32 = S3Client.builder()
-                .credentialsProvider(StaticCredentialsProvider.create(awsBasicCredentials))
-                .region(region)
-                .build();
-
-        // Put Object
-        PutObjectResponse putObjectResponse = s32.putObject(PutObjectRequest.builder().bucket("bucket1578104563321").key("图片12334")
-                        .build(),
-                RequestBody.fromFile(FileUtil.file("/Users/chenweilong/Downloads/images_1578044378980.png"))
-                );
-
-
-
-//        // List buckets
-//        ListBucketsRequest listBucketsRequest = ListBucketsRequest.builder().build();
-//        ListBucketsResponse listBucketsResponse = s3.listBuckets(listBucketsRequest);
-//        listBucketsResponse.buckets().stream().forEach(x -> System.out.println(x.name()));
-
-
-
-    }
+//
+//
+//
+////        // List buckets
+////        ListBucketsRequest listBucketsRequest = ListBucketsRequest.builder().build();
+////        ListBucketsResponse listBucketsResponse = s3.listBuckets(listBucketsRequest);
+////        listBucketsResponse.buckets().stream().forEach(x -> System.out.println(x.name()));
+//
+//
+//
+//    }
 
     private static ByteBuffer getRandomByteBuffer(int size) {
         byte[] b = new byte[size];

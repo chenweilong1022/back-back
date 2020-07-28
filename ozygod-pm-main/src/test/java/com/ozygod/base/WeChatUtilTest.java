@@ -38,17 +38,17 @@ public class WeChatUtilTest {
 
     }
 
-    public static void main(String[] args) {
-
-
-//        String s = HttpUtil.get("https://w.url.cn/s/AqoWJi7");
-
-
-//        HttpUtil.get
-
-
-        String url = "https://w.url.cn/s/Ae3BgbK";
-
-
-    }
+//    public static void main(String[] args) {
+//
+//
+////        String s = HttpUtil.get("https://w.url.cn/s/AqoWJi7");
+//
+//
+////        HttpUtil.get
+//
+//
+//        String url = "https://w.url.cn/s/Ae3BgbK";
+//
+//
+//    }
 }

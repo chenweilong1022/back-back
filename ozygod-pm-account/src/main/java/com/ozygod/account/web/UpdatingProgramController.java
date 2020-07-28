@@ -35,10 +35,10 @@ public class UpdatingProgramController {
     @Autowired
     private UpdatingProgramService updatingProgramService;
 
-    public static void main(String[] args) {
-        List<String> strings = FileUtil.listFileNames("/Users/chenweilong/Desktop/upload/logs/ozygod-pm");
-        System.out.println(strings);
-    }
+//    public static void main(String[] args) {
+//        List<String> strings = FileUtil.listFileNames("/Users/chenweilong/Desktop/upload/logs/ozygod-pm");
+//        System.out.println(strings);
+//    }
 
 
     /**

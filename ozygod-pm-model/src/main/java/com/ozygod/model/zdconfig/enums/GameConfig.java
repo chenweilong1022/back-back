@@ -34,18 +34,18 @@ public enum GameConfig implements BaseEnum {
 
 
 
-    public static void main(String[] args) {
-        List<String> values = EnumUtil.values(GameConfig.values());
-        for (String value : values) {
-            String firstLetters = "";
-            for (int i = 0;i < value.length();i++) {
-                char c = value.charAt(i);
-                char firstLetter = PinyinUtil.getFirstLetter(c);
-                firstLetters += firstLetter;
-            }
-            System.out.println(firstLetters.toUpperCase());
-        }
-    }
+//    public static void main(String[] args) {
+//        List<String> values = EnumUtil.values(GameConfig.values());
+//        for (String value : values) {
+//            String firstLetters = "";
+//            for (int i = 0;i < value.length();i++) {
+//                char c = value.charAt(i);
+//                char firstLetter = PinyinUtil.getFirstLetter(c);
+//                firstLetters += firstLetter;
+//            }
+//            System.out.println(firstLetters.toUpperCase());
+//        }
+//    }
 
     private Integer key;
     private String value;
