@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     image: back-front
     environment:
-      HTTP_BASE_API: 47.52.249.35
+      HTTP_BASE_API: 47.52.249.35:8080
     ports:
       - "8081:8080"
   back-back:
