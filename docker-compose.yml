@@ -1,5 +1,14 @@
 version: '3'
 services:
+  back-front:
+    build:
+      context: ./back-front/
+      dockerfile: Dockerfile
+    image: back-front
+    environment:
+      HTTP_BASE_API: 47.52.249.35
+    ports:
+      - "8081:8080"
   back-back:
     build:
       context: ./back-back/
