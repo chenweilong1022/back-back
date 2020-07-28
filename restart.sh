@@ -2,6 +2,7 @@
 
 #清空文件夹
 rm -rf back-back
+rm -rf back-front
 
 docker run -i --rm -v ${HOME}:/root -v $(pwd):/git alpine/git clone https://chenweilong961022:ch1433471850@gitee.com/chenweilong961022/back-back.git
 docker run -i --rm -v ${HOME}:/root -v $(pwd):/git alpine/git clone https://chenweilong961022:ch1433471850@gitee.com/chenweilong961022/back-front.git
