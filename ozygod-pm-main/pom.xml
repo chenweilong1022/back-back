@@ -94,43 +94,43 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.1.1</version>
-                <executions>
-                    <execution>
-                        <id>build-image</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<!--生成的image的tag，多值则会生成多个镜像-->
-					<imageTags>
-                        <imageTag>${ozygod.version}</imageTag>
-                        <imageTag>latest</imageTag>
-                    </imageTags>
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-					<!--本地docker环境变量配置-->
-					<dockerHost>https://192.168.99.100:2376</dockerHost>
-                    <dockerCertPath>C:\Users\Administrator\.docker\machine\machines\default</dockerCertPath>
-                    <skipDockerBuild>false</skipDockerBuild>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+			<!--<plugin>-->
+                <!--&lt;!&ndash;<groupId>com.spotify</groupId>&ndash;&gt;-->
+                <!--&lt;!&ndash;<artifactId>docker-maven-plugin</artifactId>&ndash;&gt;-->
+                <!--&lt;!&ndash;<version>1.1.1</version>&ndash;&gt;-->
+                <!--&lt;!&ndash;<executions>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<execution>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<id>build-image</id>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<phase>install</phase>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<goals>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<goal>build</goal>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</goals>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</execution>&ndash;&gt;-->
+                <!--&lt;!&ndash;</executions>&ndash;&gt;-->
+                <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<imageName>${docker.image.prefix}/${project.artifactId}</imageName>&ndash;&gt;-->
+					<!--&lt;!&ndash;&lt;!&ndash;生成的image的tag，多值则会生成多个镜像&ndash;&gt;&ndash;&gt;-->
+					<!--&lt;!&ndash;<imageTags>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<imageTag>${ozygod.version}</imageTag>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<imageTag>latest</imageTag>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</imageTags>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>&ndash;&gt;-->
+					<!--&lt;!&ndash;&lt;!&ndash;本地docker环境变量配置&ndash;&gt;&ndash;&gt;-->
+					<!--&lt;!&ndash;<dockerHost>https://192.168.99.100:2376</dockerHost>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<dockerCertPath>C:\Users\Administrator\.docker\machine\machines\default</dockerCertPath>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<skipDockerBuild>false</skipDockerBuild>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<resources>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<resource>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<targetPath>/</targetPath>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<directory>${project.build.directory}</directory>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<include>${project.build.finalName}.jar</include>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</resource>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</resources>&ndash;&gt;-->
 
-					<!--对照maven的settings.xml配置的serverId-->
-					<serverId>docker-registry</serverId>
-                </configuration>
-            </plugin>
+					<!--&lt;!&ndash;&lt;!&ndash;对照maven的settings.xml配置的serverId&ndash;&gt;&ndash;&gt;-->
+					<!--&lt;!&ndash;<serverId>docker-registry</serverId>&ndash;&gt;-->
+                <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
+            <!--</plugin>-->
 		</plugins>
 	</build>
 
