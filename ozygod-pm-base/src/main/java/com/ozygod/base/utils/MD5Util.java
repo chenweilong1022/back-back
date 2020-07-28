@@ -64,7 +64,7 @@ public class MD5Util {
         return resultString;
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5Util.encode("123456789qaz"+"keyCxzU!.,"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(MD5Util.encode("123456789qaz"+"keyCxzU!.,"));
+//    }
 }

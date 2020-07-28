@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 public class EnumUtil {
 
 
-    public static void main(String[] args) {
-        System.out.println(enumToVo(IndexCard.values()));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(enumToVo(IndexCard.values()));
+//    }
 
     public static String describe(BaseEnum[] baseEnums) {
         String describe = enumToVo(baseEnums).stream().map(enumVo -> enumVo.getKey() + ":" + enumVo.getValue() + " ,").collect(Collectors.joining());
