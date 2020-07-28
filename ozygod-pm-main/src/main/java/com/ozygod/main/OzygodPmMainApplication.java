@@ -16,11 +16,11 @@ import java.util.TimeZone;
 @EnableAspectJAutoProxy
 public class OzygodPmMainApplication {
 
-//	public static void main(String[] args) {
-//		SpringApplication.run(OzygodPmMainApplication.class, args);
-//
-//
-//	}
+	public static void main(String[] args) {
+		SpringApplication.run(OzygodPmMainApplication.class, args);
+
+
+	}
 
 	/**
 	 * 时区设置为东八区
