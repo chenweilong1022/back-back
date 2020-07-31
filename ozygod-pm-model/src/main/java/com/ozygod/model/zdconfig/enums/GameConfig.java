@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 public enum GameConfig implements BaseEnum {
 
-    SB(126,"色宝",null,"sbcard"),
+    SB(126,"色宝",new SBGameConfigVo(),"sbcard"),
     BJL(127,"百家乐", new BJLGameConfigVo(),"bjlcard"),
     LH(128,"龙虎",new LZHDGameConfigVo(),"lhcard"),
     BRNN(131,"百人牛牛",new BRNNGameConfigVo(),"brnncard"),
