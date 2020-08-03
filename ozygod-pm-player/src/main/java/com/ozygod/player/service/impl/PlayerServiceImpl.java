@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -15,6 +17,7 @@ import com.ozygod.model.zdconfig.bo.SysConfigsBO;
 import com.ozygod.model.zdconfig.dao.SysConfigsEntityMapper;
 import com.ozygod.model.zdgame.bo.*;
 import com.ozygod.model.zdgame.dao.*;
+import com.ozygod.model.zdgame.dto.LockPlayerDTO;
 import com.ozygod.model.zdgame.dto.PlayerAccountDto;
 import com.ozygod.model.zdgame.dto.PlayerOrderDto;
 import com.ozygod.model.zdgame.dto.RemitDto;
@@ -644,6 +647,12 @@ public class PlayerServiceImpl implements IPlayerService {
         String result = HttpRequestUtil.sendGet(gameUrl + "/freeze_user?user_id_start=" + bo.getUserid()
                 + "&user_id_end=" + bo.getUserid() + "&manager_id=" + bo.getManagerId() + "&reason=" + bo.getReason());
         log.info("result: " + result);
+
+        //新增发送到 agent
+        LockPlayerDTO lockPlayerDTO = new LockPlayerDTO();
+        lockPlayerDTO.setStart_uid(bo.getUserid());
+        lockPlayerDTO.setEnd_uid(bo.getUserid());
+        lockPlayer(lockPlayerDTO);
         if (CommonUtil.ValidateSuccess(result)) {
             return 1;
         }
@@ -661,10 +670,22 @@ public class PlayerServiceImpl implements IPlayerService {
         String result = HttpRequestUtil.sendGet(gameUrl + "/freeze_user?user_id_start=" + bo.getStartPlayerId()
                 + "&user_id_end=" + bo.getEndPlayerId() + "&manager_id=" + bo.getManagerId() + "&reason=" + bo.getReason());
         log.info("result: " + result);
+
+        //新增发送到 agent
+        LockPlayerDTO lockPlayerDTO = new LockPlayerDTO();
+        lockPlayerDTO.setStart_uid(bo.getStartPlayerId());
+        lockPlayerDTO.setEnd_uid(bo.getEndPlayerId());
+        lockPlayer(lockPlayerDTO);
+
         if (CommonUtil.ValidateSuccess(result)) {
             return 1;
         }
         return 0;
+    }
+
+    private void lockPlayer(LockPlayerDTO lockPlayerDTO) {
+        String post = HttpUtil.post(agentUrl + "/lockPlayer", JSONUtil.toJsonStr(lockPlayerDTO));
+        log.info(post);
     }
 
     /**
