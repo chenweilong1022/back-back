@@ -41,7 +41,7 @@
 		<swagger.version>1.7.1.RELEASE</swagger.version>
 		<commons-httpclient.version>3.1-rc1</commons-httpclient.version>
 		<commons-lang3.version>3.4</commons-lang3.version>
-		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<ipdb.version>1.1.1</ipdb.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
 		<hutool.version>4.1.1</hutool.version>
