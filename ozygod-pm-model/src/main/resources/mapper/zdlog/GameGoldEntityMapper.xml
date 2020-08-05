@@ -214,7 +214,7 @@
       FROM tbl_game_gold t1
       left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
       left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      WHERE t1.userid > 10000 and t1.reason = 0
+      WHERE t1.userid > 10000
       and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
       <if test="playerId != null">
         and t1.userid = #{playerId,jdbcType=BIGINT}
