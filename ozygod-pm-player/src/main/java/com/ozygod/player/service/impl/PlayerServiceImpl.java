@@ -3,6 +3,7 @@ package com.ozygod.player.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
@@ -288,6 +289,10 @@ public class PlayerServiceImpl implements IPlayerService {
             playerLogDto.setStartTime(DateUtil.beginOfDay(DateUtil.date()));
             playerLogDto.setEndTime(DateUtil.endOfDay(DateUtil.date()));
             PlayersWinLoseVO playersWinLoseVO = this.playersWinLose(playerLogDto);
+            if (ObjectUtil.isNotNull(playersWinLoseVO)) {
+                playersWinLoseVO.setWinningMoney(playersWinLoseVO.getWin().add(playersWinLoseVO.getLose()));
+                playersWinLoseVO.setFlowVolume(playersWinLoseVO.getWin().abs().add(playersWinLoseVO.getLose().abs()));
+            }
             bo.setPlayersWinLoseVO(playersWinLoseVO);
 
         }

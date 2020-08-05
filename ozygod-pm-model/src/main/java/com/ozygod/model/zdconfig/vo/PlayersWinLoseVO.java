@@ -17,8 +17,14 @@ import java.math.BigDecimal;
 public class PlayersWinLoseVO {
 
     @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
-    private BigDecimal win;
+    private BigDecimal win = BigDecimal.ZERO;
 
     @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
-    private BigDecimal lose;
+    private BigDecimal lose = BigDecimal.ZERO;
+
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private BigDecimal winningMoney;
+
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private BigDecimal flowVolume;
 }
