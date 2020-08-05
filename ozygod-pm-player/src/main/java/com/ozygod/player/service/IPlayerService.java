@@ -2,6 +2,7 @@ package com.ozygod.player.service;
 
 import com.ozygod.base.bo.ResponseBO;
 import com.ozygod.model.common.bo.EmailBO;
+import com.ozygod.model.zdconfig.vo.PlayersWinLoseVO;
 import com.ozygod.model.zdgame.bo.*;
 import com.ozygod.model.zdgame.dto.PlayerAccountDto;
 import com.ozygod.model.zdgame.dto.PlayerOrderDto;
@@ -382,4 +383,6 @@ public interface IPlayerService {
      * @return
      */
     int totalUserGameDetailByQry(PlayerLogDto dto);
+
+    PlayersWinLoseVO  playersWinLose(PlayerLogDto dto);
 }

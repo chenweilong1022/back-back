@@ -1,5 +1,6 @@
 package com.ozygod.model.zdlog.dao;
 
+import com.ozygod.model.zdconfig.vo.PlayersWinLoseVO;
 import com.ozygod.model.zdlog.bo.GameWinningDetailBO;
 import com.ozygod.model.zdlog.bo.PlayerGameLogBO;
 import com.ozygod.model.zdlog.dto.BankGoldDto;
@@ -69,4 +70,11 @@ public interface GameGoldEntityMapper {
      * @return
      */
     long countGiftGoldByQry(PlayerLogDto dto);
+
+    /**
+     * 玩家输赢
+     * @param dto
+     * @return
+     */
+    PlayersWinLoseVO playersWinLose(PlayerLogDto dto);
 }

@@ -15,6 +15,7 @@ import com.ozygod.base.utils.*;
 import com.ozygod.model.common.bo.EmailBO;
 import com.ozygod.model.zdconfig.bo.SysConfigsBO;
 import com.ozygod.model.zdconfig.dao.SysConfigsEntityMapper;
+import com.ozygod.model.zdconfig.vo.PlayersWinLoseVO;
 import com.ozygod.model.zdgame.bo.*;
 import com.ozygod.model.zdgame.dao.*;
 import com.ozygod.model.zdgame.dto.LockPlayerDTO;
@@ -286,12 +287,8 @@ public class PlayerServiceImpl implements IPlayerService {
             playerLogDto.setPlayerId(bo.getUserid());
             playerLogDto.setStartTime(DateUtil.beginOfDay(DateUtil.date()));
             playerLogDto.setEndTime(DateUtil.endOfDay(DateUtil.date()));
-            List<GameWinningDetailBO> gameWinningDetailBOS = this.listUserGameDetailByQry(playerLogDto);
-            if (CollUtil.isEmpty(gameWinningDetailBOS)) {
-                continue;
-            }
-            GameWinningDetailBO gameWinningDetailBO = gameWinningDetailBOS.get(0);
-            bo.setGameWinningDetailBO(gameWinningDetailBO);
+            PlayersWinLoseVO playersWinLoseVO = this.playersWinLose(playerLogDto);
+            bo.setPlayersWinLoseVO(playersWinLoseVO);
 
         }
         return resultList;
@@ -1075,6 +1072,12 @@ public class PlayerServiceImpl implements IPlayerService {
         return gameGoldEntityMapper.listUserGameDetailByQry(dto);
     }
 
+
+
+
+
+
+
     /**
      * 查询玩家输赢明细总数
      *
@@ -1084,6 +1087,11 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public int totalUserGameDetailByQry(PlayerLogDto dto) {
         return gameGoldEntityMapper.totalUserGameDetailByQry(dto);
+    }
+
+    @Override
+    public PlayersWinLoseVO  playersWinLose(PlayerLogDto dto) {
+        return gameGoldEntityMapper.playersWinLose(dto);
     }
 
     /**

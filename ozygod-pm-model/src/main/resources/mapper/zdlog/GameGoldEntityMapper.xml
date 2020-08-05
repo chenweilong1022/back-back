@@ -354,6 +354,12 @@
       AND record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
     </if>
   </select>
+  <select id="playersWinLose" resultType="com.ozygod.model.zdconfig.vo.PlayersWinLoseVO" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto">
+    SELECT SUM( IF (( after_bet - before_bet ) > 0, after_bet - before_bet, 0 )) win, SUM( IF (( after_bet - before_bet ) &lt; 0, after_bet - before_bet, 0 )) lose FROM tbl_game_record
+    WHERE time > #{startTime}
+    AND time &lt;= #{endTime} AND userid = #{playerId}
+
+  </select>
 
   <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.GameGoldEntity">
     insert into tbl_game_gold (userid, reason, roomid,
