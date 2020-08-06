@@ -30,7 +30,7 @@ public enum GameConfig implements BaseEnum {
     DNTG(145,"大闹天宫",new DNTGGameConfigVo(),"dntgcard"),
     SHBY(148,"深海捕鱼",new SHBYGameConfigVo(),"shbycard"),
     JXLW(149,"九线拉王",null,"jxlwcard"),
-    EBG(154,"二八杠",null,"ebgcard");
+    EBG(154,"二八杠",new EBGGameConfigVo(),"ebgcard");
 
 
 
