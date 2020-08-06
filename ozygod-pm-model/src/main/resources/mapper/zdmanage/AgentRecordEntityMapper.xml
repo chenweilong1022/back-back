@@ -21,47 +21,13 @@
     direct_performance, team_performance, under_count, agent_time
   </sql>
 
-  <select id="listAgentRecordByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdmanage.bo.AgentRecordBO">
-    select
-    t1.*, t2.account userAccount, t3.nickname, t3.show_id
-    from tbl_agent_record t1
-    left join zdgame.tbl_account t2 on t1.user_id = t2.userid
-    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
-    <if test="playerId != null">
-      and t1.user_id = #{playerId,jdbcType=BIGINT}
-    </if>
-    <if test="superId != null">
-      and t1.super_id = #{superId,jdbcType=BIGINT}
-    </if>
-    <if test="period != null">
-      and t1.period = #{period,jdbcType=INTEGER}
-    </if>
-    <if test="startTime != null">
-      and t1.agent_time &gt;= #{startTime,jdbcType=TIMESTAMP}
-    </if>
-    <if test="endTime != null">
-      and t1.agent_time &lt;= #{endTime,jdbcType=TIMESTAMP}
-    </if>
-    <if test="account != null and account != ''">
-      and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
-    </if>
-    <if test="showId != null">
-      and t3.show_id = #{showId,jdbcType=BIGINT}
-    </if>
-    order by t1.agent_time desc,t1.user_id, t1.total_rebate desc
-    <if test="pageSize > 0">
-      limit #{start}, #{pageSize}
-    </if>
-  </select>
-
   <select id="totalAgentRecordByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="int">
     select
     COUNT(1)
     from tbl_agent_record t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where  (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
@@ -82,6 +48,40 @@
     </if>
     <if test="showId != null">
       and t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <select id="listAgentRecordByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdmanage.bo.AgentRecordBO">
+    select
+    t1.*, t2.account userAccount, t3.nickname, t3.show_id
+    from tbl_agent_record t1
+    left join zdgame.tbl_account t2 on t1.user_id = t2.userid
+    left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
+    <if test="playerId != null">
+      and t1.user_id = #{playerId,jdbcType=BIGINT}
+    </if>
+    <if test="superId != null">
+      and t1.super_id = #{superId,jdbcType=BIGINT}
+    </if>
+    <if test="period != null">
+      and t1.period = #{period,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null">
+      and t1.agent_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      and t1.agent_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="account != null and account != ''">
+      and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
+    </if>
+    <if test="showId != null">
+      and t3.show_id = #{showId,jdbcType=BIGINT}
+    </if>
+    order by t1.agent_time desc,t1.user_id, t1.third_performance desc
+    <if test="pageSize > 0">
+      limit #{start}, #{pageSize}
     </if>
   </select>
 
@@ -89,12 +89,19 @@
     select t1.*, t2.account userAccount, t3.nickname, t3.show_id
     from (
       select
-        t1.user_id, t1.super_id, sum(t1.total_performance) total_performance, sum(t1.total_rebate) total_rebate,
-        sum(t1.performance) performance, sum(t1.direct_performance) direct_performance, sum(t1.team_performance) team_performance,
+        t1.user_id, t1.super_id,
+        ifnull( sum( t1.first_performance ), 0 ) firstPerformance,
+        ifnull( sum( t1.second_performance ), 0 ) secondPerformance,
+        ifnull( sum( t1.third_performance ), 0 ) thirdPerformance,
+        ifnull( sum( t1.unlimit_performance ), 0 ) unlimitPerformance,
+        ifnull( sum( t1.first_bonus ), 0 ) firstBonus,
+        ifnull( sum( t1.second_bonus ), 0 ) secondBonus,
+        ifnull( sum( t1.third_bonus ), 0 ) thirdBonus,
+        ifnull( sum( t1.unlimit_bonus ), 0 ) unlimitBonus,
         max(under_count) under_count
       from tbl_agent_record t1
       left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-      where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
       <if test="playerId != null">
         and t1.user_id = #{playerId,jdbcType=BIGINT}
       </if>
@@ -117,7 +124,7 @@
     ) t1
     left join zdgame.tbl_account t2 on t1.user_id = t2.userid
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    order by t1.total_rebate desc
+    order by t1.unlimitPerformance desc
     <if test="pageSize > 0">
       limit #{start}, #{pageSize}
     </if>
@@ -127,12 +134,19 @@
     select count(t1.user_id)
     from (
       select
-        t1.user_id, t1.super_id, sum(t1.total_performance) total_performance, sum(t1.total_rebate) total_rebate,
-        sum(t1.performance) performance, sum(t1.direct_performance) direct_performance, sum(t1.team_performance) team_performance,
+        t1.user_id, t1.super_id,
+    ifnull( sum( t1.first_performance ), 0 ) firstPerformance,
+    ifnull( sum( t1.second_performance ), 0 ) secondPerformance,
+    ifnull( sum( t1.third_performance ), 0 ) thirdPerformance,
+    ifnull( sum( t1.unlimit_performance ), 0 ) unlimitPerformance,
+    ifnull( sum( t1.first_bonus ), 0 ) firstBonus,
+    ifnull( sum( t1.second_bonus ), 0 ) secondBonus,
+    ifnull( sum( t1.third_bonus ), 0 ) thirdBonus,
+    ifnull( sum( t1.unlimit_bonus ), 0 ) unlimitBonus,
         max(under_count) under_count
       from tbl_agent_record t1
       left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-      where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
       <if test="playerId != null">
         and t1.user_id = #{playerId,jdbcType=BIGINT}
       </if>
@@ -157,12 +171,18 @@
 
   <select id="getAgentRecordSummary" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdmanage.bo.AgentSummaryBO">
     select
-    ifnull(sum(t1.total_performance), 0) totalAllPerformance, ifnull(sum(t1.total_rebate), 0) totalRebate, ifnull(sum(t1.performance), 0) totalPerformance,
-    ifnull(sum(t1.direct_performance), 0) totalDirectPerformance, ifnull(sum(t1.team_performance), 0) totalTeamPerformance,
-    count(distinct t1.user_id) totalAgentCount
+    ifnull( sum( t1.first_performance ), 0 ) firstPerformance,
+    ifnull( sum( t1.second_performance ), 0 ) secondPerformance,
+    ifnull( sum( t1.third_performance ), 0 ) thirdPerformance,
+    ifnull( sum( t1.unlimit_performance ), 0 ) unlimitPerformance,
+    ifnull( sum( t1.first_bonus ), 0 ) firstBonus,
+    ifnull( sum( t1.second_bonus ), 0 ) secondBonus,
+    ifnull( sum( t1.third_bonus ), 0 ) thirdBonus,
+    ifnull( sum( t1.unlimit_bonus ), 0 ) unlimitBonus,
+    count( DISTINCT t1.user_id ) totalAgentCount
     from tbl_agent_record t1
     left join zdgame.tbl_playerinfo t3 on t1.user_id = t3.userid
-    where (t1.performance > 0 or t1.direct_performance > 0 or t1.team_performance > 0)
+    where (t1.first_performance >= 0 or t1.second_performance >= 0 or t1.third_performance >= 0)
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
@@ -184,7 +204,7 @@
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_agent_record
     where id = #{id,jdbcType=BIGINT}
@@ -195,13 +215,13 @@
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.AgentRecordEntity">
     insert into tbl_agent_record (id, user_id, super_id, period,
-      total_performance, agent_level, ratio, 
-      total_rebate, performance, direct_performance, 
+      total_performance, agent_level, ratio,
+      total_rebate, performance, direct_performance,
       team_performance, under_count, agent_time
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{superId,jdbcType=BIGINT}, #{period,jdbcType=INTEGER},
-      #{totalPerformance,jdbcType=BIGINT}, #{agentLevel,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER}, 
-      #{totalRebate,jdbcType=BIGINT}, #{performance,jdbcType=BIGINT}, #{directPerformance,jdbcType=BIGINT}, 
+      #{totalPerformance,jdbcType=BIGINT}, #{agentLevel,jdbcType=INTEGER}, #{ratio,jdbcType=INTEGER},
+      #{totalRebate,jdbcType=BIGINT}, #{performance,jdbcType=BIGINT}, #{directPerformance,jdbcType=BIGINT},
       #{teamPerformance,jdbcType=BIGINT}, #{underCount,jdbcType=INTEGER}, #{agentTime,jdbcType=TIMESTAMP}
       )
   </insert>

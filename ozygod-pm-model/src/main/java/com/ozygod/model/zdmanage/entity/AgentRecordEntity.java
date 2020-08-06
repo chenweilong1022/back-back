@@ -1,138 +1,100 @@
 package com.ozygod.model.zdmanage.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AgentRecordEntity {
+/**
+ * 代理结算记录表
+ *
+ * @author chenweilong
+ * @email 1433471850@qq.com
+ * @date 2020-08-06 19:54:59
+ */
+@Data
+@TableName("tbl_agent_record")
+@ApiModel("代理结算记录表")
+@Accessors(chain = true)
+public class AgentRecordEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * id
+     */
+    @TableId(type = IdType.AUTO)
+    @ApiModelProperty(required=false,value="id")
     private Long id;
-
+    /**
+     * 用户id
+     */
+    @ApiModelProperty(required=false,value="用户id")
     private Long userId;
-
+    /**
+     * 上级id
+     */
+    @ApiModelProperty(required=false,value="上级id")
     private Long superId;
-
-    private int period;
-
-    private Long totalPerformance;
-
-    private Integer agentLevel;
-
-    private Integer ratio;
-
-    private Long totalRebate;
-
-    private Long performance;
-
-    private Long directPerformance;
-
-    private Long teamPerformance;
-
+    /**
+     * 直属下线人数
+     */
+    @ApiModelProperty(required=false,value="直属下线人数")
     private Integer underCount;
-
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    /**
+     * 结算时间
+     */
+    @ApiModelProperty(required=false,value="结算时间")
     private Date agentTime;
+    /**
+     * 期号，月日期
+     */
+    @ApiModelProperty(required=false,value="期号，月日期")
+    private Integer period;
+    /**
+     * 一代流水
+     */
+    @ApiModelProperty(required=false,value="一代流水")
+    private Long firstPerformance;
+    /**
+     * 二代流水
+     */
+    @ApiModelProperty(required=false,value="二代流水")
+    private Long secondPerformance;
+    /**
+     * 三代流水
+     */
+    @ApiModelProperty(required=false,value="三代流水")
+    private Long thirdPerformance;
+    /**
+     * 无限代流水
+     */
+    @ApiModelProperty(required=false,value="无限代流水")
+    private Long unlimitPerformance;
+    /**
+     * 一代佣金
+     */
+    @ApiModelProperty(required=false,value="一代佣金")
+    private Long firstBonus;
+    /**
+     * 二代佣金
+     */
+    @ApiModelProperty(required=false,value="二代佣金")
+    private Long secondBonus;
+    /**
+     * 三代佣金
+     */
+    @ApiModelProperty(required=false,value="三代佣金")
+    private Long thirdBonus;
+    /**
+     * 无限代佣金
+     */
+    @ApiModelProperty(required=false,value="无限代佣金")
+    private Long unlimitBonus;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getSuperId() {
-        return superId;
-    }
-
-    public void setSuperId(Long superId) {
-        this.superId = superId;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
-    }
-
-    public Long getTotalPerformance() {
-        return totalPerformance;
-    }
-
-    public void setTotalPerformance(Long totalPerformance) {
-        this.totalPerformance = totalPerformance;
-    }
-
-    public Integer getAgentLevel() {
-        return agentLevel;
-    }
-
-    public void setAgentLevel(Integer agentLevel) {
-        this.agentLevel = agentLevel;
-    }
-
-    public Integer getRatio() {
-        return ratio;
-    }
-
-    public void setRatio(Integer ratio) {
-        this.ratio = ratio;
-    }
-
-    public Long getTotalRebate() {
-        return totalRebate;
-    }
-
-    public void setTotalRebate(Long totalRebate) {
-        this.totalRebate = totalRebate;
-    }
-
-    public Long getPerformance() {
-        return performance;
-    }
-
-    public void setPerformance(Long performance) {
-        this.performance = performance;
-    }
-
-    public Long getDirectPerformance() {
-        return directPerformance;
-    }
-
-    public void setDirectPerformance(Long directPerformance) {
-        this.directPerformance = directPerformance;
-    }
-
-    public Long getTeamPerformance() {
-        return teamPerformance;
-    }
-
-    public void setTeamPerformance(Long teamPerformance) {
-        this.teamPerformance = teamPerformance;
-    }
-
-    public Integer getUnderCount() {
-        return underCount;
-    }
-
-    public void setUnderCount(Integer underCount) {
-        this.underCount = underCount;
-    }
-
-    public Date getAgentTime() {
-        return agentTime;
-    }
-
-    public void setAgentTime(Date agentTime) {
-        this.agentTime = agentTime;
-    }
 }

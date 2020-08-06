@@ -421,14 +421,35 @@ public class PlayerServiceImpl implements IPlayerService {
             }
             // 充值标识
             bo.setRechargeFlag(this.validateUserRechargeState(bo.getShowId()));
-            /**
-             * 今日输赢
-             */
-            bo.setTodayWinningGold(tblGameGoldService.winningLosing(beginOfDay,endOfDay, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
-            /**
-             * 总输赢
-             */
-            bo.setTotalWinningGold(tblGameGoldService.winningLosing(null,null, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
+//            /**
+//             * 今日输赢
+//             */
+//            bo.setTodayWinningGold(tblGameGoldService.winningLosing(beginOfDay,endOfDay, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
+//            /**
+//             * 总输赢
+//             */
+//            bo.setTotalWinningGold(tblGameGoldService.winningLosing(null,null, CollUtil.newArrayList(bo.getUserid()),CollUtil.newArrayList("0")));
+
+            //今日输赢
+            PlayerLogDto playerLogDto = new PlayerLogDto();
+            playerLogDto.setPlayerId(bo.getUserid());
+            PlayersWinLoseVO totalPlayersWinLoseVO = this.playersWinLose(playerLogDto);
+            if (ObjectUtil.isNotNull(totalPlayersWinLoseVO)) {
+                totalPlayersWinLoseVO.setWinningMoney(totalPlayersWinLoseVO.getWin().add(totalPlayersWinLoseVO.getLose()));
+            }
+            bo.setTotalPlayersWinLoseVO(totalPlayersWinLoseVO);
+            //总输赢
+            playerLogDto.setStartTime(DateUtil.beginOfDay(DateUtil.date()));
+            playerLogDto.setEndTime(DateUtil.endOfDay(DateUtil.date()));
+            PlayersWinLoseVO playersWinLoseVO = this.playersWinLose(playerLogDto);
+
+            if (ObjectUtil.isNotNull(playersWinLoseVO)) {
+                playersWinLoseVO.setWinningMoney(playersWinLoseVO.getWin().add(playersWinLoseVO.getLose()));
+            }
+            bo.setPlayersWinLoseVO(playersWinLoseVO);
+
+
+
             /**
              * 今日充值金额
              */

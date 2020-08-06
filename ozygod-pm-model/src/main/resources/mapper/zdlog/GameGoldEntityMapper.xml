@@ -233,8 +233,14 @@
   </select>
   <select id="playersWinLose" resultType="com.ozygod.model.zdconfig.vo.PlayersWinLoseVO" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto">
     SELECT SUM(bet) bet,SUM( IF (( after_bet - before_bet ) > 0, after_bet - before_bet, 0 )) win, SUM( IF (( after_bet - before_bet ) &lt; 0, after_bet - before_bet, 0 )) lose FROM tbl_game_record
-    WHERE time > #{startTime}
-    AND time &lt;= #{endTime} AND userid = #{playerId}
+    WHERE
+    userid = #{playerId}
+    <if test="startTime != null">
+      and time > #{startTime}
+    </if>
+    <if test="endTime != null">
+      AND time &lt;= #{endTime}
+    </if>
 
   </select>
   <select id="getGameRecordMinId" resultType="java.lang.Integer">

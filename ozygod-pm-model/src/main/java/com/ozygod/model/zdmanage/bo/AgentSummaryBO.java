@@ -15,16 +15,25 @@ import lombok.Data;
 @Data
 @ApiModel("代理总计")
 public class AgentSummaryBO extends BaseBO {
-    @ApiModelProperty("总业绩")
-    private Long totalAllPerformance;
-    @ApiModelProperty("总返佣")
-    private Long totalRebate;
-    @ApiModelProperty("总自营业绩")
+
+    private Long firstPerformance;
+    private Long secondPerformance;
+    private Long thirdPerformance;
+    private Long unlimitPerformance;
+    private Long firstBonus;
+    private Long secondBonus;
+    private Long thirdBonus;
+    private Long unlimitBonus;
+
+    private Long totalBonus;
+
     private Long totalPerformance;
-    @ApiModelProperty("总直营业绩")
-    private Long totalDirectPerformance;
-    @ApiModelProperty("总团队业绩")
-    private Long totalTeamPerformance;
-    @ApiModelProperty("总代理人数")
-    private Long totalAgentCount;
+
+    public Long getTotalBonus() {
+        return this.getFirstBonus() + this.getSecondBonus() + this.getThirdBonus() + this.getUnlimitBonus();
+    }
+
+    public Long getTotalPerformance() {
+        return this.getFirstPerformance() + this.getSecondPerformance() + this.getThirdPerformance() + this.getUnlimitPerformance();
+    }
 }

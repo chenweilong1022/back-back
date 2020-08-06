@@ -23,4 +23,16 @@ public class AgentRecordBO extends AgentRecordEntity {
     private Integer billingTimes;
     @ApiModelProperty("显示id")
     private Long showId;
+
+    private Long totalBonus;
+
+    private Long totalPerformance;
+
+    public Long getTotalBonus() {
+        return this.getFirstBonus() + this.getSecondBonus() + this.getThirdBonus() + this.getUnlimitBonus();
+    }
+
+    public Long getTotalPerformance() {
+        return this.getFirstPerformance() + this.getSecondPerformance() + this.getThirdPerformance() + this.getUnlimitPerformance();
+    }
 }
