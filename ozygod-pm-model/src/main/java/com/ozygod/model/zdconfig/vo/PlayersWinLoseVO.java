@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 public class PlayersWinLoseVO {
 
     @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
+    private BigDecimal bet = BigDecimal.ZERO;
+
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
     private BigDecimal win = BigDecimal.ZERO;
 
     @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})

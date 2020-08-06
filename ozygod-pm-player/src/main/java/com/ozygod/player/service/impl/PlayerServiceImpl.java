@@ -291,7 +291,6 @@ public class PlayerServiceImpl implements IPlayerService {
             PlayersWinLoseVO playersWinLoseVO = this.playersWinLose(playerLogDto);
             if (ObjectUtil.isNotNull(playersWinLoseVO)) {
                 playersWinLoseVO.setWinningMoney(playersWinLoseVO.getWin().add(playersWinLoseVO.getLose()));
-                playersWinLoseVO.setFlowVolume(playersWinLoseVO.getWin().abs().add(playersWinLoseVO.getLose().abs()));
             }
             bo.setPlayersWinLoseVO(playersWinLoseVO);
 
