@@ -6,7 +6,9 @@ import com.ozygod.model.zdlog.bo.PlayerGameLogBO;
 import com.ozygod.model.zdlog.dto.BankGoldDto;
 import com.ozygod.model.zdlog.dto.PlayerLogDto;
 import com.ozygod.model.zdlog.entity.GameGoldEntity;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface GameGoldEntityMapper {
@@ -77,4 +79,8 @@ public interface GameGoldEntityMapper {
      * @return
      */
     PlayersWinLoseVO playersWinLose(PlayerLogDto dto);
+
+    Integer getGameRecordMinId(@Param("startTime") Date startTime);
+
+    Integer getGameRecordMaxId(@Param("endTime") Date endTime);
 }

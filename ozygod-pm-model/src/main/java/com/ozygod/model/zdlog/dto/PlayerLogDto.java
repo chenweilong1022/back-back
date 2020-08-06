@@ -41,4 +41,7 @@ public class PlayerLogDto extends BaseDto {
     private List<Long> onlineUserIds;
     @ApiModelProperty("是否在线")
     private boolean online = false;
+
+    private Integer startId;
+    private Integer endId;
 }

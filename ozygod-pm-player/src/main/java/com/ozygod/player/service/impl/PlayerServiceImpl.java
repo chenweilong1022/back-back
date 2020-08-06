@@ -1073,12 +1073,12 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public List<GameWinningDetailBO> listUserGameDetailByQry(PlayerLogDto dto) {
+        Integer maxId = gameGoldEntityMapper.getGameRecordMaxId(dto.getEndTime());
+        Integer minId = gameGoldEntityMapper.getGameRecordMinId(dto.getStartTime());
+        dto.setStartId(minId);
+        dto.setEndId(maxId);
         return gameGoldEntityMapper.listUserGameDetailByQry(dto);
     }
-
-
-
-
 
 
 
@@ -1090,6 +1090,10 @@ public class PlayerServiceImpl implements IPlayerService {
      */
     @Override
     public int totalUserGameDetailByQry(PlayerLogDto dto) {
+        Integer maxId = gameGoldEntityMapper.getGameRecordMaxId(dto.getEndTime());
+        Integer minId = gameGoldEntityMapper.getGameRecordMinId(dto.getStartTime());
+        dto.setStartId(minId);
+        dto.setEndId(maxId);
         return gameGoldEntityMapper.totalUserGameDetailByQry(dto);
     }
 

@@ -110,179 +110,57 @@
   </select>
 
   <select id="listGameWinningDetailByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdlog.bo.GameWinningDetailBO">
-    select t1.roomId, t1.gamePersonCount, ifnull(t1.winningMoney, 0) winningMoney, ifnull(t1.totalTax, 0) + ifnull(t5.totalTax, 0) totalTax,
-    ifnull(t4.flowVolume, 0) flowVolume, t2.room_name gameName
-    from (
-      SELECT
-      t1.roomid roomId,
-      COUNT(DISTINCT t1.userid) gamePersonCount,
-      IFNULL(SUM(t1.change_gold) - SUM(t1.tax_gold), 0) winningMoney,
-      IFNULL(SUM(t1.tax_gold), 0) totalTax
-      FROM tbl_game_gold t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      WHERE t1.userid > 10000 and t1.reason = 0
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
+    SELECT
+      tbl_game_record.roomid roomId,
+      (SELECT room_name FROM zdconfig.tbl_game_room WHERE roomid = tbl_game_record.roomid) gameName,
+      SUM( after_bet - before_bet ) AS winningMoney,
+      COUNT( DISTINCT tbl_game_record.userid ) AS gamePersonCount,
+      SUM( bet ) AS flowVolume
+    FROM
+      tbl_game_record
+    WHERE
+      time >= #{startTime}
+      AND time &lt;= #{endTime}
       <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
+        and userid = #{playerId}
       </if>
       <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
+        and userid = #{showId}
       </if>
-      <if test="gameIds != null and gameIds.size() > 0">
-        and t3.gameid in
-        <foreach collection="gameIds" item="gameId" open="(" separator="," close=")">
-          #{gameId, jdbcType=INTEGER}
-        </foreach>
+      <if test="roomId != null">
+        and roomid = #{roomId}
       </if>
-      <if test="startTime != null">
-        and t1.record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.roomid
-    ) t1
-    left join zdgame.tbl_game_room t2 on t1.roomid = t2.roomid
-    left join (
-      select t1.roomid, IFNULL(SUM(t1.sale), 0) flowVolume
-      from zdgame.tbl_sale t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      where t1.userid > 10000
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
-      </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="gameIds != null and gameIds.size() > 0">
-        and t3.gameid in
-        <foreach collection="gameIds" item="gameId" open="(" separator="," close=")">
-          #{gameId, jdbcType=INTEGER}
-        </foreach>
-      </if>
-      <if test="startTime != null">
-        and t1.time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.roomid
-    ) t4 on t1.roomid = t4.roomid
-    left join (
-      select t1.roomid, IFNULL(SUM(t1.tax), 0) totalTax
-      from tbl_tax t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      where t1.userid > 10000
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
-      </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="gameIds != null and gameIds.size() > 0">
-        and t3.gameid in
-        <foreach collection="gameIds" item="gameId" open="(" separator="," close=")">
-          #{gameId, jdbcType=INTEGER}
-        </foreach>
-      </if>
-      <if test="startTime != null">
-        and t1.time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.roomid
-    ) t5 on t1.roomid = t5.roomid
+      GROUP BY
+    tbl_game_record.roomid
   </select>
 
   <select id="listUserGameDetailByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="com.ozygod.model.zdlog.bo.GameWinningDetailBO">
-    select t1.userId, t1.show_id, t1.nickname, t1.roomId, ifnull(t1.winningMoney, 0) winningMoney, ifnull(t1.totalTax, 0) + ifnull(t5.totalTax, 0) totalTax,
-     ifnull(t4.flowVolume, 0) flowVolume, t2.room_name gameName
-    from (
-      SELECT
-      t1.userid userId,
-      t4.show_id,
-      t4.nickname,
-      t1.roomid roomId,
-      IFNULL(SUM(t1.change_gold) - SUM(t1.tax_gold), 0) winningMoney,
-      IFNULL(SUM(t1.tax_gold), 0) totalTax
-      FROM tbl_game_gold t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      WHERE t1.userid > 10000
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
+    SELECT
+      tbl_game_record.roomid,
+      tbl_game_record.userid,
+      (SELECT room_name FROM zdconfig.tbl_game_room WHERE roomid = tbl_game_record.roomid) gameName,
+      (SELECT nickname FROM zdgame.tbl_playerinfo WHERE userid = tbl_game_record.userid) nickname,
+      SUM( after_bet - before_bet ) AS winningMoney,
+      COUNT( DISTINCT tbl_game_record.userid ) AS gamePersonCount,
+      SUM( bet ) AS flowVolume
+    FROM
+      tbl_game_record
+    WHERE
+      id > #{startId}
+      <if test="endId != null">
+        AND id &lt; #{endId}
       </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="roomId != null">
-        and t1.roomid = #{roomId, jdbcType=INTEGER}
-      </if>
-      <if test="startTime != null">
-        and t1.record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.userid, t1.roomid
-    ) t1
-    left join zdgame.tbl_game_room t2 on t1.roomid = t2.roomid
-    left join (
-      select t1.roomid, t1.userid userId, IFNULL(SUM(t1.sale), 0) flowVolume
-      from zdgame.tbl_sale t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      where t1.userid > 10000
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
-      </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="roomId != null">
-        and t1.roomid = #{roomId, jdbcType=INTEGER}
-      </if>
-      <if test="startTime != null">
-        and t1.time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.userid, t1.roomid
-    ) t4 on t1.roomid = t4.roomid and t1.userId = t4.userId
-    left join (
-      select t1.roomid, t1.userid userId, IFNULL(SUM(t1.tax), 0) totalTax
-      from tbl_tax t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      where t1.userid > 10000
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
-      </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="roomId != null">
-        and t1.roomid = #{roomId, jdbcType=INTEGER}
-      </if>
-      <if test="startTime != null">
-        and t1.time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.userid, t1.roomid
-    ) t5 on t1.roomid = t5.roomid and t1.userId = t5.userId
-    order by t1.winningMoney desc
+    <if test="playerId != null">
+      and userid = #{playerId}
+    </if>
+    <if test="showId != null">
+      and userid = #{showId}
+    </if>
+    <if test="roomId != null">
+      and roomid = #{roomId}
+    </if>
+    GROUP BY
+    tbl_game_record.roomid,tbl_game_record.userid
     <if test="pageSize > 0">
       limit #{start}, #{pageSize}
     </if>
@@ -291,33 +169,32 @@
   <select id="totalUserGameDetailByQry" parameterType="com.ozygod.model.zdlog.dto.PlayerLogDto" resultType="java.lang.Integer">
     select COUNT(1)
     from (
-      SELECT
-      t1.userid userId,
-      t4.nickname,
-      t1.roomid roomId,
-      IFNULL(SUM(t1.change_gold) - SUM(t1.tax_gold), 0) winningMoney,
-      IFNULL(SUM(t1.tax_gold), 0) totalTax
-      FROM tbl_game_gold t1
-      left join zdgame.tbl_game_room t3 on t1.roomid = t3.roomid
-      left join zdgame.tbl_playerinfo t4 on t1.userid = t4.userid
-      WHERE t1.userid > 10000 and t1.reason = 0
-      and t1.userid in (select distinct userid from (select userid from zdgame.tbl_order where state = 3 union all select user_id userid from tbl_manager_remit) t1)
-      <if test="playerId != null">
-        and t1.userid = #{playerId,jdbcType=BIGINT}
-      </if>
-      <if test="showId != null">
-        and t4.show_id = #{showId,jdbcType=BIGINT}
-      </if>
-      <if test="roomId != null">
-        and t1.roomid = #{roomId, jdbcType=INTEGER}
-      </if>
-      <if test="startTime != null">
-        and t1.record_time &gt;= #{startTime,jdbcType=TIMESTAMP}
-      </if>
-      <if test="endTime != null">
-        and t1.record_time &lt;= #{endTime,jdbcType=TIMESTAMP}
-      </if>
-      group by t1.userid, t1.roomid
+    SELECT
+      tbl_game_record.roomid,
+      tbl_game_record.userid,
+      (SELECT room_name FROM zdconfig.tbl_game_room WHERE roomid = tbl_game_record.roomid) gameName,
+      (SELECT nickname FROM zdgame.tbl_playerinfo WHERE userid = tbl_game_record.userid),
+      SUM( after_bet - before_bet ) AS result,
+      COUNT( DISTINCT tbl_game_record.userid ) AS player_count,
+      SUM( bet ) AS bet
+    FROM
+    tbl_game_record
+    WHERE
+    id > #{startId}
+    <if test="endId != null">
+      AND id &lt; #{endId}
+    </if>
+    <if test="playerId != null">
+      and userid = #{playerId}
+    </if>
+    <if test="showId != null">
+      and userid = #{showId}
+    </if>
+    <if test="roomId != null">
+      and roomid = #{roomId}
+    </if>
+    GROUP BY
+    tbl_game_record.roomid,tbl_game_record.userid
     ) t1
   </select>
 
@@ -359,6 +236,12 @@
     WHERE time > #{startTime}
     AND time &lt;= #{endTime} AND userid = #{playerId}
 
+  </select>
+  <select id="getGameRecordMinId" resultType="java.lang.Integer">
+    SELECT id FROM tbl_game_record WHERE time &lt; #{startTime} ORDER BY id DESC LIMIT 1
+  </select>
+  <select id="getGameRecordMaxId" resultType="java.lang.Integer">
+    SELECT id FROM tbl_game_record WHERE time > #{endTime} LIMIT 1
   </select>
 
   <insert id="insert" parameterType="com.ozygod.model.zdlog.entity.GameGoldEntity">

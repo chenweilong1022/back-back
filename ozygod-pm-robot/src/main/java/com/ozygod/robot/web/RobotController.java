@@ -233,15 +233,17 @@ public class RobotController {
         }
 
         GameConfig gameConfig = GameConfig.getByKey(gameId);
-        /**
-         * 解决integer 转换成str问题
-         */
-        BaseGameConfigVo baseGameConfigVo = JSONUtil.toBean(bo.getConfig(), gameConfig.getBaseGameConfigVo().getClass());
-        bo.setConfig(JSONUtil.toJsonStr(baseGameConfigVo));
+        if (StrUtil.isNotEmpty(bo.getConfig())) {
+            /**
+             * 解决integer 转换成str问题
+             */
+            BaseGameConfigVo baseGameConfigVo = JSONUtil.toBean(bo.getConfig(), gameConfig.getBaseGameConfigVo().getClass());
+            bo.setConfig(JSONUtil.toJsonStr(baseGameConfigVo));
 
-        int result = robotManageService.updateRobotConfig(bo);
-        if (result ==  0) {
-            return new ResponseBO(ResponseCode.U001.getCode(), "修改失败");
+            int result = robotManageService.updateRobotConfig(bo);
+            if (result ==  0) {
+                return new ResponseBO(ResponseCode.U001.getCode(), "修改失败");
+            }
         }
         return new ResponseBO("修改成功");
     }
