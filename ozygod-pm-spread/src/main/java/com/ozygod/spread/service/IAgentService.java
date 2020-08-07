@@ -23,6 +23,13 @@ public interface IAgentService {
     List<AgentRealtimeBO> listAgentRealtimeByQry(PlatformDto dto);
 
     /**
+     * 查询实时代理记录列表
+     * @param dto
+     * @return
+     */
+    List<AgentRealtimeBO> listTotalAgentRealtimeByQry(PlatformDto dto);
+
+    /**
      * 查询实时代理记录总数
      * @param dto
      * @return

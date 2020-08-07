@@ -19,6 +19,12 @@ public interface AgentRealtimeEntityMapper {
 
     int updateByPrimaryKey(AgentRealtimeEntity record);
 
+    /**
+     * 查询实时代理记录列表
+     * @param dto
+     * @return
+     */
+    AgentRealtimeBO listTotalAgentRealtimeByQry(PlatformDto dto);
 
     /**
      * 查询实时代理记录列表
@@ -26,6 +32,8 @@ public interface AgentRealtimeEntityMapper {
      * @return
      */
     List<AgentRealtimeBO> listAgentRealtimeByQry(PlatformDto dto);
+
+
 
     /**
      * 查询实时代理记录总数

@@ -22,6 +22,8 @@ public class AgentRealtimeBO extends AgentRealtimeEntity {
     @ApiModelProperty("显示id")
     private Long showId;
 
+    private String type;
+
 
     private Long totalBonus;
 

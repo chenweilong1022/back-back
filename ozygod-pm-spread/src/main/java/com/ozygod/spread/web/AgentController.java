@@ -51,6 +51,18 @@ public class AgentController implements Serializable {
      * @param dto
      * @return
      */
+    @RequestMapping(value = "/realtime/query/total", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
+    public ResponseBO listTotalAgentRealtimeByQry(@RequestBody PlatformDto dto) {
+        ResponseBO responseBO = new ResponseBO();
+        responseBO.setData(agentService.listTotalAgentRealtimeByQry(dto));
+        return responseBO;
+    }
+
+    /**
+     * 查询代理结算记录列表
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/record/query", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
     public ResponseBO listAgentRecordByQry(@RequestBody PlatformDto dto) {
         ResponseBO responseBO = new ResponseBO();

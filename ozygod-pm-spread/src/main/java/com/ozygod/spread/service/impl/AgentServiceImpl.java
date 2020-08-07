@@ -1,5 +1,6 @@
 package com.ozygod.spread.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ozygod.base.utils.CommonUtil;
 import com.ozygod.model.common.dto.PlatformDto;
 import com.ozygod.model.zdmanage.bo.AgentRealtimeBO;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +40,27 @@ public class AgentServiceImpl implements IAgentService {
     @Override
     public List<AgentRealtimeBO> listAgentRealtimeByQry(PlatformDto dto) {
         return agentRealtimeEntityMapper.listAgentRealtimeByQry(dto);
+    }
+
+    @Override
+    public List<AgentRealtimeBO> listTotalAgentRealtimeByQry(PlatformDto dto) {
+
+        List<AgentRealtimeBO> list = new ArrayList<>();
+        AgentRealtimeBO agentRealtimeBO = agentRealtimeEntityMapper.listTotalAgentRealtimeByQry(dto);
+        if (ObjectUtil.isNull(agentRealtimeBO)) {
+            agentRealtimeBO = new AgentRealtimeBO();
+        }
+        agentRealtimeBO.setType("小计");
+        list.add(agentRealtimeBO);
+
+        AgentRealtimeBO agentRealtimeBO1 = agentRealtimeEntityMapper.listTotalAgentRealtimeByQry(null);
+        if (ObjectUtil.isNull(agentRealtimeBO1)) {
+            agentRealtimeBO1 = new AgentRealtimeBO();
+        }
+        agentRealtimeBO1.setType("总计");
+        list.add(agentRealtimeBO1);
+
+        return list;
     }
 
     /**

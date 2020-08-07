@@ -18,6 +18,24 @@
     team_performance, under_count
   </sql>
 
+  <select id="listTotalAgentRealtimeByQry" resultType="com.ozygod.model.zdmanage.bo.AgentRealtimeBO">
+    SELECT
+    ifnull( sum( t1.first_performance ), 0 ) firstPerformance,
+    ifnull( sum( t1.second_performance ), 0 ) secondPerformance,
+    ifnull( sum( t1.third_performance ), 0 ) thirdPerformance,
+    ifnull( sum( t1.unlimit_performance ), 0 ) unlimitPerformance,
+    ifnull( sum( t1.first_bonus ), 0 ) firstBonus,
+    ifnull( sum( t1.second_bonus ), 0 ) secondBonus,
+    ifnull( sum( t1.third_bonus ), 0 ) thirdBonus,
+    ifnull( sum( t1.unlimit_bonus ), 0 ) unlimitBonus
+    FROM
+    ( SELECT * FROM tbl_agent_realtime t1 WHERE ( t1.first_performance >= 0 OR t1.second_performance >= 0 OR t1.third_performance >= 0 )
+    <if test="pageSize > 0">
+      limit #{start}, #{pageSize}
+    </if>
+     ) t1
+  </select>
+
   <select id="listAgentRealtimeByQry" parameterType="com.ozygod.model.common.dto.PlatformDto" resultType="com.ozygod.model.zdmanage.bo.AgentRealtimeBO">
     select
     t1.*, t2.account userAccount, t3.nickname, t3.show_id
@@ -37,7 +55,6 @@
     <if test="account != null and account != ''">
       and t2.account like concat('%', #{account,jdbcType=VARCHAR}, '%')
     </if>
-    order by t1.under_count desc
     <if test="pageSize > 0">
       limit #{start}, #{pageSize}
     </if>
@@ -70,6 +87,7 @@
     from tbl_agent_realtime
     where user_id = #{userId,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tbl_agent_realtime
     where user_id = #{userId,jdbcType=BIGINT}
