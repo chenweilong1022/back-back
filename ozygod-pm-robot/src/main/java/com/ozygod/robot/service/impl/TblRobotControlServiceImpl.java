@@ -70,7 +70,7 @@ public class TblRobotControlServiceImpl extends ServiceImpl<TblRobotControlDao, 
                 if (StrUtil.isNotBlank(winRateControlJson) && JSONUtil.isJson(winRateControlJson)) {
                     winRateControlDTO = JSONUtil.toBean(winRateControlJson, WinRateControlDTO.class);
 
-                    DateTime dateTime = DateUtil.offsetMinute(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
+                    DateTime dateTime = DateUtil.offsetSecond(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
                     long ex = dateTime.getTime() - System.currentTimeMillis();
                     redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
                 }

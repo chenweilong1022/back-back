@@ -227,7 +227,7 @@ public class RobotController {
 
         if (ObjectUtil.isNotNull(winRateControlDTO) && ObjectUtil.isNotNull(winRateControlDTO.getTimeInterval())) {
             redisTemplate.opsForValue().set("winRateControl:" + roomId, JSONUtil.toJsonStr(winRateControlDTO));
-            DateTime dateTime = DateUtil.offsetMinute(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
+            DateTime dateTime = DateUtil.offsetSecond(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
             long ex = dateTime.getTime() - System.currentTimeMillis();
             redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
         }
