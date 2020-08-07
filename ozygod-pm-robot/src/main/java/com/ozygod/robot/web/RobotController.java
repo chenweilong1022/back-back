@@ -3,7 +3,9 @@ package com.ozygod.robot.web;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.ozygod.model.common.bo.RobotConfigBO;
@@ -20,6 +22,7 @@ import com.ozygod.model.common.bo.RobotBO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +45,8 @@ public class RobotController {
     private IRobotManageService robotManageService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Value("${game_url}")
+    private String gameUrl;
 
     /**
      * 获取机器人状态列表
@@ -230,6 +235,21 @@ public class RobotController {
             DateTime dateTime = DateUtil.offsetSecond(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
             long ex = dateTime.getTime() - System.currentTimeMillis();
             redisTemplate.opsForValue().set("winRateControlRandom:" + roomId,"1",ex, TimeUnit.MILLISECONDS);
+
+
+            int i = RandomUtil.randomInt(0, 100);
+            //随机到了 进行放分
+            if (winRateControlDTO.getReleaseProbability().intValue() >= i) {
+                String url = gameUrl + "/game_trick?roomid=" + roomId + "&val=" + winRateControlDTO.getReleaseLucky();
+                String resJson = HttpUtil.get(url);
+                log.info(url);
+                log.info(resJson);
+            }else {
+                String url = gameUrl + "/game_trick?roomid=" + roomId + "&val=" + winRateControlDTO.getShareLucky();
+                String resJson = HttpUtil.get(url);
+                log.info(url);
+                log.info(resJson);
+            }
         }
 
         GameConfig gameConfig = GameConfig.getByKey(gameId);
