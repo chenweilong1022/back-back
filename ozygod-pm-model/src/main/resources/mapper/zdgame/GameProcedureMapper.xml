@@ -6,6 +6,7 @@
         <result column="@LOCKUSER" jdbcType="BIGINT" property="lockUser" />
         <result column="@TODAYLOGIN" jdbcType="BIGINT" property="todayLogin" />
         <result column="@TOTALGOLD" jdbcType="BIGINT" property="totalGold" />
+        <result column="@ONLINETOTALGOLD" jdbcType="BIGINT" property="onlineTotalGold" />
         <result column="@TOTALDIAMOND" jdbcType="BIGINT" property="totalDiamond" />
         <result column="@TOTALORDERPAY" jdbcType="BIGINT" property="totalOrderPay" />
         <result column="@TOTALTAX" jdbcType="BIGINT" property="totalTax" />
@@ -33,7 +34,7 @@
     <select id="getPlatformOverview" resultMap="platformOverview" statementType="CALLABLE">
       call sp_get_platform_survey()
     </select>
-    
+
     <select id="listDailyRechargeCountByQry" statementType="CALLABLE" parameterType="com.ozygod.model.common.dto.PlatformDto" resultMap="dailyRechargeCount, rechargeCount">
       call sp_get_day_pay_amont(#{startDate, jdbcType=DATE},#{endDate, jdbcType=DATE})
     </select>

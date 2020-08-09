@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ozygod.model.zdgame.entity.TblPlayerinfoEntity;
 import com.ozygod.model.zdgame.dto.TblPlayerinfoListDto;
 import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.model.zdgame.vo.AgentTreeVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,6 @@ public interface TblPlayerinfoService extends IService<TblPlayerinfoEntity> {
 
     ResponseBO queryPage(TblPlayerinfoListDto tblPlayerinfo);
 
+    List<AgentTreeVo> agentTree(Long saler);
 }
 

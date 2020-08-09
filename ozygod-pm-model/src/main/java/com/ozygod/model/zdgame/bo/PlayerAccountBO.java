@@ -97,5 +97,6 @@ public class PlayerAccountBO extends AccountEntity {
     private PlayersWinLoseVO playersWinLoseVO;
     @ApiModelProperty("总的游戏输赢")
     private PlayersWinLoseVO totalPlayersWinLoseVO;
-
+    @ApiModelProperty("合计类型")
+    private String type;
 }

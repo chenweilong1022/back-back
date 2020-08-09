@@ -3,6 +3,7 @@ package com.ozygod.model.zdgame.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ozygod.base.bo.ResponseBO;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,14 @@ public class TblPlayerinfoController {
 			TblPlayerinfoEntity tblPlayerinfo = tblPlayerinfoService.getById(userid);
 
         return ResponseBO.data(tblPlayerinfo);
+    }
+
+    /**
+     * 代理树形图
+     */
+    @RequestMapping("/agentTree")
+    public ResponseBO agentTree(Long saler){
+        return ResponseBO.data(tblPlayerinfoService.agentTree(saler));
     }
 
     /**

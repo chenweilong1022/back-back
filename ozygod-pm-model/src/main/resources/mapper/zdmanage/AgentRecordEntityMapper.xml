@@ -61,9 +61,7 @@
     <if test="playerId != null">
       and t1.user_id = #{playerId,jdbcType=BIGINT}
     </if>
-    <if test="superId != null">
       and t1.super_id = #{superId,jdbcType=BIGINT}
-    </if>
     <if test="period != null">
       and t1.period = #{period,jdbcType=INTEGER}
     </if>

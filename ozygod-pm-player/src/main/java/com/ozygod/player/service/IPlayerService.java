@@ -97,6 +97,12 @@ public interface IPlayerService {
      * @return
      */
     List<PlayerAccountBO> listOnlinePlayerQry(PlayerAccountDto dto);
+    /**
+     * 查询在线玩家金币
+     * @param dto
+     * @return
+     */
+    List<PlayerAccountBO> listOnlineTotalGold(PlayerAccountDto dto);
 
     /**
      * 查询在线玩家列表总数

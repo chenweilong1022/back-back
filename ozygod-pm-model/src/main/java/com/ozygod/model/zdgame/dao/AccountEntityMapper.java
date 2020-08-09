@@ -46,6 +46,8 @@ public interface AccountEntityMapper {
     int totalCountPlayerAccountByQry(PlayerAccountDto dto);
 
 
+
+
     /**
      * 查询在线玩家列表
      * @param dto
@@ -59,6 +61,15 @@ public interface AccountEntityMapper {
      * @return
      */
     List<PlayerAccountBO> listOnlinePlayerQryPage(IPage page, @Param(Constants.WRAPPER)PlayerAccountDto dto,@Param("realUserId") Integer realUserId);
+
+    /**
+     * 查询在线玩家总金币
+     * @param page
+     * @param dto
+     * @return
+     */
+    PlayerAccountBO listOnlinePlayerTotalGold(IPage page, @Param(Constants.WRAPPER)PlayerAccountDto dto,@Param("realUserId") Integer realUserId);
+
 
     /**
      * 查询在线玩家列表总数

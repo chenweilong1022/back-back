@@ -24,6 +24,8 @@ public class PlatformOverviewBO extends BaseBO {
     private Integer todayLogin;
     @ApiModelProperty(value = "平台金币总和")
     private Long totalGold;
+    @ApiModelProperty(value = "在线玩家平台金币总和")
+    private Long onlineTotalGold;
     @ApiModelProperty(value = "平台钻石总和")
     private Long totalDiamond;
     @ApiModelProperty(value = "平台充值总额")

@@ -53,10 +53,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * @title:
  * @description:
@@ -468,6 +466,32 @@ public class PlayerServiceImpl implements IPlayerService {
             bo.setTotalWithdrawGold(tblWithdrawOrderService.totalBack(null, null, CollUtil.newArrayList(bo.getUserid())));
         }
         return resultList;
+    }
+
+    @Override
+    public List<PlayerAccountBO> listOnlineTotalGold(PlayerAccountDto dto) {
+
+        List<PlayerAccountBO> playerAccountBOS = new ArrayList<>();
+
+        PlayerAccountBO playerAccountBO = accountEntityMapper.listOnlinePlayerTotalGold(dto.getPage(), dto, Global.REAL_USER_ID);
+
+        if (ObjectUtil.isNull(playerAccountBO)) {
+            playerAccountBO = new PlayerAccountBO();
+        }
+        playerAccountBO.setType("小计");
+        playerAccountBOS.add(playerAccountBO);
+
+        PlayerAccountBO playerAccountBO1 = accountEntityMapper.listOnlinePlayerTotalGold(null, dto, Global.REAL_USER_ID);
+
+        if (ObjectUtil.isNull(playerAccountBO1)) {
+            playerAccountBO1 = new PlayerAccountBO();
+        }
+        playerAccountBO1.setType("合计");
+
+        playerAccountBOS.add(playerAccountBO1);
+
+
+        return playerAccountBOS;
     }
 
     /**

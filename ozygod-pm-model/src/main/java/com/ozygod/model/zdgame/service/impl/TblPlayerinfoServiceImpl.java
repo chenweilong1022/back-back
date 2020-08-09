@@ -1,6 +1,11 @@
 package com.ozygod.model.zdgame.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.ozygod.model.zdgame.vo.AgentTreeVo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,5 +29,20 @@ public class TblPlayerinfoServiceImpl extends ServiceImpl<TblPlayerinfoDao, TblP
                 new QueryWrapper<TblPlayerinfoEntity>()
         );
         return ResponseBO.page(page);
+    }
+
+    @Override
+    public List<AgentTreeVo> agentTree(Long saler) {
+        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(saler);
+        agentTreeVos.forEach(this::sub);
+        return agentTreeVos;
+    }
+
+    private void sub(AgentTreeVo agentTreeVo) {
+        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(agentTreeVo.getShowId());
+        if (CollUtil.isNotEmpty(agentTreeVos)) {
+            agentTreeVo.setChildrens(agentTreeVos);
+            agentTreeVos.forEach(this::sub);
+        }
     }
 }

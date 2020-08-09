@@ -22,5 +22,21 @@
         <result property="recharge" column="recharge"/>
     </resultMap>
 
+    <select id="agentTree" resultType="com.ozygod.model.zdgame.vo.AgentTreeVo">
+    SELECT
+        p.nickname,
+        p.show_id showId
+    FROM
+        tbl_account ta
+        LEFT JOIN tbl_playerinfo p ON ta.userid = p.userid
+    where
+    <if test="saler == null">
+        ta.saler is null
+    </if>
+    <if test="saler != null" >
+        ta.saler = #{saler,jdbcType=BIGINT}
+    </if>
+    </select>
+
 
 </mapper>

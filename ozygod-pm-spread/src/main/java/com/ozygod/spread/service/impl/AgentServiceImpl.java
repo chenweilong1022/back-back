@@ -1,5 +1,6 @@
 package com.ozygod.spread.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.ozygod.base.utils.CommonUtil;
 import com.ozygod.model.common.dto.PlatformDto;
@@ -82,7 +83,25 @@ public class AgentServiceImpl implements IAgentService {
      */
     @Override
     public List<AgentRecordBO> listAgentRecordByQry(PlatformDto dto) {
-        return agentRecordEntityMapper.listAgentRecordByQry(dto);
+        if (ObjectUtil.isNull(dto.getSuperId())) {
+            dto.setSuperId(0L);
+        }
+        List<AgentRecordBO> agentRecordBOS = agentRecordEntityMapper.listAgentRecordByQry(dto);
+        agentRecordBOS.forEach(this::sub);
+        return agentRecordBOS;
+    }
+
+    private void sub(AgentRecordBO agentRecordBO) {
+
+        PlatformDto dto = new PlatformDto();
+        dto.setSuperId(agentRecordBO.getUserId());
+        dto.setPeriod(agentRecordBO.getPeriod());
+        List<AgentRecordBO> agentRecordBOS = agentRecordEntityMapper.listAgentRecordByQry(dto);
+        if (CollUtil.isNotEmpty(agentRecordBOS)) {
+            agentRecordBO.setChildrens(agentRecordBOS);
+            agentRecordBO.setChildrenCount(agentRecordBOS.size());
+            agentRecordBOS.forEach(this::sub);
+        }
     }
 
     /**

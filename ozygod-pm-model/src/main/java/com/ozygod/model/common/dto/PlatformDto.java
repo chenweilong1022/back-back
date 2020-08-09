@@ -42,7 +42,7 @@ public class PlatformDto extends BaseDto {
     @ApiModelProperty("管理员id")
     private Integer managerId;
     @ApiModelProperty("上级id")
-    private Integer superId;
+    private Long superId;
     @ApiModelProperty("期次")
     private Integer period;
     @ApiModelProperty("显示id")

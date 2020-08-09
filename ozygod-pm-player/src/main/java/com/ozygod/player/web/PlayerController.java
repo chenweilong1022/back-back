@@ -121,6 +121,18 @@ public class PlayerController {
     }
 
     /**
+     * 查询在线玩家总金币
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/online/totalGold", method = RequestMethod.POST, headers = Constant.API_VERSION_V1)
+    public ResponseBO listOnlineTotalGold(@RequestBody PlayerAccountDto dto) {
+        ResponseBO responseBO = new ResponseBO();
+        responseBO.setData(playerService.listOnlineTotalGold(dto));
+        return responseBO;
+    }
+
+    /**
      * 调整在线玩家幸运值
      * @param bo
      * @return

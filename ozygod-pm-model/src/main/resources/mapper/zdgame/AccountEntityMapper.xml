@@ -49,6 +49,7 @@
             ( B.GOLD + B.BANK_GOLD ) AS TOTALGOLD,
             B.HONOR,
             B.diamond,
+            B.show_id showId,
             C.totalPay,
             D.totalWithdraw
         FROM
@@ -330,6 +331,33 @@
         ORDER BY t1.into_time asc
     </select>
 
+    <select id="listOnlinePlayerTotalGold" resultType="com.ozygod.model.zdgame.bo.PlayerAccountBO">
+        SELECT
+          IFNULL( SUM( GOLD )+ SUM( BANK_GOLD ), 0 ) totalGold
+        FROM
+          tbl_player_location t1
+        LEFT JOIN zdconfig.tbl_game_room tt ON t1.room = tt.roomid
+        LEFT JOIN tbl_playerinfo t3 ON t1.userid = t3.userid
+          WHERE
+        t1.userid > ${realUserId}
+        <if test="ew.playerId != null">
+            AND t1.userid = #{ew.playerId,jdbcType=BIGINT}
+        </if>
+        <if test="ew.showId != null">
+            AND t3.show_id = #{ew.showId,jdbcType=BIGINT}
+        </if>
+        <if test="ew.gameId != null and ew.gameId != 0">
+            and tt.gameid = #{ew.gameId, jdbcType=INTEGER}
+        </if>
+        <if test="ew.gameIds != null and ew.gameIds.size() > 0">
+            and tt.gameid in
+            <foreach collection="ew.gameIds" item="gameId" open="(" separator="," close=")">
+                #{ew.gameId, jdbcType=INTEGER}
+            </foreach>
+        </if>
+        ORDER BY t1.into_time asc
+    </select>
+
 
 
   <select id="totalOnlinePlayerByQry" parameterType="com.ozygod.model.zdgame.dto.PlayerAccountDto" resultType="int">
@@ -354,7 +382,6 @@
       </foreach>
     </if>
   </select>
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tbl_account
     where userid = #{userid,jdbcType=BIGINT}

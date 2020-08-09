@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @title:
  * @description:
@@ -27,6 +29,10 @@ public class AgentRecordBO extends AgentRecordEntity {
     private Long totalBonus;
 
     private Long totalPerformance;
+
+    private List<AgentRecordBO> childrens;
+
+    private Integer childrenCount = 0;
 
     public Long getTotalBonus() {
         return this.getFirstBonus() + this.getSecondBonus() + this.getThirdBonus() + this.getUnlimitBonus();
