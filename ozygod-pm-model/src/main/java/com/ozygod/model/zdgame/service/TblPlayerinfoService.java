@@ -20,6 +20,6 @@ public interface TblPlayerinfoService extends IService<TblPlayerinfoEntity> {
 
     ResponseBO queryPage(TblPlayerinfoListDto tblPlayerinfo);
 
-    List<AgentTreeVo> agentTree(Long saler);
+    List<AgentTreeVo> agentTree(Long saler,Long userid);
 }
 

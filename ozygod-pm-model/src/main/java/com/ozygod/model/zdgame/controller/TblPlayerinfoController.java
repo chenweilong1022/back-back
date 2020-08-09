@@ -54,8 +54,8 @@ public class TblPlayerinfoController {
      * 代理树形图
      */
     @RequestMapping("/agentTree")
-    public ResponseBO agentTree(Long saler){
-        return ResponseBO.data(tblPlayerinfoService.agentTree(saler));
+    public ResponseBO agentTree(Long saler,Long userid){
+        return ResponseBO.data(tblPlayerinfoService.agentTree(saler,userid));
     }
 
     /**

@@ -19,6 +19,6 @@ import java.util.List;
 public interface TblPlayerinfoDao extends BaseMapper<TblPlayerinfoEntity> {
 
 
-    List<AgentTreeVo> agentTree(@Param("saler") Long saler);
+    List<AgentTreeVo> agentTree(@Param("saler") Long saler,@Param("userid") Long userid);
 
 }

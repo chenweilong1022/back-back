@@ -32,14 +32,14 @@ public class TblPlayerinfoServiceImpl extends ServiceImpl<TblPlayerinfoDao, TblP
     }
 
     @Override
-    public List<AgentTreeVo> agentTree(Long saler) {
-        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(saler);
+    public List<AgentTreeVo> agentTree(Long saler,Long userid) {
+        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(saler,userid);
         agentTreeVos.forEach(this::sub);
         return agentTreeVos;
     }
 
     private void sub(AgentTreeVo agentTreeVo) {
-        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(agentTreeVo.getShowId());
+        List<AgentTreeVo> agentTreeVos = baseMapper.agentTree(agentTreeVo.getShowId(),null);
         if (CollUtil.isNotEmpty(agentTreeVos)) {
             agentTreeVo.setChildrens(agentTreeVos);
             agentTreeVos.forEach(this::sub);

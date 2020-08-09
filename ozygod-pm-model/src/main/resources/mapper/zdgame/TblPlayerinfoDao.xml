@@ -30,11 +30,14 @@
         tbl_account ta
         LEFT JOIN tbl_playerinfo p ON ta.userid = p.userid
     where
-    <if test="saler == null">
+    <if test="userid == null and saler == null">
         ta.saler is null
     </if>
     <if test="saler != null" >
         ta.saler = #{saler,jdbcType=BIGINT}
+    </if>
+    <if test="userid != null" >
+        ta.userid = #{userid,jdbcType=BIGINT}
     </if>
     </select>
 
