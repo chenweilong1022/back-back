@@ -44,7 +44,7 @@
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<ipdb.version>1.1.1</ipdb.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
-		<hutool.version>4.1.1</hutool.version>
+		<hutool.version>4.1.12</hutool.version>
 		<org.mapstruct.version>1.2.0.CR1</org.mapstruct.version>
 	</properties>
 
