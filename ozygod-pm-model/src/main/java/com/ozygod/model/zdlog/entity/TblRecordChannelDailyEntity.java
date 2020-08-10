@@ -43,17 +43,17 @@ public class TblRecordChannelDailyEntity implements Serializable {
 	 * 玩家身上金币
 	 */
 	@ApiModelProperty(required=false,value="玩家身上金币")
-	private Long gold;
+	private Long gold = 0L;
 	/**
 	 * 玩家银行金币
 	 */
 	@ApiModelProperty(required=false,value="玩家银行金币")
-	private Long bankGold;
+	private Long bankGold = 0L;
 	/**
 	 * 玩家总金币
 	 */
 	@ApiModelProperty(required=false,value="玩家总金币")
-	private Long totalGold;
+	private Long totalGold = 0L;
 	/**
 	 * 终端
 	 */

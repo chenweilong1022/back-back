@@ -13,7 +13,8 @@ import lombok.Getter;
 public enum AccountLoginType implements BaseEnum {
 
     IOS(3,"ios","IOS登录"),
-    ANDROID(4,"andorid","安卓登录");
+    ANDROID(4,"andorid","安卓登录"),
+    OTHER(5,"","其他登录");
 //    FIVE(5,"充值金额(元)"),
 //    SIX(6,"总充值成功率"),
 //    SEVEN(7,"兑换金额(元)"),

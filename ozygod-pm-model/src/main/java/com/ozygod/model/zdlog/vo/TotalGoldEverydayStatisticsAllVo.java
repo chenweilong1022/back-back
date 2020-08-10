@@ -2,6 +2,8 @@ package com.ozygod.model.zdlog.vo;
 
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.ozygod.base.annotations.MoneyField;
+import com.ozygod.base.enums.MoneyFormatType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -31,16 +33,19 @@ public class TotalGoldEverydayStatisticsAllVo {
      * 玩家身上金币
      */
     @ApiModelProperty(required=false,value="玩家身上金币")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
     private Long gold;
     /**
      * 玩家银行金币
      */
     @ApiModelProperty(required=false,value="玩家银行金币")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
     private Long bankGold;
     /**
      * 玩家总金币
      */
     @ApiModelProperty(required=false,value="玩家总金币")
+    @MoneyField(moneyFormatTypes = {MoneyFormatType.DIV})
     private Long totalGold;
 
     public void add(TotalGoldEverydayStatisticsVo totalGoldEverydayStatisticsVo) {

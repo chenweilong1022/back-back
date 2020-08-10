@@ -516,10 +516,25 @@ public class IndexController {
                         .le(TblRecordChannelDailyEntity::getCurrentDates, totalGoldEverydayStatisticsAllVo.getEndTime())
                         .orderByAsc(TblRecordChannelDailyEntity::getCurrentDates)
                 );
+
+
+                List<TblRecordChannelDailyEntity> tblRecordChannelDailyEntities1 = dates.stream().map(dateTime -> {
+                    TblRecordChannelDailyEntity entity = tblRecordChannelDailyEntities.stream().filter(tblRecordChannelDailyEntity -> DateUtil.formatDate(dateTime).equals(DateUtil.formatDate(tblRecordChannelDailyEntity.getCurrentDates()))).findFirst().orElse(null);
+
+                    if (ObjectUtil.isNull(entity)) {
+                        entity = new TblRecordChannelDailyEntity();
+                        entity.setAppChannel(accountRegisterChannel.getValue());
+                        entity.setPlatform(accountLoginType.getValue());
+                    }
+                    return entity;
+                }).collect(Collectors.toList());
+
+
+
                 /**
                  * 拿到所有的总金币list
                  */
-                List<Long> totalGolds = tblRecordChannelDailyEntities.stream().map(TblRecordChannelDailyEntity::getTotalGold).collect(Collectors.toList());
+                List<Long> totalGolds = tblRecordChannelDailyEntities1.stream().map(TblRecordChannelDailyEntity::getTotalGold).collect(Collectors.toList());
                 /**
                  * 设置
                  */
