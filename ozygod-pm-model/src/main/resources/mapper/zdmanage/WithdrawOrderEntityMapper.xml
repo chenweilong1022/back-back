@@ -20,7 +20,7 @@
     id, userid, type, state, account, bank, realname, amount, tax, note, approval_id, completeTime, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tbl_withdraw_order
     where id = #{id,jdbcType=BIGINT}
@@ -132,19 +132,31 @@
     group by t1.type
   </select>
 
+  <select id="withdrawAmount" resultType="java.lang.Integer">
+    SELECT
+        IFNULL( SUM( amount ), 0 ) amount
+    FROM
+        tbl_withdraw_order
+    WHERE
+        state = 2
+    <if test="userid != null">
+      AND userid = #{userid}
+    </if>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tbl_withdraw_order
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.ozygod.model.zdmanage.entity.WithdrawOrderEntity">
-    insert into tbl_withdraw_order (id, userid, type, 
+    insert into tbl_withdraw_order (id, userid, type,
       state, account, bank, realname, amount, tax,
-      note, approval_id, completeTime, 
+      note, approval_id, completeTime,
       create_time)
-    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
       #{state,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR},  #{bank,jdbcType=VARCHAR},
       #{realname,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{tax,jdbcType=INTEGER},
-      #{note,jdbcType=VARCHAR}, #{approvalId,jdbcType=INTEGER}, #{completetime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{approvalId,jdbcType=INTEGER}, #{completetime,jdbcType=TIMESTAMP},
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ozygod.model.zdmanage.entity.WithdrawOrderEntity">

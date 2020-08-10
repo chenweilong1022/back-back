@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.dto.TblOrderListDto;
 import com.ozygod.base.bo.ResponseBO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,8 @@ public interface TblOrderService extends IService<TblOrderEntity> {
      * @return
      */
     List<TblOrderEntity> rechargeOrderList(DateTime begin, DateTime end, List<Long> userIds);
+
+    Integer rechargePrice(Long userid);
 
 }
 

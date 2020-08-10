@@ -29,6 +29,8 @@ public class AgentSummaryBO extends BaseBO {
 
     private Long totalPerformance;
 
+    private Integer totalAgentCount;
+
     public Long getTotalBonus() {
         return this.getFirstBonus() + this.getSecondBonus() + this.getThirdBonus() + this.getUnlimitBonus();
     }

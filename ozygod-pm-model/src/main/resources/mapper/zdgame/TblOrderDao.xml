@@ -19,5 +19,17 @@
         <result property="type" column="type"/>
     </resultMap>
 
+    <select id="rechargePrice" resultType="java.lang.Integer">
+        SELECT
+          IFNULL(SUM( money ) ,0) money
+        FROM
+            tbl_order
+        WHERE
+            state = 3
+        <if test="userid != null">
+            AND userid = #{userid}
+        </if>
+    </select>
+
 
 </mapper>

@@ -83,9 +83,9 @@ public class AgentServiceImpl implements IAgentService {
      */
     @Override
     public List<AgentRecordBO> listAgentRecordByQry(PlatformDto dto) {
-        if (ObjectUtil.isNull(dto.getSuperId())) {
-            dto.setSuperId(0L);
-        }
+//        if (ObjectUtil.isNull(dto.getSuperId())) {
+//            dto.setSuperId(0L);
+//        }
         List<AgentRecordBO> agentRecordBOS = agentRecordEntityMapper.listAgentRecordByQry(dto);
         agentRecordBOS.forEach(this::sub);
         return agentRecordBOS;
@@ -186,6 +186,7 @@ public class AgentServiceImpl implements IAgentService {
      */
     @Override
     public AgentSummaryBO getAgentRecordSummary(PlatformDto dto) {
+//        this.getDateDurationByQueryType(dto);
         return agentRecordEntityMapper.getAgentRecordSummary(dto);
     }
 }

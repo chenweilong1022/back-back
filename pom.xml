@@ -45,6 +45,7 @@
 		<ipdb.version>1.1.1</ipdb.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
 		<hutool.version>4.1.1</hutool.version>
+		<org.mapstruct.version>1.2.0.CR1</org.mapstruct.version>
 	</properties>
 
 	<!-- 管理所有子模块 -->
@@ -258,6 +259,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!--mapStruct依赖-->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-jdk8</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

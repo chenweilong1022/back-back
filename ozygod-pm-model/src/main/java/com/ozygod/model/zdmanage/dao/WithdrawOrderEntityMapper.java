@@ -5,6 +5,7 @@ import com.ozygod.model.common.dto.PlatformDto;
 import com.ozygod.model.zdmanage.bo.WithdrawOrderBO;
 import com.ozygod.model.zdmanage.dto.BusinessDto;
 import com.ozygod.model.zdmanage.entity.WithdrawOrderEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,4 +49,6 @@ public interface WithdrawOrderEntityMapper {
      * @return
      */
     long countWithdrawOrderByQry(BusinessDto dto);
+
+    Integer withdrawAmount(@Param("userid") Long userid);
 }

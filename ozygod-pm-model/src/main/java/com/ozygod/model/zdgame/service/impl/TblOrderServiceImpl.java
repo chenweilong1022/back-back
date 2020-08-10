@@ -100,5 +100,10 @@ public class TblOrderServiceImpl extends ServiceImpl<TblOrderDao, TblOrderEntity
         return list;
     }
 
+    @Override
+    public Integer rechargePrice(Long userid) {
+        return baseMapper.rechargePrice(userid);
+    }
+
 
 }

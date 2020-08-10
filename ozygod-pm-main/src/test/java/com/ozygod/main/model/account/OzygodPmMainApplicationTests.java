@@ -1,10 +1,7 @@
 package com.ozygod.main.model.account;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,7 +10,6 @@ import com.ozygod.model.zdgame.entity.TblAccountEntity;
 import com.ozygod.model.zdgame.entity.TblOrderEntity;
 import com.ozygod.model.zdgame.service.TblAccountService;
 import com.ozygod.model.zdgame.service.TblOrderService;
-import com.ozygod.model.zdmanage.controller.TblAgentRecordController;
 import com.ozygod.model.zdmanage.entity.TblAgentRealtimeEntity;
 import com.ozygod.model.zdmanage.entity.TblAgentRecordEntity;
 import com.ozygod.model.zdmanage.entity.TblWithdrawOrderEntity;
@@ -21,14 +17,11 @@ import com.ozygod.model.zdmanage.service.TblAgentRealtimeService;
 import com.ozygod.model.zdmanage.service.TblAgentRecordService;
 import com.ozygod.model.zdmanage.service.TblWithdrawOrderService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +44,16 @@ public class OzygodPmMainApplicationTests {
 	private TblOrderService tblOrderService;
 	@Autowired
 	private TblWithdrawOrderService tblWithdrawOrderService;
+
+//	@Autowired
+//	private MallTblOrderService mallTblOrderService;
+//
+//	@Test
+//	public void contextLoads1() {
+//		List<MallTblOrderEntity> list = mallTblOrderService.list(null);
+//		System.out.println(list);
+//	}
+
 
 	@Test
 	public void contextLoads() {

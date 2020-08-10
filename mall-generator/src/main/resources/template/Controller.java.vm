@@ -1,0 +1,73 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import com.ozygod.base.bo.ResponseBO;
+import com.ozygod.base.vo.PageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ${package}.${moduleName}.dto.${className}DTO;
+import ${package}.${moduleName}.vo.${className}VO;
+import ${package}.${moduleName}.service.${className}Service;
+
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+//@RestController
+@RequestMapping("${moduleName}/${pathName}")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    public ResponseBO list(${className}DTO ${classname}){
+        PageUtils page = ${classname}Service.queryPage(${classname});
+        return ResponseBO.data(page);
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{${pk.attrname}}")
+    public ResponseBO info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}VO ${classname} = ${classname}Service.getById(${pk.attrname});
+        return ResponseBO.data(${classname});
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
+    public ResponseBO save(@RequestBody ${className}DTO ${classname}){
+        return ResponseBO.data(${classname}Service.save(${classname}));
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    public ResponseBO update(@RequestBody ${className}DTO ${classname}){
+		${classname}Service.updateById(${classname});
+        return ResponseBO.data(${classname}Service.updateById(${classname}));
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    public ResponseBO delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+        return ResponseBO.data(${classname}Service.removeByIds(Arrays.asList(${pk.attrname}s)));
+    }
+
+}
