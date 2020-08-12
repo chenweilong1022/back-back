@@ -55,14 +55,23 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
                 //随机到了 进行放分
                 if (winRateControlDTO.getReleaseProbability().intValue() >= i) {
                     String url = gameUrl + "/game_trick?roomid=" + roomId + "&val=" + winRateControlDTO.getReleaseLucky();
-                    String resJson = HttpUtil.get(url);
+                    try {
+                        String resJson = HttpUtil.get(url);
+                        log.info(resJson);
+                    }catch (Exception e) {
+                        log.error("winRateControl:{}Exception",roomId);
+                    }
                     log.info(url);
-                    log.info(resJson);
+
                 }else {
                     String url = gameUrl + "/game_trick?roomid=" + roomId + "&val=" + winRateControlDTO.getShareLucky();
-                    String resJson = HttpUtil.get(url);
+                    try {
+                        String resJson = HttpUtil.get(url);
+                        log.info(resJson);
+                    }catch (Exception e) {
+                        log.error("winRateControl:{}Exception",roomId);
+                    }
                     log.info(url);
-                    log.info(resJson);
                 }
 
                 DateTime dateTime = DateUtil.offsetSecond(DateUtil.date(), winRateControlDTO.getTimeInterval().intValue());
