@@ -116,7 +116,8 @@ public class GameRulesController implements Serializable {
     @ApiOperation(value = "获取短链接", response = String.class)
     public ResponseBO getShortUrl(@RequestParam("longUrl") String longUrl) {
         ResponseBO responseBO = new ResponseBO();
-        responseBO.setData(weChatUtil.getWeChatShortUrl(longUrl));
+//        responseBO.setData(weChatUtil.getWeChatShortUrl(longUrl));
+        responseBO.setData(longUrl);
         return responseBO;
     }
 
